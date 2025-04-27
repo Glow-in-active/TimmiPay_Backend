@@ -22,7 +22,7 @@ target_include_directories(app_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/postgres_connect
 )
 
-target_link_libraries(app_lib PUBLIC  # Меняем PRIVATE на PUBLIC
+target_link_libraries(app_lib PUBLIC
     nlohmann_json::nlohmann_json
     libpqxx::pqxx
 )
@@ -31,11 +31,24 @@ target_link_libraries(app_lib PUBLIC  # Меняем PRIVATE на PUBLIC
 add_executable(myapp cmd/main.cpp)
 target_link_libraries(myapp PRIVATE app_lib)
 
-# Тесты
-add_executable(my_tests
+# --- Один общий исполняемый файл для всех тестов ---
+
+add_executable(all_tests
     internal/storage/config/config_test.cpp
+    internal/storage/postgres_connect/connect_test.cpp
 )
-target_link_libraries(my_tests PRIVATE
+
+target_include_directories(all_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/config
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/postgres_connect
+)
+
+target_link_libraries(all_tests PRIVATE
     app_lib
     GTest::gtest_main
+    libpqxx::pqxx
 )
+
+# Включаем автоматический запуск тестов через CTest
+enable_testing()
+add_test(NAME AllTests COMMAND all_tests)
