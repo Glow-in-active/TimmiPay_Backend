@@ -16,12 +16,18 @@ add_library(app_lib
     internal/storage/config/config.cpp
     internal/storage/postgres_connect/connect.cpp
     internal/storage/user_verify/user_verify.cpp
+    internal/user_verify/verification/user_verify.cpp
+    internal/user_verify/token_generator/token_generator.cpp
 )
 
 target_include_directories(app_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/config
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/postgres_connect
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/user_verify
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/user_verify/verification
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/user_verify/token_generator
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/models
+
 )
 
 target_link_libraries(app_lib PUBLIC

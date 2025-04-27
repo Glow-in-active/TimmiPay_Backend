@@ -1,28 +1,29 @@
 #include "user_verify.h"
+#include <pqxx/pqxx>
 #include <iostream>
-#include "../postgres_connect/connect.h"
-#include <string>
 
-UserStorage::UserStorage(const Config& config) : config_(config), conn_(connect_to_database(config)) {}
+UserStorage::UserStorage(pqxx::connection& conn) : conn_(conn) {}
 
 User UserStorage::GetUserByEmail(const std::string& email) {
-    User user;
     try {
-        pqxx::nontransaction transaction(conn_);
+        pqxx::work transaction(conn_);
         pqxx::result result = transaction.exec_params(
             "SELECT id, email, password_hash FROM users WHERE email = $1",
             email
         );
 
-        if (!result.empty()) {
-            user.id = result[0]["id"].as<std::string>();
-            user.email = result[0]["email"].as<std::string>();
-            user.password_hash = result[0]["password_hash"].as<std::string>();
-        }
-    } catch (const std::exception& e) {
-        std::cerr << "Ошибка при получении пользователя из базы данных: " << e.what() << std::endl;
+        if (result.empty()) return User{};
+
+        return User{
+            result[0][0].as<std::string>(),
+            result[0][1].as<std::string>(),
+            result[0][2].as<std::string>()
+        };
     }
-    return user;
+    catch (const std::exception& e) {
+        std::cout << "Database error: " << e.what() << std::endl;
+        return User{};
+    }
 }
 
 bool UserStorage::VerifyPassword(const User& user, const std::string& password_hash) {
