@@ -20,6 +20,7 @@ add_library(app_lib
     internal/user_verify/verification/user_verify.cpp
     internal/user_verify/token_generator/token_generator.cpp
     internal/uuid_generator/uuid_generator.cpp
+    internal/storage/redis_config/config_redis.cpp
 )
 
 target_include_directories(app_lib PUBLIC
@@ -30,6 +31,7 @@ target_include_directories(app_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/user_verify/token_generator
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/models
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/uuid_generator
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/redis_config
 )
 
 target_link_libraries(app_lib PUBLIC
@@ -48,12 +50,14 @@ add_executable(all_tests
     internal/storage/postgres_connect/connect_test.cpp
     #internal/user_verify/verification/user_verify_test.cpp
     internal/uuid_generator/uuid_generator_test.cpp
+    internal/storage/redis_config/config_redis_test.cpp
 )
 
 target_include_directories(all_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/config
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/postgres_connect
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/user_verify/verification
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/redis_config
 )
 
 target_link_libraries(all_tests PRIVATE
