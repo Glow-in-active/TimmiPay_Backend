@@ -15,11 +15,13 @@ find_package(libpqxx REQUIRED)  # Используем современный в
 add_library(app_lib
     internal/storage/config/config.cpp
     internal/storage/postgres_connect/connect.cpp
+    internal/storage/user_verify/user_verify.cpp
 )
 
 target_include_directories(app_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/config
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/postgres_connect
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/user_verify
 )
 
 target_link_libraries(app_lib PUBLIC
