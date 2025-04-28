@@ -36,7 +36,6 @@ TEST_F(RedisSetTokenTest, WritesValidDataWithTTL) {
     auto stored_id = redis->hget(token, "id");
     auto expires_at = redis->hget(token, "expires_at");
     
-    // Проверка для старых версий redis-plus-plus
     ASSERT_TRUE(static_cast<bool>(stored_id));
     ASSERT_TRUE(static_cast<bool>(expires_at));
     EXPECT_EQ(*stored_id, id);
@@ -73,13 +72,11 @@ TEST_F(RedisSetTokenTest, OverwritesExistingToken) {
     const std::string id1 = "user_old";
     const std::string id2 = "user_new";
     
-    // Первая запись
     set_token(*redis, token, id1);
     const auto first_ttl = redis->ttl(token);
     
     std::this_thread::sleep_for(std::chrono::seconds(1));
     
-    // Вторая запись
     set_token(*redis, token, id2);
     
     const auto stored_id = redis->hget(token, "id");
@@ -95,7 +92,7 @@ TEST_F(RedisSetTokenTest, DataPersistsUntilExpiration) {
     const std::string id = "user_789";
     
     set_token(*redis, token, id);
-    redis->expire(token, 3); // Уменьшаем TTL для теста
+    redis->expire(token, 3);
     
     EXPECT_EQ(redis->exists(token), 1);
     
@@ -104,9 +101,4 @@ TEST_F(RedisSetTokenTest, DataPersistsUntilExpiration) {
     
     std::this_thread::sleep_for(std::chrono::seconds(2));
     EXPECT_EQ(redis->exists(token), 0);
-}
-
-int main(int argc, char **argv) {
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }
