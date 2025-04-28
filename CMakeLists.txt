@@ -23,6 +23,7 @@ add_library(app_lib
     internal/uuid_generator/uuid_generator.cpp
     internal/storage/redis_config/config_redis.cpp
     internal/storage/redis_connect/connect_redis.cpp
+    internal/storage/user_verify/redis_set/redis_set_token.cpp
 )
 
 target_include_directories(app_lib PUBLIC
@@ -35,6 +36,7 @@ target_include_directories(app_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/uuid_generator
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/redis_config
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/redis_connect
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/user_verify/redis_set
 )
 
 target_link_libraries(app_lib PUBLIC

@@ -1,38 +1,40 @@
-#include "../internal/storage/config/config.h"
-#include "../internal/storage/postgres_connect/connect.h"
-#include "../internal/storage/user_verify/auth/user_verify.h"
-#include "../internal/user_verify/verification/user_verify.h"
-#include <pqxx/pqxx>
+#include "connect_redis.h"
+#include "redis_set_token.h"
 #include <iostream>
-#include <string>
+#include <chrono>
 
 int main() {
+    ConfigRedis config {
+        .host = "localhost",
+        .port = 6379,
+        .password = "",
+        .db = 0
+    };
+
     try {
-        Config config = load_config("postgres-config.json");
-        pqxx::connection conn = connect_to_database(config);
-        
-        UserVerifier user_verifier(conn); 
+        auto redis = connect_to_redis(config);
+        std::cout << "Connected to Redis!\n";
 
-        std::string email;
-        std::string password_hash;
+        const std::string test_token = "test_token_123";
+        const std::string test_id = "user_42";
 
-        std::cout << "Введите email: ";
-        std::getline(std::cin, email);
+        set_token(redis, test_token, test_id);
 
-        std::cout << "Введите hash пароля: ";
-        std::getline(std::cin, password_hash);
+        auto id = redis.hget(test_token, "id");
+        auto expires_at = redis.hget(test_token, "expires_at");
 
-        std::string token = user_verifier.GenerateToken(email, password_hash);
-
-        if (!token.empty()) {
-            std::cout << "Пользователь успешно верифицирован. Токен: " << token << std::endl;
+        if (id && expires_at) {
+            std::cout << "Data verification:\n"
+                      << "ID: " << *id << "\n"
+                      << "Expires: " << *expires_at << "\n";
         } else {
-            std::cout << "Неверный email или пароль." << std::endl;
+            std::cerr << "Data verification failed!\n";
         }
-    }
-    catch (const std::exception& e) {
-        std::cout << "Ошибка: " << e.what() << std::endl;
+
+        return 0;
+
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << "\n";
         return 1;
     }
-    return 0;
 }
