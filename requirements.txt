@@ -11,3 +11,19 @@
     openssl:x64-linux@3.5.0#1
     vcpkg-cmake-get-vars:x64-linux@2024-09-22
     zlib:x64-linux@1.3.1
+
+./vcpkg/vcpkg install boost-uuid
+    boost-assert:x64-linux@1.88.0
+    boost-cmake:x64-linux@1.88.0
+    boost-config:x64-linux@1.88.0
+    boost-headers:x64-linux@1.88.0
+    boost-static-assert:x64-linux@1.88.0
+    boost-throw-exception:x64-linux@1.88.0
+    boost-type-traits:x64-linux@1.88.0
+    boost-uninstall:x64-linux@1.88.0
+    boost-uuid:x64-linux@1.88.0
+    vcpkg-boost:x64-linux@2025-03-29
+
+./vcpkg/vcpkg install redis-plus-plus
+    hiredis:x64-linux@1.3.0
+    redis-plus-plus:x64-linux@1.3.14
