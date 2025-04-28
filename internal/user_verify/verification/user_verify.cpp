@@ -1,16 +1,17 @@
 #include "user_verify.h"
 #include <iostream>
 
-UserVerifier::UserVerifier(pqxx::connection& conn)
-    : user_storage_(conn) {}
+UserVerifier::UserVerifier(pqxx::connection& pg_conn, sw::redis::Redis& redis) 
+    : user_storage_(pg_conn),
+      uuid_generator_(),
+      redis_(redis),
+      token_gen_(uuid_generator_, redis) {}
 
-std::string UserVerifier::GenerateToken(const std::string& email, const std::string& password_hash) {
+std::string UserVerifier::GenerateToken(const std::string& email, 
+                                      const std::string& password_hash) {
     User user = user_storage_.GetUserByEmail(email);
-    
-    if (user.id.empty() || !user_storage_.VerifyPassword(user, password_hash)) {
-        std::cout << "Неверный email или пароль при генерации токена." << std::endl;
-        return "";
+    if (!user.id.empty() && user_storage_.VerifyPassword(user, password_hash)) {
+        return token_gen_.GenerateToken(user);
     }
-
-    return token_generator_.GenerateToken(user);
+    return "";
 }

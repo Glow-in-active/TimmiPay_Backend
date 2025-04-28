@@ -1,7 +1,15 @@
 #include "token_generator.h"
-#include <iostream>
+#include "../../storage/user_verify/redis_set/redis_set_token.h"
 
 std::string TokenGenerator::GenerateToken(const User& user) {
-    std::cout << "Generating token for user: " << user.email << std::endl;
-     return "dummy_token_for_user_" + user.id;
+    const std::string token = uuid_gen_.generateUUID();
+    
+    set_token(redis_, token, user.id);
+    
+    return token;
 }
+
+TokenGenerator::TokenGenerator(UUIDGenerator& uuid_gen, sw::redis::Redis& redis)
+    : uuid_gen_(uuid_gen), 
+      redis_(redis) 
+{}

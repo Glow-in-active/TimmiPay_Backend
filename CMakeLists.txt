@@ -60,6 +60,7 @@ add_executable(all_tests
     internal/storage/redis_connect/connect_redis_test.cpp
     internal/storage/user_verify/auth/user_verify_test.cpp
     internal/storage/user_verify/redis_set/redis_set_token_test.cpp
+    internal/user_verify/token_generator/token_generator_test.cpp
 )
 
 target_include_directories(all_tests PRIVATE
@@ -69,7 +70,8 @@ target_include_directories(all_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/redis_config
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/redis_connect
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/user_verify/auth
-    ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/user_verify/redis_set/
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/user_verify/redis_set
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/user_verify/token_generator
 )
 
 target_link_libraries(all_tests PRIVATE
