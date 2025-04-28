@@ -11,6 +11,7 @@ find_package(nlohmann_json REQUIRED)
 find_package(GTest REQUIRED)
 find_package(libpqxx REQUIRED)  # Используем современный вариант
 find_package(Boost REQUIRED COMPONENTS uuid)
+find_package(redis++ CONFIG REQUIRED)
 
 # Общая библиотека
 add_library(app_lib
@@ -21,6 +22,7 @@ add_library(app_lib
     internal/user_verify/token_generator/token_generator.cpp
     internal/uuid_generator/uuid_generator.cpp
     internal/storage/redis_config/config_redis.cpp
+    internal/storage/redis_connect/connect_redis.cpp
 )
 
 target_include_directories(app_lib PUBLIC
@@ -32,12 +34,14 @@ target_include_directories(app_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/models
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/uuid_generator
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/redis_config
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/redis_connect
 )
 
 target_link_libraries(app_lib PUBLIC
     nlohmann_json::nlohmann_json
     libpqxx::pqxx
     Boost::uuid
+    redis++::redis++_static
 )
 # Основное приложение
 add_executable(myapp cmd/main.cpp)
@@ -51,6 +55,7 @@ add_executable(all_tests
     #internal/user_verify/verification/user_verify_test.cpp
     internal/uuid_generator/uuid_generator_test.cpp
     internal/storage/redis_config/config_redis_test.cpp
+    internal/storage/redis_connect/connect_redis_test.cpp
 )
 
 target_include_directories(all_tests PRIVATE
@@ -58,6 +63,7 @@ target_include_directories(all_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/postgres_connect
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/user_verify/verification
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/redis_config
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/redis_connect
 )
 
 target_link_libraries(all_tests PRIVATE
