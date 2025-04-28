@@ -3,7 +3,7 @@
 
 #include <string>
 #include "../token_generator/token_generator.h"
-#include "../../storage/user_verify/user_verify.h"
+#include "../../storage/user_verify/auth/user_verify.h"
 
 class UserVerifier {
 public:

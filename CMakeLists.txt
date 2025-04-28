@@ -17,7 +17,7 @@ find_package(redis++ CONFIG REQUIRED)
 add_library(app_lib
     internal/storage/config/config.cpp
     internal/storage/postgres_connect/connect.cpp
-    internal/storage/user_verify/user_verify.cpp
+    internal/storage/user_verify/auth/user_verify.cpp
     internal/user_verify/verification/user_verify.cpp
     internal/user_verify/token_generator/token_generator.cpp
     internal/uuid_generator/uuid_generator.cpp
@@ -28,7 +28,7 @@ add_library(app_lib
 target_include_directories(app_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/config
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/postgres_connect
-    ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/user_verify
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/user_verify/auth
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/user_verify/verification
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/user_verify/token_generator
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/models

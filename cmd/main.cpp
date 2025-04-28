@@ -1,27 +1,37 @@
-#include "../internal/storage/redis_connect/connect_redis.h"
+#include "../internal/storage/config/config.h"
+#include "../internal/storage/postgres_connect/connect.h"
+#include "../internal/storage/user_verify/auth/user_verify.h"
+#include "../internal/user_verify/verification/user_verify.h"
+#include <pqxx/pqxx>
 #include <iostream>
+#include <string>
 
 int main() {
     try {
-        ConfigRedis config = load_redis_config("redis_config.json");
-        auto redis = connect_to_redis(config);
-
-        auto pong = redis.ping();
-        if (pong != "PONG") {
-            throw std::runtime_error("Unexpected ping response: " + pong);
-        }
-
-        redis.set("test", "value");
-        auto value = redis.get("test");
+        Config config = load_config("postgres-config.json");
+        pqxx::connection conn = connect_to_database(config);
         
-        if (value) {
-            std::cout << "Success! Value: " << *value << std::endl;
+        UserVerifier user_verifier(conn); 
+
+        std::string email;
+        std::string password_hash;
+
+        std::cout << "Введите email: ";
+        std::getline(std::cin, email);
+
+        std::cout << "Введите hash пароля: ";
+        std::getline(std::cin, password_hash);
+
+        std::string token = user_verifier.GenerateToken(email, password_hash);
+
+        if (!token.empty()) {
+            std::cout << "Пользователь успешно верифицирован. Токен: " << token << std::endl;
         } else {
-            std::cout << "Key not found" << std::endl;
+            std::cout << "Неверный email или пароль." << std::endl;
         }
     }
     catch (const std::exception& e) {
-        std::cerr << "Redis error: " << e.what() << "\n";
+        std::cout << "Ошибка: " << e.what() << std::endl;
         return 1;
     }
     return 0;
