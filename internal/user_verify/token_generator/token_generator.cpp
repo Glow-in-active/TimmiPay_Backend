@@ -1,9 +1,10 @@
 #include "token_generator.h"
 #include "../../storage/user_verify/redis_set/redis_set_token.h"
+#include "../../storage/user_verify/auth/user_verify.cpp"
 
 std::string TokenGenerator::GenerateToken(const User& user) {
     const std::string token = uuid_gen_.generateUUID();
-    
+
     set_token(redis_, token, user.id);
     
     return token;
