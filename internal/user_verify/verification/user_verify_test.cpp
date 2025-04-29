@@ -1,4 +1,3 @@
-// internal/storage/user_verify/user_verify_test.cpp
 #include <gtest/gtest.h>
 #include <pqxx/pqxx>
 #include "user_verify.h"
