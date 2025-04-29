@@ -26,3 +26,17 @@ void set_token(sw::redis::Redis& redis,
         throw std::runtime_error("System error: " + std::string(e.what()));
     }
 }
+
+void hold_token(sw::redis::Redis& redis, const std::string& token) {
+    try {
+        auto ttl = redis.ttl(token);
+        
+        if (ttl != -2) {
+            redis.expire(token, 600);
+        }
+    } catch (const sw::redis::Error& e) {
+        throw std::runtime_error("Redis error: " + std::string(e.what()));
+    } catch (const std::exception& e) {
+        throw std::runtime_error("System error: " + std::string(e.what()));
+    }
+}

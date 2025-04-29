@@ -5,6 +5,7 @@
 #include "../internal/storage/redis_config/config_redis.h"
 #include "../internal/storage/redis_connect/connect_redis.h"
 #include "../internal/user_verify_http/session_start/session_start.h"
+#include "../internal/user_verify_http/session_hold/session_hold.h"
 #include <crow.h>
 #include <crow/middlewares/cors.h>
 #include <pqxx/pqxx>
@@ -14,57 +15,81 @@ using json = nlohmann::json;
 
 int main() {
     try {
-        // Инициализация конфигов и соединений
+        // Инициализация конфигов
         Config postgres_config = load_config("postgres-config.json");
         ConfigRedis redis_config = load_redis_config("redis-config.json");
         
+        // Установка соединений
         pqxx::connection postgres_conn = connect_to_database(postgres_config);
         sw::redis::Redis redis_conn = connect_to_redis(redis_config);
 
-        // Создаем цепочку зависимостей
+        // Инициализация зависимостей
         UserVerifier user_verifier(postgres_conn, redis_conn);
-        SessionStart session_handler(user_verifier);  // Наш модуль
+        SessionStart session_start_handler(user_verifier);
+        SessionHold session_hold_handler(redis_conn);
 
-        // Настройка сервера Crow
+        // Настройка Crow приложения
         crow::App<crow::CORSHandler> app;
         
         // Конфигурация CORS
         auto& cors = app.get_middleware<crow::CORSHandler>();
         cors
           .global()
-            .headers("Content-Type")
+            .headers("Content-Type", "Authorization")
             .methods("POST"_method)
             .origin("*");
 
-        // Обработчик эндпоинта
+        // Эндпоинт старта сессии
         CROW_ROUTE(app, "/session_start").methods("POST"_method)(
-            [&session_handler](const crow::request& req) {
+            [&session_start_handler](const crow::request& req) {
                 try {
-                    // Парсим напрямую через nlohmann::json
                     json request_body = json::parse(req.body);
+                    json response = session_start_handler.HandleRequest(request_body);
                     
-                    // Делегируем обработку в SessionStart
-                    json response = session_handler.HandleRequest(request_body);
-                    
-                    // Формируем HTTP-ответ
                     if (response.contains("error")) {
-                        const int status_code = 
-                            (response["error"] == "Invalid JSON format") ? 400 :
-                            (response["error"] == "Verification failed") ? 401 : 500;
+                        int status_code = 500;
+                        if (response["error"] == "Invalid JSON format") status_code = 400;
+                        else if (response["error"] == "Verification failed") status_code = 401;
+                        
                         return crow::response(status_code, response.dump());
                     }
                     return crow::response(200, response.dump());
                     
                 } catch (const std::exception& e) {
-                    return crow::response(500, json{{"error", e.what()}}.dump());
+                    return crow::response(500, json{{"error", "Internal server error"}}.dump());
+                }
+            });
+
+        // Эндпоинт продления сессии
+        CROW_ROUTE(app, "/session_refresh").methods("POST"_method)(
+            [&session_hold_handler](const crow::request& req) {
+                try {
+                    json request_body = json::parse(req.body);
+                    json response = session_hold_handler.HandleRequest(request_body);
+                    
+                    if (response.contains("error")) {
+                        int status_code = 500;
+                        if (response["error"] == "Invalid JSON format") status_code = 400;
+                        else if (response["error"] == "Token not found or expired") status_code = 404;
+                        
+                        return crow::response(status_code, response.dump());
+                    }
+                    return crow::response(200, response.dump());
+                    
+                } catch (const json::exception& e) {
+                    return crow::response(400, json{{"error", "Invalid JSON format"}}.dump());
+                } catch (const std::exception& e) {
+                    return crow::response(500, json{{"error", "Internal server error"}}.dump());
                 }
             });
 
         // Запуск сервера
-        app.port(8080).multithreaded().run();
-    }
-    catch (const std::exception& e) {
-        std::cerr << "Fatal error: " << e.what() << std::endl;
+        app.port(8080)
+            .multithreaded()
+            .run();
+
+    } catch (const std::exception& e) {
+        std::cerr << "Fatal initialization error: " << e.what() << std::endl;
         return 1;
     }
     return 0;

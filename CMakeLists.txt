@@ -25,6 +25,7 @@ add_library(app_lib
     internal/storage/redis_connect/connect_redis.cpp
     internal/storage/user_verify/redis_set/redis_set_token.cpp
     internal/user_verify_http/session_start/session_start.cpp
+    internal/user_verify_http/session_hold/session_hold.cpp
 )
 
 target_include_directories(app_lib PUBLIC
@@ -39,6 +40,7 @@ target_include_directories(app_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/redis_connect
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/user_verify/redis_set
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/user_verify_http/session_start
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/user_verify_http/session_hold
 )
 
 target_link_libraries(app_lib PUBLIC
