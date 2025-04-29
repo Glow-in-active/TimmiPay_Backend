@@ -4,7 +4,7 @@
 #include <boost/uuid/uuid_io.hpp>
 #include "token_generator.h"
 #include "uuid_generator.h"
-#include "../storage/user_verify/redis_set/redis_set_token.h"
+#include "../../storage/user_verify/redis_set/redis_set_token.h"
 
 class TokenGeneratorTest : public ::testing::Test {
 protected:

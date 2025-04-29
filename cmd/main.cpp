@@ -3,11 +3,11 @@
 #include "../internal/storage/config/config.h"
 #include "../internal/storage/postgres_connect/connect.h"
 #include "../internal/storage/user_verify/auth/user_verify.h"
-#include "../internal/user_verify/verification/user_verify.h"
+#include "../internal/auth/user_verify/verification/user_verify.h"
 #include "../internal/storage/redis_config/config_redis.h"
 #include "../internal/storage/redis_connect/connect_redis.h"
-#include "../internal/user_verify_http/session_start/session_start.h"
-#include "../internal/user_verify_http/session_hold/session_hold.h"
+#include "../internal/auth/user_verify_http/session_start/session_start.h"
+#include "../internal/auth/user_verify_http/session_hold/session_hold.h"
 #include <crow.h>
 #include <crow/middlewares/cors.h>
 #include <pqxx/pqxx>

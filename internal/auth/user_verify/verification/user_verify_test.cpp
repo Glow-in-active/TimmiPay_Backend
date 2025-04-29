@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <pqxx/pqxx>
 #include "user_verify.h"
-#include "../../models/user.h"
+#include "../../../models/user.h"
 
 constexpr auto TEST_UUID = "f715b468-50ab-4b2b-be3d-e6f1c84b8f1d";
 const std::string DB_CONN_STR = 
