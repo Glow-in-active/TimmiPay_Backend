@@ -1,3 +1,5 @@
+#include "session_auth_endpoint.h"
+#include "session_refresh_endpoint.h"
 #include "../internal/storage/config/config.h"
 #include "../internal/storage/postgres_connect/connect.h"
 #include "../internal/storage/user_verify/auth/user_verify.h"
@@ -10,8 +12,7 @@
 #include <crow/middlewares/cors.h>
 #include <pqxx/pqxx>
 #include <sw/redis++/redis++.h>
-
-using json = nlohmann::json;
+#include <iostream>
 
 int main() {
     try {
@@ -19,7 +20,7 @@ int main() {
         Config postgres_config = load_config("postgres-config.json");
         ConfigRedis redis_config = load_redis_config("redis-config.json");
         
-        // Установка соединений
+        // Установка соединений с БД
         pqxx::connection postgres_conn = connect_to_database(postgres_config);
         sw::redis::Redis redis_conn = connect_to_redis(redis_config);
 
@@ -39,57 +40,28 @@ int main() {
             .methods("POST"_method)
             .origin("*");
 
-        // Эндпоинт старта сессии
+        // Регистрация эндпоинтов
         CROW_ROUTE(app, "/session_start").methods("POST"_method)(
-            [&session_start_handler](const crow::request& req) {
-                try {
-                    json request_body = json::parse(req.body);
-                    json response = session_start_handler.HandleRequest(request_body);
-                    
-                    if (response.contains("error")) {
-                        int status_code = 500;
-                        if (response["error"] == "Invalid JSON format") status_code = 400;
-                        else if (response["error"] == "Verification failed") status_code = 401;
-                        
-                        return crow::response(status_code, response.dump());
-                    }
-                    return crow::response(200, response.dump());
-                    
-                } catch (const std::exception& e) {
-                    return crow::response(500, json{{"error", "Internal server error"}}.dump());
-                }
-            });
+            create_session_auth_handler(session_start_handler)
+        );
 
-        // Эндпоинт продления сессии
         CROW_ROUTE(app, "/session_refresh").methods("POST"_method)(
-            [&session_hold_handler](const crow::request& req) {
-                try {
-                    json request_body = json::parse(req.body);
-                    json response = session_hold_handler.HandleRequest(request_body);
-                    
-                    if (response.contains("error")) {
-                        int status_code = 500;
-                        if (response["error"] == "Invalid JSON format") status_code = 400;
-                        else if (response["error"] == "Token not found or expired") status_code = 404;
-                        
-                        return crow::response(status_code, response.dump());
-                    }
-                    return crow::response(200, response.dump());
-                    
-                } catch (const json::exception& e) {
-                    return crow::response(400, json{{"error", "Invalid JSON format"}}.dump());
-                } catch (const std::exception& e) {
-                    return crow::response(500, json{{"error", "Internal server error"}}.dump());
-                }
-            });
+            create_session_refresh_handler(session_hold_handler)
+        );
 
         // Запуск сервера
         app.port(8080)
             .multithreaded()
             .run();
 
+    } catch (const pqxx::sql_error& e) {
+        std::cerr << "PostgreSQL error: " << e.what() << std::endl;
+        return 1;
+    } catch (const sw::redis::Error& e) {
+        std::cerr << "Redis error: " << e.what() << std::endl;
+        return 1;
     } catch (const std::exception& e) {
-        std::cerr << "Fatal initialization error: " << e.what() << std::endl;
+        std::cerr << "Fatal error: " << e.what() << std::endl;
         return 1;
     }
     return 0;

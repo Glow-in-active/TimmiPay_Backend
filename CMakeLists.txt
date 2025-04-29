@@ -26,6 +26,8 @@ add_library(app_lib
     internal/storage/user_verify/redis_set/redis_set_token.cpp
     internal/user_verify_http/session_start/session_start.cpp
     internal/user_verify_http/session_hold/session_hold.cpp
+    internal/user_verify_http/endpoints/session_auth_endpoint/session_auth_endpoint.cpp
+    internal/user_verify_http/endpoints/session_refresh_endpoint/session_refresh_endpoint.cpp
 )
 
 target_include_directories(app_lib PUBLIC
@@ -41,6 +43,8 @@ target_include_directories(app_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/user_verify/redis_set
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/user_verify_http/session_start
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/user_verify_http/session_hold
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/user_verify_http/endpoints/session_auth_endpoint
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/user_verify_http/endpoints/session_refresh_endpoint
 )
 
 target_link_libraries(app_lib PUBLIC
