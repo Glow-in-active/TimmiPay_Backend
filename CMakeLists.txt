@@ -24,6 +24,7 @@ add_library(app_lib
     internal/storage/redis_config/config_redis.cpp
     internal/storage/redis_connect/connect_redis.cpp
     internal/storage/user_verify/redis_set/redis_set_token.cpp
+    internal/user_verify_http/session_start/session_start.cpp
 )
 
 target_include_directories(app_lib PUBLIC
@@ -37,6 +38,7 @@ target_include_directories(app_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/redis_config
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/redis_connect
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/user_verify/redis_set
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/user_verify_http/session_start
 )
 
 target_link_libraries(app_lib PUBLIC
@@ -61,6 +63,7 @@ add_executable(all_tests
     internal/storage/user_verify/auth/user_verify_test.cpp
     internal/storage/user_verify/redis_set/redis_set_token_test.cpp
     internal/user_verify/token_generator/token_generator_test.cpp
+    internal/user_verify_http/session_start/session_start_test.cpp
 )
 
 target_include_directories(all_tests PRIVATE
@@ -72,6 +75,7 @@ target_include_directories(all_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/user_verify/auth
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/user_verify/redis_set
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/user_verify/token_generator
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/user_verify_http/session_start
 )
 
 target_link_libraries(all_tests PRIVATE

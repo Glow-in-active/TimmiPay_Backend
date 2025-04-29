@@ -17,5 +17,4 @@ class UserVerifier {
         sw::redis::Redis& redis_;
         TokenGenerator token_gen_;
     };
-
 #endif
