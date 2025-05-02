@@ -62,7 +62,7 @@ target_link_libraries(myapp PRIVATE app_lib)
 add_executable(all_tests
     internal/storage/config/config_test.cpp
     internal/storage/postgres_connect/connect_test.cpp
-    #internal/auth/user_verify/verification/user_verify_test.cpp
+    internal/auth/user_verify/verification/user_verify_test.cpp
     internal/uuid_generator/uuid_generator_test.cpp
     internal/storage/redis_config/config_redis_test.cpp
     internal/storage/redis_connect/connect_redis_test.cpp
@@ -71,6 +71,7 @@ add_executable(all_tests
     internal/auth/user_verify/token_generator/token_generator_test.cpp
     internal/auth/user_verify_http/session_start/session_start_test.cpp
     internal/auth/user_verify_http/session_hold/session_hold_test.cpp
+    #internal/auth/user_verify_http/endpoints/session_auth_endpoint/session_auth_endpoint_test.cpp
 )
 
 target_include_directories(all_tests PRIVATE
@@ -84,6 +85,7 @@ target_include_directories(all_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/auth/user_verify/token_generator
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/auth/user_verify_http/session_start
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/auth/user_verify_http/session_hold
+    #${CMAKE_CURRENT_SOURCE_DIR}/internal/auth/user_verify_http/endpoints/session_auth_endpoint
 )
 
 target_link_libraries(all_tests PRIVATE

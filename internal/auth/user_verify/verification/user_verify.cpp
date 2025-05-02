@@ -10,8 +10,10 @@ UserVerifier::UserVerifier(pqxx::connection& pg_conn, sw::redis::Redis& redis)
 std::string UserVerifier::GenerateToken(const std::string& email, 
                                       const std::string& password_hash) {
     User user = user_storage_.GetUserByEmail(email);
-    if (!user.id.empty() && user_storage_.VerifyPassword(user, password_hash)) {
-        return token_gen_.GenerateToken(user);
+    
+    if (user.id.empty() || !user_storage_.VerifyPassword(user, password_hash)) {
+        throw std::runtime_error("Неверный логин или пароль");
     }
-    return "";
+    
+    return token_gen_.GenerateToken(user);
 }
