@@ -2,6 +2,8 @@
 #include <pqxx/pqxx>
 #include "user_verify.h"
 #include "../../../uuid_generator/uuid_generator.h"
+#include "../../config/config.h"
+#include "../../postgres_connect/connect.h"
 
 class UserStorageProdTest : public ::testing::Test {
 protected:
@@ -14,15 +16,9 @@ protected:
         test_user_id = uuid_gen.generateUUID();
         test_email = "test_" + test_user_id + "@example.com";
 
-        conn = new pqxx::connection(
-            "host=localhost "
-            "port=5432 "
-            "user=admin "
-            "password=secret "
-            "dbname=timmipay "
-            "sslmode=disable"
-        );
-        
+        Config config = load_config("database_config/test_postgres_config.json");
+        conn = new pqxx::connection(connect_to_database(config));
+
         pqxx::work setup_work(*conn);
         setup_work.exec_params(
             "INSERT INTO users (id, username, email, password_hash) "

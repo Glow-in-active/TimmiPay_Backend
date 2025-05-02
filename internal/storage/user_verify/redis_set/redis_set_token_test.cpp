@@ -1,22 +1,21 @@
 #include "redis_set_token.h"
-#include "connect_redis.h"
 #include <gtest/gtest.h>
 #include <sw/redis++/redis++.h>
 #include <chrono>
 #include <memory>
 #include <thread>
 
+#include "../../config/config.h"
+#include "../../redis_config/config_redis.h"
+#include "../../postgres_connect/connect.h"
+#include "../../redis_connect/connect_redis.h"
+
 class RedisSetTokenTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        ConfigRedis test_config{
-            .host = "localhost",
-            .port = 6379,
-            .password = "",
-            .db = 15
-        };
+        ConfigRedis redis_config = load_redis_config("database_config/test_redis_config.json");
 
-        redis = std::make_unique<sw::redis::Redis>(connect_to_redis(test_config));
+        redis = std::make_unique<sw::redis::Redis>(connect_to_redis(redis_config));
         redis->flushdb();
     }
 

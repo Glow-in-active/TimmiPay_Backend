@@ -4,15 +4,16 @@
 #include "session_refresh_endpoint.h"
 #include "../session_hold/session_hold.h"
 #include "../../../user_verify/token_generator/token_generator.h"
+#include "../../../../storage/redis_config/config_redis.h"
+#include "../../../../storage/redis_connect/connect_redis.h"
 #include "../../../../storage/user_verify/redis_set/redis_set_token.h"
 
 class SessionHoldAccessor : public SessionHold {
 public:
-    using SessionHold::SessionHold; // Наследуем конструктор
+    using SessionHold::SessionHold;
 
-    // Доступ к приватному redis_ через публичный метод
-    sw::redis::Redis& get_redis() { 
-        return this->redis_; 
+    sw::redis::Redis& get_redis() {
+        return this->redis_;
     }
 };
 
@@ -20,16 +21,15 @@ class MockSessionHold : public SessionHoldAccessor {
 public:
     MockSessionHold(sw::redis::Redis& redis) : SessionHoldAccessor(redis) {}
 
-    // Убрали override, так как базовый метод не виртуальный
     nlohmann::json HandleRequest(const nlohmann::json& request_data) {
         std::cout << "Request data in HandleRequest: " << request_data.dump() << std::endl;
 
-        last_request = request_data;  // Сохраняем запрос
+        last_request = request_data;
 
         if (request_data.contains("token")) {
             std::string token = request_data["token"];
             std::cout << "Token from request: " << token << std::endl;
-            set_token(this->get_redis(), token, "user_id");  // Устанавливаем токен в Redis
+            set_token(this->get_redis(), token, "user_id");
         } else {
             std::cout << "Token not found in request!" << std::endl;
         }
@@ -41,15 +41,16 @@ public:
     nlohmann::json response_to_return;
 };
 
-
 class SessionRefreshEndpointTest : public ::testing::Test {
 protected:
-    sw::redis::Redis redis{"tcp://localhost:6379"};
-    MockSessionHold handler{redis};
+    ConfigRedis redis_config = load_redis_config("database_config/test_redis_config.json");
+    sw::redis::Redis redis_conn = connect_to_redis(redis_config);
+
+    MockSessionHold handler{redis_conn};
     crow::request req;
 
     UUIDGenerator uuid_gen;
-    TokenGenerator token_gen{uuid_gen, redis};
+    TokenGenerator token_gen{uuid_gen, redis_conn};
 };
 
 TEST_F(SessionRefreshEndpointTest, HandlesInvalidJson) {

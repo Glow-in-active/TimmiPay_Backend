@@ -5,15 +5,16 @@
 #include "token_generator.h"
 #include "uuid_generator.h"
 #include "../../storage/user_verify/redis_set/redis_set_token.h"
+#include "../../storage/redis_config/config_redis.h"
+#include "../../storage/redis_connect/connect_redis.h"
 
 class TokenGeneratorTest : public ::testing::Test {
 protected:
     static void SetUpTestSuite() {
-        sw::redis::ConnectionOptions opts;
-        opts.host = "localhost";
-        opts.port = 6379;
-        opts.db = 15;
-        redis = std::make_unique<sw::redis::Redis>(opts);
+        ConfigRedis redis_config = load_redis_config("database_config/test_redis_config.json");
+        
+        redis = std::make_unique<sw::redis::Redis>(connect_to_redis(redis_config));
+        
         redis->flushdb();
     }
 
@@ -26,13 +27,11 @@ protected:
         redis->flushdb();
     }
 
-
     static std::unique_ptr<sw::redis::Redis> redis;
     UUIDGenerator uuid_gen;
 };
 
 std::unique_ptr<sw::redis::Redis> TokenGeneratorTest::redis = nullptr;
-
 
 TEST_F(TokenGeneratorTest, GeneratesValidTokenAndSavesToRedis) {
     TokenGenerator generator(uuid_gen, *redis);
@@ -55,7 +54,6 @@ TEST_F(TokenGeneratorTest, GeneratesValidTokenAndSavesToRedis) {
     long long ttl = redis->ttl(token);
     EXPECT_GE(ttl, 0);
 }
-
 
 TEST_F(TokenGeneratorTest, TokenUniqueness) {
     TokenGenerator generator(uuid_gen, *redis);

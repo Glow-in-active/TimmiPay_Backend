@@ -17,8 +17,8 @@
 int main() {
     try {
         // Инициализация конфигов
-        Config postgres_config = load_config("postgres-config.json");
-        ConfigRedis redis_config = load_redis_config("redis-config.json");
+        Config postgres_config = load_config("database_config/prod_postgres_config.json");
+        ConfigRedis redis_config = load_redis_config("database_config/prod_redis_config.json");
         
         // Установка соединений с БД
         pqxx::connection postgres_conn = connect_to_database(postgres_config);
