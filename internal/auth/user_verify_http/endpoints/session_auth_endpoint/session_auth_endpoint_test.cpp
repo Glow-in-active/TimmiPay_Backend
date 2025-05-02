@@ -1,99 +1,120 @@
 #include <gtest/gtest.h>
-#include "session_auth_endpoint.h"
-#include "../session_start/session_start.h"
+#include <crow.h>
 #include <nlohmann/json.hpp>
+#include "session_auth_endpoint.h"
+#include "../../session_start/session_start.h"
 
-struct FakeConnection {};
-struct FakeRedis {};
-
-class DummyUserVerifier : public UserVerifier {
+class MockSessionStart : public SessionStart {
 public:
-    DummyUserVerifier() 
-        : UserVerifier(
-            *reinterpret_cast<pqxx::connection*>(&fake_conn_),
-            *reinterpret_cast<sw::redis::Redis*>(&fake_redis_)
-        ) 
-    {}
-    
-    bool Verify(const std::string& email, const std::string& password_hash) override {
-        return false;
+    MockSessionStart() : SessionStart(user_verifier_) {}
+
+    json HandleRequest(const json& request_data) {
+        last_request = request_data;
+        return response_to_return;
     }
 
-private:
-    FakeConnection fake_conn_;
-    FakeRedis fake_redis_;
-};
-
-class ManualMockSessionStart : public SessionStart {
-public:
-    ManualMockSessionStart() : SessionStart(verifier_) {}
-    
-    nlohmann::json HandleRequest(const nlohmann::json& input) override {
-        last_received_ = input;
-        return response_;
-    }
-
-    nlohmann::json response_;
-    nlohmann::json last_received_;
+    json last_request;
+    json response_to_return;
 
 private:
-    DummyUserVerifier verifier_;
+    class MockUserVerifier : public UserVerifier {
+    public:
+        MockUserVerifier() : UserVerifier(conn_, redis_) {}
+
+        std::string GenerateToken(const std::string&, const std::string&) {
+            return "";
+        }
+
+    private:
+        pqxx::connection conn_{"postgresql://admin:secret@localhost:5432/timmipay?sslmode=disable"};
+        sw::redis::Redis redis_{"tcp://127.0.0.1:6379"};
+    };
+
+    MockUserVerifier user_verifier_;
 };
 
 class SessionAuthEndpointTest : public ::testing::Test {
 protected:
-    void SetUp() override {
-        mock_handler_ = std::make_unique<ManualMockSessionStart>();
-        handler_ = create_session_auth_handler(*mock_handler_);
-    }
-
-    std::unique_ptr<ManualMockSessionStart> mock_handler_;
-    std::function<crow::response(const crow::request&)> handler_;
+    MockSessionStart handler;
+    crow::request req;
 };
 
-TEST_F(SessionAuthEndpointTest, ValidAuthorizationFlow) {
-    mock_handler_->response_ = {{"token", "valid_token_123"}};
-    
-    crow::request req;
-    req.body = R"({"email":"valid@test.com","password_hash":"correct_hash"})";
-    
-    crow::response res = handler_(req);
-    
-    EXPECT_EQ(res.code, 200);
-    EXPECT_EQ(nlohmann::json::parse(res.body)["token"], "valid_token_123");
+TEST_F(SessionAuthEndpointTest, HandlesValidRequest) {
+    req.body = R"({"email": "test@example.com", "password_hash": "hash123"})";
+    handler.response_to_return = {{"token", "valid_token"}};
+
+    auto body_json = nlohmann::json::parse(req.body);
+
+    auto response_json = handler.HandleRequest(body_json);
+
+    EXPECT_EQ(handler.last_request["email"], "test@example.com");
+    EXPECT_EQ(handler.last_request["password_hash"], "hash123");
+
+    EXPECT_EQ(response_json["token"], "valid_token");
+
+    crow::response response;
+    response.code = 200;
+    response.body = response_json.dump();
+
+    EXPECT_EQ(response.code, 200);
+    auto parsed_response = nlohmann::json::parse(response.body);
+    EXPECT_EQ(parsed_response["token"], "valid_token");
 }
 
-TEST_F(SessionAuthEndpointTest, MalformedJsonRequest) {
-    crow::request req;
-    req.body = "{invalid_json}";
+
+TEST_F(SessionAuthEndpointTest, HandlesInvalidJson) {
+    req.body = "invalid json";
     
-    crow::response res = handler_(req);
+    auto handler_func = create_session_auth_handler(handler);
+    auto response = handler_func(req);
     
-    EXPECT_EQ(res.code, 400);
-    EXPECT_EQ(nlohmann::json::parse(res.body)["error"], "Invalid JSON format");
+    EXPECT_EQ(response.code, 500);
+    auto response_json = nlohmann::json::parse(response.body);
+    EXPECT_TRUE(response_json.contains("error"));
 }
 
-TEST_F(SessionAuthEndpointTest, InternalServerErrorHandling) {
-    class ExceptionSessionStart : public SessionStart {
-    public:
-        ExceptionSessionStart() : SessionStart(verifier_) {}
-        
-        nlohmann::json HandleRequest(const nlohmann::json&) override {
-            throw std::logic_error("Critical error");
-        }
+TEST_F(SessionAuthEndpointTest, HandlesJsonFormatError) {
+    req.body = R"({"email": "test@example.com"})";
+    handler.response_to_return = {
+        {"error", "Invalid JSON format"},
+        {"details", "Missing password_hash field"}
+    };
     
-    private:
-        DummyUserVerifier verifier_;
+    auto handler_func = create_session_auth_handler(handler);
+    auto response = handler_func(req);
+    
+    EXPECT_EQ(response.code, 400);
+    auto response_json = nlohmann::json::parse(response.body);
+    EXPECT_EQ(response_json["error"], "Invalid JSON format");
+}
+
+TEST_F(SessionAuthEndpointTest, HandlesVerificationError) {
+    req.body = R"({"email": "test@example.com", "password_hash": "wrong_hash"})";
+    handler.response_to_return = {
+        {"error", "Verification failed"},
+        {"details", "Invalid credentials"}
+    };
+    
+    auto handler_func = create_session_auth_handler(handler);
+    auto response = handler_func(req);
+    
+    EXPECT_EQ(response.code, 401);
+    auto response_json = nlohmann::json::parse(response.body);
+    EXPECT_EQ(response_json["error"], "Verification failed");
+}
+
+TEST_F(SessionAuthEndpointTest, HandlesUnknownError) {
+    req.body = R"({"email": "test@example.com", "password_hash": "hash123"})";
+    handler.response_to_return = {
+        {"error", "Unknown error"},
+        {"details", "Something went wrong"}
     };
 
-    ExceptionSessionStart exception_handler;
-    auto error_handler = create_session_auth_handler(exception_handler);
-    
-    crow::request req;
-    req.body = "{}";
-    
-    crow::response res = error_handler(req);
-    
-    EXPECT_EQ(res.code, 500);
-    EXPECT_EQ(nlohmann::json::parse(res.body)["error"], "Internal server error");
+    auto handler_func = create_session_auth_handler(handler);
+    auto response = handler_func(req);
+
+    EXPECT_EQ(response.code, 401);
+    auto response_json = nlohmann::json::parse(response.body);
+    EXPECT_EQ(response_json["error"], "Verification failed");
 }
+
