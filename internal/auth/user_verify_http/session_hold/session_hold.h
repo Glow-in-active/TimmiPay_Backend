@@ -8,8 +8,6 @@ class SessionHold {
 public:
     explicit SessionHold(sw::redis::Redis& redis);
     nlohmann::json HandleRequest(const nlohmann::json& request_data);
-
-private:
     sw::redis::Redis& redis_;
 };
 
