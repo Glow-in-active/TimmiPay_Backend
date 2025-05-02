@@ -5,12 +5,12 @@
 
 class UUIDGenerator {
 public:
-    UUIDGenerator();
-    std::string generateUUID();
+    UUIDGenerator() = default;
+    UUIDGenerator(const UUIDGenerator&) = default;
+    UUIDGenerator& operator=(const UUIDGenerator&) = default;
+    ~UUIDGenerator() = default;
 
-private:
-    class Impl;
-    Impl* impl;
+    std::string generateUUID();
 };
 
 #endif

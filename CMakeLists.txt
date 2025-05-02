@@ -28,6 +28,11 @@ add_library(app_lib
     internal/auth/user_verify_http/session_hold/session_hold.cpp
     internal/auth/user_verify_http/endpoints/session_auth_endpoint/session_auth_endpoint.cpp
     internal/auth/user_verify_http/endpoints/session_refresh_endpoint/session_refresh_endpoint.cpp
+    internal/server/api_methods/api_methods.cpp
+    internal/server/crow_app/crow_app.cpp
+    internal/server/db_init/db_init.cpp
+    internal/server/dependencies/dependencies.cpp
+    internal/server/start_server/start_server.cpp
 )
 
 target_include_directories(app_lib PUBLIC
@@ -45,6 +50,11 @@ target_include_directories(app_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/auth/user_verify_http/session_hold
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/auth/user_verify_http/endpoints/session_auth_endpoint
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/auth/user_verify_http/endpoints/session_refresh_endpoint
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/server/api_methods
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/server/crow_app
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/server/db_init
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/server/dependencies
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/server/start_server
 )
 
 target_link_libraries(app_lib PUBLIC
