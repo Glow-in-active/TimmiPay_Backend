@@ -1,23 +1,22 @@
-#include "connect_redis.h"
 #include <gtest/gtest.h>
 #include <sw/redis++/redis++.h>
+#include "../config/config.h"
+#include "../redis_config/config_redis.h"
+#include "../postgres_connect/connect.h"
+#include "../redis_connect/connect_redis.h"
 
 class ConnectRedisTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        valid_config.host = "localhost";
-        valid_config.port = 6379;
-        valid_config.password = "";
-        valid_config.db = 0;
+        redis_config = load_redis_config("database_config/test_redis_config.json");
     }
 
-    ConfigRedis valid_config;
+    ConfigRedis redis_config;
 };
 
 TEST_F(ConnectRedisTest, ConnectsWithValidConfig) {
     EXPECT_NO_THROW({
-        auto redis = connect_to_redis(valid_config);
+        auto redis = connect_to_redis(redis_config);
         redis.ping();
     });
 }
-

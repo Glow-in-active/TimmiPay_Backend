@@ -3,7 +3,7 @@
 
 #include <string>
 #include "../token_generator/token_generator.h"
-#include "../../storage/user_verify/auth/user_verify.h"
+#include "../../../storage/user_verify/auth/user_verify.h"
 
 class UserVerifier {
     public:
@@ -17,5 +17,4 @@ class UserVerifier {
         sw::redis::Redis& redis_;
         TokenGenerator token_gen_;
     };
-
 #endif

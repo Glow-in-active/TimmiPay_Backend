@@ -1,8 +1,8 @@
 #ifndef TOKEN_GENERATOR_H
 #define TOKEN_GENERATOR_H
 
-#include "../models/user.h"
-#include "../uuid_generator/uuid_generator.h"
+#include "../../models/user.h"
+#include "../../uuid_generator/uuid_generator.h"
 #include <sw/redis++/redis++.h>
 
 class TokenGenerator {
