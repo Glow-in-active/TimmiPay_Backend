@@ -16,7 +16,16 @@ protected:
     void SetUp() override {
         ConfigRedis redis_config = load_redis_config("database_config/test_redis_config.json");
         
-        redis = std::make_unique<sw::redis::Redis>(connect_to_redis(redis_config));
+        sw::redis::ConnectionOptions conn_opts;
+        conn_opts.host = redis_config.host;
+        conn_opts.port = redis_config.port;
+        conn_opts.password = redis_config.password;
+        
+        sw::redis::ConnectionPoolOptions pool_opts;
+        pool_opts.size = 10;
+        
+        redis = std::make_unique<sw::redis::Redis>(conn_opts, pool_opts);
+
         redis->flushall();
 
         set_token(*redis, "valid_token_1", "user_100");
@@ -80,8 +89,10 @@ TEST_F(RedisGetIdByTokenTest, ErrorMessageContainsCorrectInfo) {
 
 TEST_F(RedisGetIdByTokenTest, ThrowsOnRedisConnectionError) {
     sw::redis::ConnectionOptions opts;
-    opts.host = "invalid_host.local";
+    opts.host = "192.0.2.0";
     opts.port = 1234;
+    opts.connect_timeout = std::chrono::milliseconds(10);
+    opts.socket_timeout = std::chrono::milliseconds(10);
     
     sw::redis::Redis broken_redis(opts);
     
@@ -96,12 +107,12 @@ TEST_F(RedisGetIdByTokenTest, HandlesConcurrentAccess) {
     std::vector<std::thread> threads;
     
     for (int i = 0; i < thread_count; ++i) {
-        threads.emplace_back([this, i]() {
+        threads.emplace_back([this]() {
             try {
                 auto result = get_id_by_token(*redis, "valid_token_1");
                 EXPECT_EQ(result, "user_100");
             } catch (...) {
-                FAIL() << "Unexpected exception in thread " << i;
+                FAIL() << "Unexpected exception in thread";
             }
         });
     }
