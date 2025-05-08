@@ -33,6 +33,7 @@ add_library(app_lib
     internal/server/db_init/db_init.cpp
     internal/server/dependencies/dependencies.cpp
     internal/server/start_server/start_server.cpp
+    internal/storage/users_balance/users_balance.cpp
 )
 
 target_include_directories(app_lib PUBLIC
@@ -55,6 +56,7 @@ target_include_directories(app_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/server/db_init
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/server/dependencies
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/server/start_server
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/users_balance
 )
 
 target_link_libraries(app_lib PUBLIC
@@ -83,6 +85,7 @@ add_executable(all_tests
     internal/auth/user_verify_http/session_hold/session_hold_test.cpp
     internal/auth/user_verify_http/endpoints/session_auth_endpoint/session_auth_endpoint_test.cpp
     internal/auth/user_verify_http/endpoints/session_refresh_endpoint/session_refresh_endpoint_test.cpp
+    internal/storage/users_balance/users_balance_test.cpp
 )
 
 target_include_directories(all_tests PRIVATE
@@ -98,6 +101,7 @@ target_include_directories(all_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/auth/user_verify_http/session_hold
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/auth/user_verify_http/endpoints/session_auth_endpoint
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/auth/user_verify_http/endpoints/session_refresh_endpoint
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/users_balance
 )
 
 target_link_libraries(all_tests PRIVATE
