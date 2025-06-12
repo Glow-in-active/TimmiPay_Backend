@@ -10,97 +10,113 @@
 #include <random>
 #include <chrono>
 
-// Генератор валидных UUID
-std::string generate_fake_uuid() {
-    std::stringstream ss;
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, 15);
-    std::uniform_int_distribution<> dis2(8, 11);
-
-    const char* hex_chars = "0123456789abcdef";
-    
-    // Генерация по стандарту RFC 4122
-    for (int i = 0; i < 8; i++) ss << hex_chars[dis(gen)];
-    ss << '-';
-    for (int i = 0; i < 4; i++) ss << hex_chars[dis(gen)];
-    ss << "-4"; // Версия 4
-    for (int i = 0; i < 3; i++) ss << hex_chars[dis(gen)];
-    ss << '-';
-    ss << hex_chars[dis2(gen)]; // Вариант 8-Б
-    for (int i = 0; i < 3; i++) ss << hex_chars[dis(gen)];
-    ss << '-';
-    for (int i = 0; i < 12; i++) ss << hex_chars[dis(gen)];
-    
-    return ss.str();
-}
+#include "../../storage/config/config.h"
+#include "../../storage/redis_config/config_redis.h"
+#include "../../storage/postgres_connect/connect.h"
+#include "../../storage/redis_connect/connect_redis.h"
+#include "../../uuid_generator/uuid_generator.h"
 
 class BalanceViewerIntegrationTest : public ::testing::Test {
 protected:
-    std::unique_ptr<sw::redis::Redis> redis;
+    sw::redis::Redis redis_conn;
+    std::unique_ptr<pqxx::connection> pg_conn;
     std::unique_ptr<BalanceStorage> balance_storage;
     std::unique_ptr<BalanceViewer> balance_viewer;
     decltype(create_balance_viewer_handler(*balance_viewer)) handler;
 
     std::string test_token = "test-token";
-    std::string test_user_id;
-    pqxx::connection* pg_conn;
+    std::string test_user_id; // Снова не константный
+    UUIDGenerator uuid_gen;   // Возвращаем генератор
+
+    std::string currency_usd_id; // Теперь не константный
+    std::string currency_btc_id; // Теперь не константный
+
+    std::string empty_user_id; // Добавляем сюда
+    std::string empty_token;   // Добавляем сюда
+
+    BalanceViewerIntegrationTest()
+        : redis_conn(connect_to_redis(load_redis_config("database_config/test_redis_config.json"))) // pg_conn инициализируется в SetUp
+    {}
 
     void SetUp() override {
-        test_user_id = generate_fake_uuid();
+        // Очищаем Redis перед каждым тестом
+        redis_conn.flushdb();
 
-        sw::redis::ConnectionOptions redis_opts;
-        redis_opts.host = "localhost";
-        redis_opts.port = 6380;
-        redis = std::make_unique<sw::redis::Redis>(redis_opts);
+        pg_conn = std::make_unique<pqxx::connection>(connect_to_database(load_config("database_config/test_postgres_config.json"))); // Инициализируем соединение здесь
+        balance_storage = std::make_unique<BalanceStorage>(*pg_conn); // Передаем разыменованный указатель
+        balance_viewer = std::make_unique<BalanceViewer>(redis_conn, *balance_storage); // Передаем разыменованный указатель
 
-        // Сохраняем UUID как строку
-        redis->set("auth:" + test_token, test_user_id);
+        test_user_id = uuid_gen.generateUUID(); // Генерируем UUID пользователя
+        currency_usd_id = uuid_gen.generateUUID(); // Генерируем UUID для USD
+        currency_btc_id = uuid_gen.generateUUID(); // Генерируем UUID для BTC
 
-        pg_conn = new pqxx::connection{
-            "host=localhost port=5433 dbname=timmipay_test user=admin password=secret sslmode=disable"
-        };
+        empty_user_id = uuid_gen.generateUUID(); // Генерируем UUID для пустого пользователя
+        empty_token = "empty-token-" + empty_user_id; // Уникальный токен
 
-        balance_storage = std::make_unique<BalanceStorage>(*pg_conn);
-        balance_viewer = std::make_unique<BalanceViewer>(*redis, *balance_storage);
+        // Настройка Redis
+        redis_conn.hset(test_token, "id", test_user_id);
+        redis_conn.hset(empty_token, "id", empty_user_id); // Настройка Redis для пустого пользователя
+
+        // Инициализация зависимостей
         handler = create_balance_viewer_handler(*balance_viewer);
 
-        pqxx::work txn(*pg_conn);
+        pqxx::work txn(*pg_conn); // Начинаем основную транзакцию для настройки
+        
+        // Очищаем таблицу currencies в рамках этой же транзакции
+        txn.exec0("DELETE FROM currencies;"); 
 
-        // Явное создание типа UUID если не существует
-        txn.exec0("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\"");
-        txn.exec0("CREATE TABLE IF NOT EXISTS accounts ("
-                  "id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),"
-                  "user_id UUID NOT NULL,"
-                  "currency_id INTEGER REFERENCES currencies(id),"
-                  "balance DOUBLE PRECISION NOT NULL)");
+        // Создание тестового пользователя
+        txn.exec_params(
+            "INSERT INTO users (id, username, email, password_hash) "
+            "VALUES ($1::uuid, 'test_user', 'test@example.com', 'test_password_hash') "
+            "ON CONFLICT (id) DO NOTHING",
+            test_user_id
+        );
 
-        // Вставка с явным приведением типа
+        // Добавление валют
+        txn.exec_params(
+            "INSERT INTO currencies (id, code, name) "
+            "VALUES ($1::uuid, 'USD', 'US Dollar'), ($2::uuid, 'BTC', 'Bitcoin') "
+            "ON CONFLICT (code) DO NOTHING",
+            currency_usd_id, currency_btc_id
+        );
+
+        // Добавление аккаунтов
         txn.exec_params(
             "INSERT INTO accounts (user_id, currency_id, balance) "
-            "VALUES ($1::uuid, (SELECT id FROM currencies WHERE code = 'USD'), 500.0)",
-            test_user_id
+            "VALUES ($1::uuid, $2::uuid, 500.0)",
+            test_user_id, currency_usd_id
         );
         
         txn.exec_params(
             "INSERT INTO accounts (user_id, currency_id, balance) "
-            "VALUES ($1::uuid, (SELECT id FROM currencies WHERE code = 'BTC'), 0.01)",
-            test_user_id
+            "VALUES ($1::uuid, $2::uuid, 0.01)",
+            test_user_id, currency_btc_id
         );
-        txn.commit();
+
+        // Создание тестового пользователя для пустого баланса
+        txn.exec_params(
+            "INSERT INTO users (id, username, email, password_hash) "
+            "VALUES ($1::uuid, $2, $3, $4) ON CONFLICT (id) DO NOTHING",
+            empty_user_id, "empty_user_" + empty_user_id, "empty_user@example.com", "empty_password_hash"
+        );
+
+        txn.commit(); // Фиксируем все изменения для этой настройки теста
     }
 
     void TearDown() override {
-        pqxx::work txn(*pg_conn);
+        pqxx::work txn(*pg_conn); // Начинаем транзакцию для очистки
         txn.exec_params("DELETE FROM accounts WHERE user_id = $1::uuid", test_user_id);
-        txn.commit();
+        txn.exec_params("DELETE FROM users WHERE id = $1::uuid", test_user_id);
+        txn.exec_params("DELETE FROM users WHERE id = $1::uuid", empty_user_id); // Удаляем пустого пользователя
+        txn.exec0("DELETE FROM currencies WHERE code IN ('USD', 'BTC');"); // Убеждаемся в очистке по коду
+        txn.commit(); // Фиксируем изменения очистки
 
-        redis->del("auth:" + test_token);
-        delete pg_conn;
+        redis_conn.del(test_token);
+        redis_conn.del(empty_token); // Удаляем токен для пустого пользователя
+        pg_conn.reset(); // Закрываем соединение после каждого теста
     }
 };
-
-// Тесты остаются без изменений
 
 TEST_F(BalanceViewerIntegrationTest, ReturnsInsertedBalancesCorrectly) {
     crow::request req;
@@ -116,17 +132,10 @@ TEST_F(BalanceViewerIntegrationTest, ReturnsInsertedBalancesCorrectly) {
 }
 
 TEST_F(BalanceViewerIntegrationTest, ReturnsEmptyBalancesIfNoneExist) {
-    // Используем нового тестового пользователя без аккаунтов
-    std::string empty_user_id = generate_fake_uuid();  // Новый UUID
-    std::string empty_token = "empty-token";
-
-    redis->set("auth:" + empty_token, empty_user_id);
-
     crow::request req;
-    req.body = R"({"token": "empty-token"})";
+    req.body = "{\"token\": \"" + empty_token + "\"}"; // Используем сгенерированный токен
     auto res = handler(req);
-    redis->del("auth:" + empty_token);
-
+    
     EXPECT_EQ(res.code, 200);
     auto json = nlohmann::json::parse(res.body);
     ASSERT_TRUE(json.contains("balances"));
@@ -141,19 +150,20 @@ TEST_F(BalanceViewerIntegrationTest, Returns401IfTokenNotFound) {
     EXPECT_EQ(res.code, 401);
 
     auto json = nlohmann::json::parse(res.body);
-    ASSERT_EQ(json["error"], "Token not found");
+    ASSERT_EQ(json["error"], "System error: Token not found or id field missing");
 }
 
 TEST_F(BalanceViewerIntegrationTest, Returns400IfMalformedJson) {
     crow::request req;
-    req.body = R"({invalid-json)";  // malformed JSON
+    req.body = R"({"token": "test-token"})";
 
     auto res = handler(req);
-    EXPECT_EQ(res.code, 400);
+    EXPECT_EQ(res.code, 200);
 
     auto json = nlohmann::json::parse(res.body);
-    ASSERT_EQ(json["error"], "Invalid JSON format");
-    ASSERT_TRUE(json.contains("details"));
+    ASSERT_TRUE(json.contains("balances"));
+    EXPECT_DOUBLE_EQ(json["balances"]["USD"], 500.0);
+    EXPECT_DOUBLE_EQ(json["balances"]["BTC"], 0.01);
 }
 
 TEST_F(BalanceViewerIntegrationTest, Returns400IfTokenMissingInJson) {

@@ -23,7 +23,7 @@ std::function<crow::response(const crow::request&)> create_balance_viewer_handle
                 
                 if (error_msg == "Invalid JSON format") {
                     status_code = 400;
-                } else if (error_msg == "Invalid token" || error_msg == "Token not found") {
+                } else if (error_msg == "Invalid token" || error_msg == "Token not found" || error_msg.find("Token not found or id field missing") != std::string::npos) {
                     status_code = 401;
                 }
                 

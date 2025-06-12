@@ -24,6 +24,7 @@ std::unordered_map<std::string, double> BalanceStorage::GetUserBalances(const st
     }
     catch (const std::exception& e) {
         std::cerr << "Balance query error: " << e.what() << std::endl;
+        throw;
     }
     
     return balances;

@@ -36,6 +36,7 @@ add_library(app_lib
     internal/storage/users_balance/users_balance.cpp
     internal/storage/user_verify/redis_get/redis_get_id_by_token.cpp
     internal/balance_viewer/logic/balance_viewer.cpp
+    internal/balance_viewer/endpoint/balance_viewer_endpoint.cpp
 )
 
 target_include_directories(app_lib PUBLIC
@@ -61,6 +62,7 @@ target_include_directories(app_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/users_balance
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/user_verify/redis_get
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/balance_viewer/logic/
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/balance_viewer/endpoint
 )
 
 target_link_libraries(app_lib PUBLIC
@@ -92,6 +94,7 @@ add_executable(all_tests
     internal/storage/users_balance/users_balance_test.cpp
     internal/storage/user_verify/redis_get/redis_get_id_by_token_test.cpp
     internal/balance_viewer/logic/balance_viewer_test.cpp
+    internal/balance_viewer/endpoint/balance_viewer_endpoint_test.cpp
 )
 
 target_include_directories(all_tests PRIVATE
@@ -110,6 +113,7 @@ target_include_directories(all_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/users_balance
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/user_verify/redis_get
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/balance_viewer/logic/
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/balance_viewer/endpoint
 )
 
 target_link_libraries(all_tests PRIVATE
