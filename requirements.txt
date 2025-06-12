@@ -31,3 +31,6 @@
 ./vcpkg/vcpkg install crow
     asio:x64-linux@1.32.0
     crow:x64-linux@1.2.1.2
+
+./vcpkg/vcpkg install curl
+    curl[core,non-http,openssl,ssl]:x64-linux@8.14.1

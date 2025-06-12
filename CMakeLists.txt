@@ -12,6 +12,7 @@ find_package(GTest REQUIRED)
 find_package(libpqxx REQUIRED)  # Используем современный вариант
 find_package(Boost REQUIRED COMPONENTS uuid)
 find_package(redis++ CONFIG REQUIRED)
+find_package(CURL REQUIRED)
 
 # Общая библиотека
 add_library(app_lib
@@ -83,6 +84,12 @@ add_executable(all_tests
     internal/auth/user_verify_http/session_hold/session_hold_test.cpp
     internal/auth/user_verify_http/endpoints/session_auth_endpoint/session_auth_endpoint_test.cpp
     internal/auth/user_verify_http/endpoints/session_refresh_endpoint/session_refresh_endpoint_test.cpp
+    internal/server/api_methods/api_methods_test.cpp
+    internal/server/crow_app/crow_app_test.cpp
+    internal/server/db_init/db_init_test.cpp
+    internal/server/dependencies/dependencies_test.cpp
+    internal/server/start_server/start_server_test.cpp
+
 )
 
 target_include_directories(all_tests PRIVATE
@@ -98,12 +105,18 @@ target_include_directories(all_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/auth/user_verify_http/session_hold
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/auth/user_verify_http/endpoints/session_auth_endpoint
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/auth/user_verify_http/endpoints/session_refresh_endpoint
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/server/api_methods
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/server/crow_app
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/server/db_init
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/server/dependencies
+    ${CMAKE_CURRENT_SOURCE_DIR}/internal/server/start_server
 )
 
 target_link_libraries(all_tests PRIVATE
     app_lib
     GTest::gtest_main
     libpqxx::pqxx
+    CURL::libcurl 
 )
 
 # Включаем автоматический запуск тестов через CTest
