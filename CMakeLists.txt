@@ -12,6 +12,7 @@ find_package(GTest REQUIRED)
 find_package(libpqxx REQUIRED)  # Используем современный вариант
 find_package(Boost REQUIRED COMPONENTS uuid)
 find_package(redis++ CONFIG REQUIRED)
+find_package(Crow CONFIG REQUIRED)
 
 # Общая библиотека
 add_library(app_lib
@@ -63,6 +64,7 @@ target_include_directories(app_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/user_verify/redis_get
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/balance_viewer/logic/
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/balance_viewer/endpoint
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/installed/x64-linux/include
 )
 
 target_link_libraries(app_lib PUBLIC
@@ -70,6 +72,7 @@ target_link_libraries(app_lib PUBLIC
     libpqxx::pqxx
     Boost::uuid
     redis++::redis++_static
+    Crow::Crow
 )
 # Основное приложение
 add_executable(myapp cmd/main.cpp)
@@ -114,12 +117,14 @@ target_include_directories(all_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/storage/user_verify/redis_get
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/balance_viewer/logic/
     ${CMAKE_CURRENT_SOURCE_DIR}/internal/balance_viewer/endpoint
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/installed/x64-linux/include
 )
 
 target_link_libraries(all_tests PRIVATE
     app_lib
     GTest::gtest_main
     libpqxx::pqxx
+    Crow::Crow
 )
 
 # Включаем автоматический запуск тестов через CTest

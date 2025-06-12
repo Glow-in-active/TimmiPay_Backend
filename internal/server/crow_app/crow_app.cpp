@@ -3,7 +3,8 @@
 
 crow::App<crow::CORSHandler>& create_crow_app(
     SessionStart& session_start_handler,
-    SessionHold& session_hold_handler
+    SessionHold& session_hold_handler,
+    BalanceViewer& balance_viewer_handler
 ) {
     static crow::App<crow::CORSHandler> app;
     
@@ -13,7 +14,7 @@ crow::App<crow::CORSHandler>& create_crow_app(
         .methods("POST"_method)
         .origin("*");
 
-    register_routes(app, session_start_handler, session_hold_handler);
+    register_routes(app, session_start_handler, session_hold_handler, balance_viewer_handler);
     
     return app;
 }
