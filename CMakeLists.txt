@@ -22,6 +22,7 @@ add_library(app_lib
     storage/redis_config/config_redis.cpp
     storage/redis_connect/connect_redis.cpp
     storage/user_verify/redis_set/redis_set_token.cpp
+    storage/session_verify/session_verify.cpp
     uuid_generator/uuid_generator.cpp
     auth_service/internal/auth/user_verify/verification/user_verify.cpp
     auth_service/internal/auth/user_verify/token_generator/token_generator.cpp
@@ -34,6 +35,8 @@ add_library(app_lib
     auth_service/internal/server/db_init/db_init.cpp
     auth_service/internal/server/dependencies/dependencies.cpp
     auth_service/internal/server/start_server/start_server.cpp
+    finance_manager/internal/server/server.cpp
+    finance_manager/internal/finance/finance_service.cpp
 )
 
 target_include_directories(app_lib PUBLIC
@@ -43,6 +46,7 @@ target_include_directories(app_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/storage/redis_config
     ${CMAKE_CURRENT_SOURCE_DIR}/storage/redis_connect
     ${CMAKE_CURRENT_SOURCE_DIR}/storage/user_verify/redis_set
+    ${CMAKE_CURRENT_SOURCE_DIR}/storage/session_verify 
     ${CMAKE_CURRENT_SOURCE_DIR}/uuid_generator
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/auth/user_verify/verification
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/auth/user_verify/token_generator
@@ -56,6 +60,8 @@ target_include_directories(app_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/server/db_init
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/server/dependencies
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/server/start_server
+    ${CMAKE_CURRENT_SOURCE_DIR}/finance_manager/internal/server
+    ${CMAKE_CURRENT_SOURCE_DIR}/finance_manager/internal/service
 )
 
 target_link_libraries(app_lib PUBLIC
@@ -64,9 +70,13 @@ target_link_libraries(app_lib PUBLIC
     Boost::uuid
     redis++::redis++_static
 )
-# Основное приложение
+
+# Основные приложения
 add_executable(auth_service auth_service/cmd/main.cpp)
 target_link_libraries(auth_service PRIVATE app_lib)
+
+add_executable(finance_manager finance_manager/cmd/main.cpp)
+target_link_libraries(finance_manager PRIVATE app_lib)
 
 # --- Один общий исполняемый файл для всех тестов ---
 
@@ -89,7 +99,10 @@ add_executable(all_tests
     auth_service/internal/server/db_init/db_init_test.cpp
     auth_service/internal/server/dependencies/dependencies_test.cpp
     auth_service/internal/server/start_server/start_server_test.cpp
-
+    #finance_manager/internal/server/finance_server_test.cpp
+    #finance_manager/internal/service/finance_service_test.cpp
+    #finance_manager/internal/models/transaction_test.cpp
+    #finance_manager/internal/models/balance_test.cpp
 )
 
 target_include_directories(all_tests PRIVATE
@@ -111,6 +124,9 @@ target_include_directories(all_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/server/db_init
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/server/dependencies
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/server/start_server
+    #${CMAKE_CURRENT_SOURCE_DIR}/finance_manager/internal/server
+    #${CMAKE_CURRENT_SOURCE_DIR}/finance_manager/internal/service
+    #${CMAKE_CURRENT_SOURCE_DIR}/finance_manager/internal/models
 )
 
 target_link_libraries(all_tests PRIVATE
