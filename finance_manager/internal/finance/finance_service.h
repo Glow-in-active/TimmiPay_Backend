@@ -20,11 +20,11 @@ public:
         const std::string& from_user_id,
         const std::string& to_username,
         double amount,
-        const std::string& currency_code
+        const std::string& currency
     );
 
     // Получение истории транзакций
-    std::vector<Transfer> get_transaction_history(const std::string& user_id, int limit = 50);
+    std::vector<Transfer> get_transaction_history(const std::string& user_id, int page, int limit);
 
 private:
     pqxx::connection& db_conn;

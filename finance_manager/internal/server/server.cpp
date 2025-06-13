@@ -106,13 +106,15 @@ public:
                 
                 auto body = nlohmann::json::parse(cleaned_body);
                 std::string session_token = body["session_token"];
+                int page = body.count("page") ? body["page"].get<int>() : 1; // Default to page 1
+                int limit = body.count("limit") ? body["limit"].get<int>() : 10; // Default to 10 items per page
 
                 std::string user_id;
                 if (!verify_session(session_token, user_id)) {
                     return crow::response(401, "Invalid session token");
                 }
 
-                auto transfers = finance_service->get_transaction_history(user_id);
+                auto transfers = finance_service->get_transaction_history(user_id, page, limit);
                 nlohmann::json response = nlohmann::json::array();
                 
                 for (const auto& transfer : transfers) {

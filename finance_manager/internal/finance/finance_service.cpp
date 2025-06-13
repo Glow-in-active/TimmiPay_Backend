@@ -95,17 +95,19 @@ std::string FinanceService::transfer_money(
     return transfer_id;
 }
 
-std::vector<Transfer> FinanceService::get_transaction_history(const std::string& user_id, int limit) {
+std::vector<Transfer> FinanceService::get_transaction_history(const std::string& user_id, int page, int limit) {
     pqxx::work txn(db_conn);
+    int offset = (page - 1) * limit;
     auto result = txn.exec_params(
         "SELECT t.* FROM transfers t "
         "JOIN accounts a1 ON t.from_account = a1.id "
         "JOIN accounts a2 ON t.to_account = a2.id "
         "WHERE a1.user_id = $1 OR a2.user_id = $1 "
         "ORDER BY t.created_at DESC "
-        "LIMIT $2",
+        "LIMIT $2 OFFSET $3",
         user_id,
-        limit
+        limit,
+        offset
     );
 
     std::vector<Transfer> transfers;
