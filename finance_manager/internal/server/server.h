@@ -28,6 +28,7 @@ private:
 public:
     FinanceServer(pqxx::connection& postgres, sw::redis::Redis& redis);
     void run(int port);
+    void stop_server();
 };
 
 #endif // FINANCE_SERVER_H 

@@ -128,4 +128,8 @@ FinanceServer::FinanceServer(pqxx::connection& postgres, sw::redis::Redis& redis
 
 void FinanceServer::run(int port) {
     app.port(port).multithreaded().run();
+}
+
+void FinanceServer::stop_server() {
+    app.stop();
 } 
