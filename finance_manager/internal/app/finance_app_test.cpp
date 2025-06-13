@@ -4,6 +4,11 @@
 #include "../../../../storage/postgres_connect/connect.h"
 #include "../../../../uuid_generator/uuid_generator.h"
 
+/**
+ * @brief Тестовый класс для FinanceService, использующий реальное соединение с базой данных.
+ *
+ * Настраивает и очищает тестовые данные в базе данных для каждого теста.
+ */
 class FinanceServiceTest : public ::testing::Test {
 protected:
     std::string test_user1_id;
@@ -12,6 +17,12 @@ protected:
     std::string test_eur_id;
     UUIDGenerator uuid_gen;
 
+    /**
+     * @brief Настраивает тестовую среду перед каждым тестом.
+     *
+     * Инициализирует соединение с базой данных, создает FinanceService
+     * и настраивает тестовые данные.
+     */
     void SetUp() override {
         Config config = load_config("database_config/test_postgres_config.json");
         db_conn = std::make_unique<pqxx::connection>(connect_to_database(config));
@@ -20,10 +31,20 @@ protected:
         setupTestData();
     }
 
+    /**
+     * @brief Очищает тестовую среду после каждого теста.
+     *
+     * Удаляет тестовые данные из базы данных.
+     */
     void TearDown() override {
         cleanupTestData();
     }
 
+    /**
+     * @brief Настраивает тестовые данные в базе данных.
+     *
+     * Вставляет тестовых пользователей, валюты и счета для использования в тестах.
+     */
     void setupTestData() {
         pqxx::work txn(*db_conn);
         
@@ -46,6 +67,11 @@ protected:
         txn.commit();
     }
 
+    /**
+     * @brief Очищает тестовые данные из базы данных.
+     *
+     * Удаляет все записи из таблиц transfers, accounts, currencies и users.
+     */
     void cleanupTestData() {
         pqxx::work txn(*db_conn);
         txn.exec("DELETE FROM transfers");
@@ -59,6 +85,12 @@ protected:
     std::unique_ptr<FinanceService> finance_service;
 };
 
+/**
+ * @brief Проверяет получение баланса пользователя.
+ *
+ * Тест получает баланс для тестового пользователя и проверяет количество счетов,
+ * код валюты и сумму баланса.
+ */
 TEST_F(FinanceServiceTest, GetUserBalance) {
     auto balances = finance_service->get_user_balance(test_user1_id);
     ASSERT_EQ(balances.size(), 1);
@@ -66,6 +98,12 @@ TEST_F(FinanceServiceTest, GetUserBalance) {
     EXPECT_DOUBLE_EQ(balances[0].second, 1000.0);
 }
 
+/**
+ * @brief Проверяет успешную передачу денег между пользователями.
+ *
+ * Тест выполняет перевод денег и проверяет, что ID перевода не пуст,
+ * а балансы отправителя и получателя обновлены корректно.
+ */
 TEST_F(FinanceServiceTest, TransferMoneySuccess) {
     std::string transfer_id = finance_service->transfer_money(test_user1_id, "test_user2", 100.0, "USD");
     EXPECT_FALSE(transfer_id.empty());
@@ -78,18 +116,36 @@ TEST_F(FinanceServiceTest, TransferMoneySuccess) {
     EXPECT_DOUBLE_EQ(receiver_balances[0].second, 600.0);
 }
 
+/**
+ * @brief Проверяет, что при недостаточном балансе выбрасывается исключение.
+ *
+ * Тест пытается выполнить перевод суммы, превышающей доступный баланс пользователя,
+ * и ожидает исключения `std::runtime_error`.
+ */
 TEST_F(FinanceServiceTest, TransferMoneyInsufficientFunds) {
     EXPECT_THROW({
         finance_service->transfer_money(test_user1_id, "test_user2", 2000.0, "USD");
     }, std::runtime_error);
 }
 
+/**
+ * @brief Проверяет, что при неверной валюте выбрасывается исключение.
+ *
+ * Тест пытается выполнить перевод с использованием несуществующей валюты
+ * и ожидает исключения `std::runtime_error`.
+ */
 TEST_F(FinanceServiceTest, TransferMoneyInvalidCurrency) {
     EXPECT_THROW({
         finance_service->transfer_money(test_user1_id, "test_user2", 100.0, "INVALID");
     }, std::runtime_error);
 }
 
+/**
+ * @brief Проверяет получение истории транзакций пользователя.
+ *
+ * Тест выполняет перевод, затем получает историю транзакций для отправителя и получателя,
+ * проверяя размер истории, сумму транзакции и ее статус.
+ */
 TEST_F(FinanceServiceTest, GetTransactionHistory) {
     // Make a transfer first
     finance_service->transfer_money(test_user1_id, "test_user2", 100.0, "USD");

@@ -1,9 +1,25 @@
 #include "finance_service.h"
 #include <stdexcept>
 
+/**
+ * @brief Конструктор для FinanceService.
+ *
+ * Инициализирует FinanceService с предоставленным соединением с базой данных PostgreSQL.
+ *
+ * @param db_conn Ссылка на объект pqxx::connection, используемый для взаимодействия с базой данных.
+ */
 FinanceService::FinanceService(pqxx::connection& db_conn)
     : db_conn(db_conn) {}
 
+/**
+ * @brief Получает баланс пользователя для каждой валюты.
+ *
+ * Выполняет запрос к базе данных для получения балансов всех счетов, принадлежащих указанному пользователю,
+ * и возвращает их вместе с соответствующим кодом валюты.
+ *
+ * @param user_id Уникальный идентификатор пользователя.
+ * @return Вектор пар, где каждая пара содержит код валюты (string) и баланс (double).
+ */
 std::vector<std::pair<std::string, double>> FinanceService::get_user_balance(const std::string& user_id) {
     pqxx::work txn(db_conn);
     auto result = txn.exec_params(
@@ -24,6 +40,20 @@ std::vector<std::pair<std::string, double>> FinanceService::get_user_balance(con
     return balances;
 }
 
+/**
+ * @brief Осуществляет перевод денег между пользователями.
+ *
+ * Выполняет атомарную операцию перевода, обновляя балансы счетов отправителя и получателя,
+ * и записывает транзакцию в базу данных.
+ *
+ * @param from_user_id ID пользователя-отправителя.
+ * @param to_username Имя пользователя-получателя.
+ * @param amount Сумма перевода.
+ * @param currency_code Код валюты перевода (например, "USD", "EUR").
+ * @return ID созданной транзакции.
+ * @throws std::runtime_error В случае неверного кода валюты, отсутствия получателя,
+ *                             отсутствия счета, недостаточных средств или других ошибок базы данных.
+ */
 std::string FinanceService::transfer_money(
     const std::string& from_user_id,
     const std::string& to_username,
@@ -109,6 +139,17 @@ std::string FinanceService::transfer_money(
     return transfer_id;
 }
 
+/**
+ * @brief Получает историю транзакций для указанного пользователя.
+ *
+ * Выполняет запрос к базе данных для получения списка транзакций, в которых участвовал пользователь,
+ * с возможностью пагинации.
+ *
+ * @param user_id Уникальный идентификатор пользователя.
+ * @param page Номер страницы для пагинации (начиная с 1).
+ * @param limit Максимальное количество записей на одной странице.
+ * @return Вектор объектов Transfer, представляющих историю транзакций пользователя.
+ */
 std::vector<Transfer> FinanceService::get_transaction_history(const std::string& user_id, int page, int limit) {
     pqxx::work txn(db_conn);
     int offset = (page - 1) * limit;
@@ -133,6 +174,15 @@ std::vector<Transfer> FinanceService::get_transaction_history(const std::string&
 }
 
 std::string FinanceService::get_currency_id(pqxx::work& txn, const std::string& currency_code) {
+    /**
+     * @brief Получает ID валюты по ее коду.
+     *
+     * Выполняет запрос к базе данных для поиска ID валюты по ее трехбуквенному коду (например, "USD").
+     *
+     * @param txn Ссылка на активную транзакцию `pqxx::work`.
+     * @param currency_code Трехбуквенный код валюты.
+     * @return ID валюты в виде строки, или пустая строка, если валюта не найдена.
+     */
     auto result = txn.exec_params(
         "SELECT id FROM currencies WHERE code = $1",
         currency_code
@@ -145,6 +195,15 @@ std::string FinanceService::get_currency_id(pqxx::work& txn, const std::string& 
     return result[0]["id"].as<std::string>();
 }
 
+/**
+ * @brief Получает ID пользователя по его имени пользователя.
+ *
+ * Выполняет запрос к базе данных для поиска ID пользователя по его имени пользователя.
+ *
+ * @param txn Ссылка на активную транзакцию `pqxx::work`.
+ * @param username Имя пользователя.
+ * @return ID пользователя в виде строки, или пустая строка, если пользователь не найден.
+ */
 std::string FinanceService::get_user_id_by_username(pqxx::work& txn, const std::string& username) {
     auto result = txn.exec_params(
         "SELECT id FROM users WHERE username = $1",
@@ -158,6 +217,16 @@ std::string FinanceService::get_user_id_by_username(pqxx::work& txn, const std::
     return result[0]["id"].as<std::string>();
 }
 
+/**
+ * @brief Получает объект счета пользователя по ID пользователя и ID валюты.
+ *
+ * Выполняет запрос к базе данных для получения полной информации о счете.
+ *
+ * @param txn Ссылка на активную транзакцию `pqxx::work`.
+ * @param user_id ID пользователя, которому принадлежит счет.
+ * @param currency_id ID валюты счета.
+ * @return `std::optional<Account>` содержащий объект Account, если счет найден, иначе `std::nullopt`.
+ */
 std::optional<Account> FinanceService::get_account(pqxx::work& txn, const std::string& user_id, const std::string& currency_id) {
     auto result = txn.exec_params(
         "SELECT * FROM accounts WHERE user_id = $1 AND currency_id = $2",
@@ -172,6 +241,16 @@ std::optional<Account> FinanceService::get_account(pqxx::work& txn, const std::s
     return Account::from_row(result[0]);
 }
 
+/**
+ * @brief Получает ID счета пользователя по ID пользователя и ID валюты.
+ *
+ * Выполняет запрос к базе данных для поиска ID счета пользователя.
+ *
+ * @param txn Ссылка на активную транзакцию `pqxx::work`.
+ * @param user_id ID пользователя, которому принадлежит счет.
+ * @param currency_id ID валюты счета.
+ * @return `std::optional<std::string>` содержащий ID счета в виде строки, если счет найден, иначе `std::nullopt`.
+ */
 std::optional<std::string> FinanceService::get_account_id(pqxx::work& txn, const std::string& user_id, const std::string& currency_id) {
     auto result = txn.exec_params(
         "SELECT id FROM accounts WHERE user_id = $1 AND currency_id = $2",
@@ -186,6 +265,15 @@ std::optional<std::string> FinanceService::get_account_id(pqxx::work& txn, const
     return result[0]["id"].as<std::string>();
 }
 
+/**
+ * @brief Обновляет баланс счета.
+ *
+ * Выполняет обновление баланса указанного счета в базе данных.
+ *
+ * @param txn Ссылка на активную транзакцию `pqxx::work`.
+ * @param account_id ID счета, баланс которого нужно обновить.
+ * @param amount Сумма, на которую нужно изменить баланс (положительное для увеличения, отрицательное для уменьшения).
+ */
 void FinanceService::update_account_balance(pqxx::work& txn, const std::string& account_id, double amount) {
     txn.exec_params(
         "UPDATE accounts SET balance = balance + $1 WHERE id = $2",

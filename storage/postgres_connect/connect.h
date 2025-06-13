@@ -4,10 +4,10 @@
 #include "../config/config.h"
 
 /**
- * Устанавливает соединение с базой данных PostgreSQL.
- * 
- * @param config Конфигурация подключения (хост, порт, пользователь, пароль и т.д.).
- * @return pqxx::connection Объект соединения с базой данных.
- * @throws std::runtime_error В случае ошибки подключения или SQL-ошибки.
+ * @brief Устанавливает соединение с базой данных PostgreSQL.
+ *
+ * @param config Объект Config, содержащий параметры подключения к базе данных.
+ * @return Активное соединение с базой данных PostgreSQL (`pqxx::connection`).
+ * @throws std::runtime_error В случае ошибок подключения к базе данных или SQL-ошибок.
  */
 pqxx::connection connect_to_database(const Config& config);

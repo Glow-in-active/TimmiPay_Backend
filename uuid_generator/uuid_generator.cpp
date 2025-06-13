@@ -3,6 +3,13 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
+/**
+ * @brief Генерирует новый UUID.
+ *
+ * Эта функция использует библиотеку Boost.UUID для создания универсального уникального идентификатора.
+ *
+ * @return Строка, представляющая сгенерированный UUID.
+ */
 std::string UUIDGenerator::generateUUID() {
     thread_local boost::uuids::random_generator generator;
 

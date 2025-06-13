@@ -8,8 +8,18 @@
 #include "../../../../storage/redis_config/config_redis.h"
 #include "../../../../storage/redis_connect/connect_redis.h"
 
+/**
+ * @brief Тестовый класс для TokenGenerator.
+ *
+ * Настраивает и очищает тестовую среду Redis для каждого тестового набора.
+ */
 class TokenGeneratorTest : public ::testing::Test {
 protected:
+    /**
+     * @brief Настраивает тестовую среду перед выполнением всех тестов.
+     *
+     * Загружает конфигурацию Redis, устанавливает соединение и очищает базу данных Redis.
+     */
     static void SetUpTestSuite() {
         ConfigRedis redis_config = load_redis_config("database_config/test_redis_config.json");
         
@@ -18,11 +28,21 @@ protected:
         redis->flushdb();
     }
 
+    /**
+     * @brief Очищает тестовую среду после выполнения всех тестов.
+     *
+     * Очищает базу данных Redis и освобождает ресурсы.
+     */
     static void TearDownTestSuite() {
         redis->flushdb();
         redis.reset();
     }
 
+    /**
+     * @brief Настраивает тестовую среду перед каждым тестом.
+     *
+     * Очищает базу данных Redis, чтобы каждый тест начинался с чистого состояния.
+     */
     void SetUp() override {
         redis->flushdb();
     }
@@ -33,6 +53,12 @@ protected:
 
 std::unique_ptr<sw::redis::Redis> TokenGeneratorTest::redis = nullptr;
 
+/**
+ * @brief Проверяет, что TokenGenerator генерирует валидный токен и сохраняет его в Redis.
+ *
+ * Тест проверяет формат сгенерированного токена (наличие дефисов, длину) и убеждается,
+ * что токен успешно сохраняется в Redis с правильным ID пользователя и TTL.
+ */
 TEST_F(TokenGeneratorTest, GeneratesValidTokenAndSavesToRedis) {
     TokenGenerator generator(uuid_gen, *redis);
     User test_user{"user123", "test@example.com", "hash"};
@@ -55,6 +81,12 @@ TEST_F(TokenGeneratorTest, GeneratesValidTokenAndSavesToRedis) {
     EXPECT_GE(ttl, 0);
 }
 
+/**
+ * @brief Проверяет уникальность сгенерированных токенов.
+ *
+ * Тест генерирует два токена для одного и того же пользователя и проверяет,
+ * что они отличаются, а также оба присутствуют в Redis.
+ */
 TEST_F(TokenGeneratorTest, TokenUniqueness) {
     TokenGenerator generator(uuid_gen, *redis);
     User test_user{"user456", "test2@example.com", "hash"};

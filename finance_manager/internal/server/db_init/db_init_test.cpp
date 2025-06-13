@@ -5,6 +5,14 @@
 #include "../../../../storage/postgres_connect/connect.h"
 #include "../../../../storage/redis_connect/connect_redis.h"
 
+/**
+ * @brief Инициализирует тестовые соединения с базами данных PostgreSQL и Redis для финансовых тестов.
+ *
+ * Загружает конфигурации для тестовых баз данных, устанавливает соединения и возвращает их.
+ *
+ * @return Структура DBConnections, содержащая установленные тестовые соединения.
+ * @throws std::runtime_error Если инициализация тестовой базы данных завершается с ошибкой.
+ */
 DBConnections initialize_finance_test_databases() {
     try {
         Config postgres_config = load_config("database_config/test_postgres_config.json");
@@ -25,11 +33,23 @@ DBConnections initialize_finance_test_databases() {
     }
 }
 
+/**
+ * @brief Проверяет, что соединение с PostgreSQL успешно открыто.
+ *
+ * Тест инициализирует тестовые базы данных и проверяет, что соединение с PostgreSQL
+ * находится в открытом состоянии.
+ */
 TEST(FinanceDBInitTest, TestPostgresConnectionIsOpen) {
     DBConnections db = initialize_finance_test_databases();
     EXPECT_TRUE(db.postgres.is_open());
 }
 
+/**
+ * @brief Проверяет, что соединение с Redis активно.
+ *
+ * Тест инициализирует тестовые базы данных и проверяет, что соединение с Redis
+ * активно, выполняя команду PING.
+ */
 TEST(FinanceDBInitTest, TestRedisConnectionIsAlive) {
     DBConnections db = initialize_finance_test_databases();
     EXPECT_NO_THROW({
@@ -38,6 +58,12 @@ TEST(FinanceDBInitTest, TestRedisConnectionIsAlive) {
     });
 }
 
+/**
+ * @brief Проверяет обработку некорректной конфигурации PostgreSQL.
+ *
+ * Тест пытается подключиться к PostgreSQL с невалидной конфигурацией
+ * и ожидает возникновения `std::runtime_error`.
+ */
 TEST(FinanceDBInitTest, TestInvalidPostgresConfig) {
     Config invalid_config;
     invalid_config.host = "invalid_host";
@@ -48,6 +74,12 @@ TEST(FinanceDBInitTest, TestInvalidPostgresConfig) {
     }, std::runtime_error);
 }
 
+/**
+ * @brief Проверяет обработку некорректной конфигурации Redis.
+ *
+ * Тест пытается подключиться к Redis с невалидной конфигурацией
+ * и ожидает возникновения `std::runtime_error`.
+ */
 TEST(FinanceDBInitTest, TestInvalidRedisConfig) {
     ConfigRedis invalid_config;
     invalid_config.host = "invalid_host";

@@ -10,6 +10,15 @@
 #include "../../../storage/postgres_connect/connect.h"
 #include "../../../storage/redis_connect/connect_redis.h"
 
+/**
+ * @brief Callback-функция для записи данных, полученных от cURL.
+ *
+ * @param contents Указатель на полученные данные.
+ * @param size Размер одного элемента данных.
+ * @param nmemb Количество элементов данных.
+ * @param s Указатель на строку, куда будут добавлены данные.
+ * @return Фактическое количество записанных байт.
+ */
 static size_t CurlWriteCallback(void* contents, size_t size, size_t nmemb, std::string* s) {
     s->append((char*)contents, size * nmemb);
     return size * nmemb;
@@ -17,6 +26,11 @@ static size_t CurlWriteCallback(void* contents, size_t size, size_t nmemb, std::
 
 class RealSessionStart : public SessionStart {
 public:
+    /**
+     * @brief Конструктор для RealSessionStart.
+     *
+     * Инициализирует конфигурацию базы данных, Redis, устанавливает соединения и создает UserVerifier.
+     */
     RealSessionStart()
         : config_(load_config("database_config/test_postgres_config.json")),
           redis_config_(load_redis_config("database_config/test_redis_config.json")),
@@ -36,6 +50,11 @@ private:
 
 class RealSessionHold : public SessionHold {
 public:
+    /**
+     * @brief Конструктор для RealSessionHold.
+     *
+     * Инициализирует конфигурацию Redis и устанавливает соединение.
+     */
     RealSessionHold()
         : redis_config_(load_redis_config("database_config/test_redis_config.json")),
           redis_(connect_to_redis(redis_config_)),
@@ -49,6 +68,11 @@ private:
 
 class CrowAppServerFixture : public ::testing::Test {
 protected:
+    /**
+     * @brief Настраивает тестовый набор перед выполнением всех тестов.
+     *
+     * Инициализирует приложение Crow, запускает его в отдельном потоке и ожидает готовности сервера.
+     */
     static void SetUpTestSuite() {
         app = &create_crow_app(session_start, session_hold);
 
@@ -63,12 +87,24 @@ protected:
         FAIL() << "CrowApp: Server did not start in time";
     }
 
+    /**
+     * @brief Очищает ресурсы после выполнения всех тестов.
+     *
+     * Останавливает приложение Crow и завершает поток сервера.
+     */
     static void TearDownTestSuite() {
         app->stop();
         if (server_thread.joinable())
             server_thread.join();
     }
 
+    /**
+     * @brief Проверяет доступность сервера.
+     *
+     * Отправляет HTTP-запрос к серверу и проверяет успешность соединения.
+     *
+     * @return true, если сервер доступен, false в противном случае.
+     */
     static bool is_server_alive() {
         CURL* curl = curl_easy_init();
         if (!curl) return false;
@@ -89,6 +125,11 @@ protected:
 };
 
 TEST_F(CrowAppServerFixture, SessionStartRouteIsAvailable) {
+    /**
+     * @brief Проверяет доступность маршрута /session_start.
+     *
+     * Тест отправляет POST-запрос на /session_start и проверяет, что ответ получен успешно и не пуст.
+     */
     CURL* curl = curl_easy_init();
     ASSERT_TRUE(curl != nullptr);
 
@@ -109,6 +150,11 @@ TEST_F(CrowAppServerFixture, SessionStartRouteIsAvailable) {
 }
 
 TEST_F(CrowAppServerFixture, SessionRefreshRouteIsAvailable) {
+    /**
+     * @brief Проверяет доступность маршрута /session_refresh.
+     *
+     * Тест отправляет POST-запрос на /session_refresh и проверяет, что ответ получен успешно и не пуст.
+     */
     CURL* curl = curl_easy_init();
     ASSERT_TRUE(curl != nullptr);
 

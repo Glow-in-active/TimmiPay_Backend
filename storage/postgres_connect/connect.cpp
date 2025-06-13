@@ -3,14 +3,14 @@
 #include <string>
 
 /**
- * Устанавливает соединение с базой данных PostgreSQL, используя параметры из Config.
- * 
- * Формирует строку подключения и пытается создать объект pqxx::connection.
- * В случае ошибок выбрасывает std::runtime_error с описанием.
- * 
- * @param config Конфигурация подключения.
- * @return pqxx::connection Активное соединение с базой данных.
- * @throws std::runtime_error При ошибках подключения или SQL-ошибках.
+ * @brief Устанавливает соединение с базой данных PostgreSQL.
+ *
+ * Формирует строку подключения на основе предоставленных параметров конфигурации
+ * и пытается создать объект `pqxx::connection`.
+ *
+ * @param config Объект Config, содержащий параметры подключения к базе данных.
+ * @return Активное соединение с базой данных PostgreSQL (`pqxx::connection`).
+ * @throws std::runtime_error В случае ошибок подключения к базе данных или SQL-ошибок.
  */
 pqxx::connection connect_to_database(const Config& config) {
     try {

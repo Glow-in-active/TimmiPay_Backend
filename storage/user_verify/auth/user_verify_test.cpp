@@ -5,6 +5,11 @@
 #include "../../config/config.h"
 #include "../../postgres_connect/connect.h"
 
+/**
+ * @brief Тестовый класс для UserStorage, использующий реальное соединение с базой данных.
+ *
+ * Настраивает и очищает тестовые данные в базе данных для каждого теста.
+ */
 class UserStorageProdTest : public ::testing::Test {
 protected:
     pqxx::connection* conn;
@@ -12,6 +17,12 @@ protected:
     std::string test_email;
     UUIDGenerator uuid_gen;
 
+    /**
+     * @brief Настраивает тестовую среду перед каждым тестом.
+     *
+     * Генерирует уникальный ID пользователя и email, устанавливает соединение с тестовой базой данных
+     * и вставляет тестового пользователя.
+     */
     void SetUp() override {
         test_user_id = uuid_gen.generateUUID();
         test_email = "test_" + test_user_id + "@example.com";
@@ -31,6 +42,11 @@ protected:
         setup_work.commit();
     }
 
+    /**
+     * @brief Очищает тестовую среду после каждого теста.
+     *
+     * Удаляет тестового пользователя из базы данных и закрывает соединение.
+     */
     void TearDown() override {
         pqxx::work teardown_work(*conn);
         teardown_work.exec_params(
@@ -43,6 +59,11 @@ protected:
     }
 };
 
+/**
+ * @brief Проверяет, что созданный пользователь существует в базе данных.
+ *
+ * Тест получает пользователя по email и проверяет, что его ID и email соответствуют ожидаемым.
+ */
 TEST_F(UserStorageProdTest, CreatedUserExists) {
     UserStorage storage(*conn);
     User user = storage.GetUserByEmail(test_email);
@@ -52,6 +73,11 @@ TEST_F(UserStorageProdTest, CreatedUserExists) {
     EXPECT_EQ(user.email, test_email);
 }
 
+/**
+ * @brief Проверяет функциональность верификации пароля.
+ *
+ * Тест получает пользователя по email и проверяет правильность верификации пароля как для верного, так и для неверного хеша.
+ */
 TEST_F(UserStorageProdTest, PasswordVerificationWorks) {
     UserStorage storage(*conn);
     User user = storage.GetUserByEmail(test_email);

@@ -15,6 +15,12 @@
 
 const std::string REDIS_PREFIX = "session:";
 
+/**
+ * @brief Тестовый класс для интеграционных тестов SessionHold.
+ *
+ * Настраивает и очищает тестовую среду с использованием реальных подключений к PostgreSQL и Redis,
+ * а также тестовых пользователей.
+ */
 class ProdSessionHoldTest : public ::testing::Test {
 protected:
     Config pg_config = load_config("database_config/test_postgres_config.json");
@@ -29,6 +35,11 @@ protected:
     std::string test_hash = "5f4dcc3b5aa765d61d8327deb882cf99";
     std::string test_username = "aboba";
 
+    /**
+     * @brief Настраивает тестовую среду перед каждым тестом.
+     *
+     * Вставляет тестового пользователя в базу данных PostgreSQL.
+     */
     void SetUp() override {
         pqxx::work txn(pg_conn);
         txn.exec_params(
@@ -38,6 +49,11 @@ protected:
         txn.commit();
     }
 
+    /**
+     * @brief Очищает тестовую среду после каждого теста.
+     *
+     * Удаляет тестового пользователя из PostgreSQL и все связанные ключи сессий из Redis.
+     */
     void TearDown() override {
         pqxx::work txn(pg_conn);
         txn.exec_params("DELETE FROM users WHERE email = $1", test_email);
@@ -51,6 +67,12 @@ protected:
     }
 };
 
+/**
+ * @brief Проверяет успешное удержание (обновление) сессии с валидным токеном.
+ *
+ * Тест генерирует валидный токен, использует его для удержания сессии
+ * и проверяет, что операция успешна, а токен по-прежнему существует в Redis.
+ */
 TEST_F(ProdSessionHoldTest, SessionHoldValidToken) {
     SessionStart session_handler(verifier);
     nlohmann::json session_request = {
@@ -71,6 +93,12 @@ TEST_F(ProdSessionHoldTest, SessionHoldValidToken) {
     EXPECT_TRUE(token_exists) << "Ожидаемый ключ: " << token;
 }
 
+/**
+ * @brief Проверяет обработку невалидного или несуществующего токена при удержании сессии.
+ *
+ * Тест пытается удержать сессию с невалидным токеном и проверяет,
+ * что возвращается ошибка "Token not found or expired".
+ */
 TEST_F(ProdSessionHoldTest, SessionHoldInvalidToken) {
     SessionHold hold_handler(redis_conn);
 
@@ -81,6 +109,12 @@ TEST_F(ProdSessionHoldTest, SessionHoldInvalidToken) {
     EXPECT_EQ(response["error"], "Token not found or expired");
 }
 
+/**
+ * @brief Проверяет интеграцию с реальной базой данных для начала сессии.
+ *
+ * Тест использует реальные соединения с базами данных для начала сессии
+ * и проверяет, что токен успешно генерируется и нет ошибок.
+ */
 TEST_F(ProdSessionHoldTest, RealDbIntegration) {
     SessionStart session_handler(verifier);
 

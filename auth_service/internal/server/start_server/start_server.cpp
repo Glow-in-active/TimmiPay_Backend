@@ -5,6 +5,14 @@
 #include <crow/middlewares/cors.h>
 #include <iostream>
 
+/**
+ * @brief Запускает HTTP-сервер Crow для сервиса аутентификации.
+ *
+ * Инициализирует приложение Crow, регистрирует маршруты и запускает сервер на порту 8080.
+ * Обрабатывает исключения, связанные с PostgreSQL, Redis и другие общие исключения.
+ *
+ * @param deps Структура Dependencies, содержащая обработчики для начала и удержания сессий.
+ */
 void start_server(Dependencies& deps) {
     try {
         auto& app = create_crow_app(deps.session_start_handler, deps.session_hold_handler);

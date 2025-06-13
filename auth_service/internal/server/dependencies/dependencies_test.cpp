@@ -9,6 +9,13 @@
 #include "../../../storage/postgres_connect/connect.h"
 #include "../../../storage/redis_connect/connect_redis.h"
 
+/**
+ * @brief Инициализирует тестовые соединения с базами данных PostgreSQL и Redis.
+ *
+ * Загружает конфигурации для тестовых баз данных, устанавливает соединения и возвращает их.
+ *
+ * @return Структура DBConnections, содержащая установленные тестовые соединения.
+ */
 static DBConnections initialize_test_databases_for_dependencies() {
     Config postgres_config = load_config("database_config/test_postgres_config.json");
     ConfigRedis redis_config = load_redis_config("database_config/test_redis_config.json");
@@ -22,6 +29,12 @@ static DBConnections initialize_test_databases_for_dependencies() {
     };
 }
 
+/**
+ * @brief Проверяет, что инициализация зависимостей не вызывает исключений.
+ *
+ * Тест создает тестовые соединения с базами данных и пытается инициализировать
+ * зависимости, ожидая, что процесс завершится без ошибок.
+ */
 TEST(DependenciesTest, InitializeDependenciesDoesNotThrow) {
     DBConnections db = initialize_test_databases_for_dependencies();
     EXPECT_NO_THROW({
@@ -29,6 +42,13 @@ TEST(DependenciesTest, InitializeDependenciesDoesNotThrow) {
     });
 }
 
+/**
+ * @brief Проверяет, что инициализированные обработчики являются валидными.
+ *
+ * Тест инициализирует зависимости и проверяет, что указатели на
+ * `user_verifier`, `session_start_handler` и `session_hold_handler` не являются nullptr,
+ * подтверждая их успешное создание.
+ */
 TEST(DependenciesTest, HandlersAreValid) {
     DBConnections db = initialize_test_databases_for_dependencies();
     Dependencies deps = initialize_dependencies(db);

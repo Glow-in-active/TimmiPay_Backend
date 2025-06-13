@@ -8,7 +8,7 @@
  * Открывает файл по указанному пути, парсит JSON и заполняет структуру Config.
  * 
  * @param filename Путь к JSON-файлу с конфигурацией.
- * @return Config Структура с параметрами конфигурации.
+ * @return Структура Config с параметрами конфигурации.
  * @throws std::runtime_error Если файл не удалось открыть.
  * @throws nlohmann::json::parse_error Если JSON некорректен.
  */

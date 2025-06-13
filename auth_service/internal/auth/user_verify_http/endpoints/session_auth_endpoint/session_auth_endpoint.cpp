@@ -1,6 +1,17 @@
 #include "session_auth_endpoint.h"
 #include <nlohmann/json.hpp>
 
+/**
+ * @brief Создает обработчик HTTP-запросов для аутентификации сессии.
+ *
+ * Этот обработчик принимает запрос Crow, извлекает тело запроса в формате JSON,
+ * передает его обработчику `SessionStart` и формирует HTTP-ответ в зависимости от результата.
+ * Обрабатывает различные ошибки, такие как неверный формат JSON, неудачная верификация
+ * и внутренние ошибки сервера.
+ *
+ * @param handler Объект SessionStart, который обрабатывает логику начала сессии.
+ * @return Функция, которая принимает `crow::request` и возвращает `crow::response`.
+ */
 std::function<crow::response(const crow::request&)> create_session_auth_handler(SessionStart& handler) {
     return [&handler](const crow::request& req) {
         try {

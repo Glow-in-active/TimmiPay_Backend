@@ -5,6 +5,14 @@
 #include "../../../storage/postgres_connect/connect.h"
 #include "../../../storage/redis_connect/connect_redis.h"
 
+/**
+ * @brief Инициализирует тестовые соединения с базами данных PostgreSQL и Redis.
+ *
+ * Загружает тестовые конфигурации для PostgreSQL и Redis, устанавливает соединения и возвращает их.
+ *
+ * @return Структура DBConnections, содержащая установленные тестовые соединения с PostgreSQL и Redis.
+ * @throws std::runtime_error Если инициализация тестовой базы данных завершается с ошибкой.
+ */
 DBConnections initialize_auth_test_databases() {
     try {
         Config postgres_config = load_config("database_config/test_postgres_config.json");
@@ -25,11 +33,21 @@ DBConnections initialize_auth_test_databases() {
     }
 }
 
+/**
+ * @brief Проверяет, что соединение с PostgreSQL открыто.
+ *
+ * Тест инициализирует тестовые соединения с базами данных и проверяет, что соединение с PostgreSQL активно.
+ */
 TEST(DBInitTest, TestPostgresConnectionIsOpen) {
     DBConnections db = initialize_auth_test_databases();
     EXPECT_TRUE(db.postgres.is_open());
 }
 
+/**
+ * @brief Проверяет, что соединение с Redis активно.
+ *
+ * Тест инициализирует тестовые соединения с базами данных и отправляет команду PING в Redis для проверки активности соединения.
+ */
 TEST(DBInitTest, TestRedisConnectionIsAlive) {
     DBConnections db = initialize_auth_test_databases();
     EXPECT_NO_THROW({

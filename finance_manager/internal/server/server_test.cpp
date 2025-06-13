@@ -10,6 +10,11 @@
 #include <chrono>
 #include "../../../../uuid_generator/uuid_generator.h"
 
+/**
+ * @brief Тестовый класс для интеграционного тестирования FinanceServer.
+ *
+ * Настраивает и очищает тестовую базу данных и сервер Crow для каждого тестового набора.
+ */
 class ServerTest : public ::testing::Test {
 protected:
     // Static members for server and connections, initialized once for all tests
@@ -25,6 +30,12 @@ protected:
     std::string test_session_token;
     UUIDGenerator uuid_gen;
 
+    /**
+     * @brief Настраивает тестовый набор перед выполнением всех тестов.
+     *
+     * Инициализирует статические соединения с PostgreSQL и Redis, создает и запускает
+     * FinanceServer в отдельном потоке, а затем ожидает его готовности.
+     */
     static void SetUpTestSuite() {
         // Initialize static connections
         Config postgres_config = load_config("database_config/test_postgres_config.json");
@@ -49,6 +60,12 @@ protected:
         FAIL() << "CrowApp: Server did not start in time";
     }
 
+    /**
+     * @brief Очищает ресурсы тестового набора после выполнения всех тестов.
+     *
+     * Останавливает FinanceServer и ожидает завершения его потока. Соединения с базами данных
+     * будут закрыты автоматически при уничтожении `std::unique_ptr`.
+     */
     static void TearDownTestSuite() {
         // Stop server
         if (server) {
@@ -72,6 +89,12 @@ protected:
         cleanupTestData();
     }
 
+    /**
+     * @brief Настраивает тестовые данные для каждого теста.
+     *
+     * Вставляет тестовых пользователей, валюты и счета в базу данных PostgreSQL,
+     * а также создает тестовый токен сессии в Redis.
+     */
     void setupTestData() {
         pqxx::work txn(*postgres_conn);
         
@@ -99,6 +122,11 @@ protected:
         redis_conn->expire(test_session_token, 60); // Set a short expiration for test tokens
     }
 
+    /**
+     * @brief Очищает тестовые данные после каждого теста.
+     *
+     * Удаляет тестовых пользователей, счета, валюты из PostgreSQL и тестовый токен сессии из Redis.
+     */
     void cleanupTestData() {
         pqxx::work txn(*postgres_conn);
         txn.exec("DELETE FROM transfers");
@@ -110,11 +138,29 @@ protected:
         redis_conn->hdel(test_session_token, "id");
     }
 
+    /**
+     * @brief Callback-функция для записи данных, полученных от cURL.
+     *
+     * @param contents Указатель на полученные данные.
+     * @param size Размер одного элемента данных.
+     * @param nmemb Количество элементов данных.
+     * @param userp Указатель на строку, куда будут добавлены данные.
+     * @return Фактическое количество записанных байт.
+     */
     static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* userp) {
         userp->append((char*)contents, size * nmemb);
         return size * nmemb;
     }
 
+    /**
+     * @brief Выполняет HTTP-запрос к серверу.
+     *
+     * @param endpoint Конечная точка API (например, "/api/v1/balance").
+     * @param method HTTP-метод (например, "POST").
+     * @param data Тело запроса в виде строки JSON.
+     * @return Строка, содержащая ответ сервера.
+     * @throws std::runtime_error Если запрос cURL завершается с ошибкой.
+     */
     std::string makeRequest(const std::string& endpoint, const std::string& method, const std::string& data) {
         CURL* curl = curl_easy_init();
         std::string response_string;
@@ -140,6 +186,12 @@ protected:
         return response_string;
     }
 
+    /**
+     * @brief Проверяет, запущен ли сервер.
+     *
+     * Отправляет небольшой запрос к серверу, чтобы убедиться, что он отвечает.
+     * @return true, если сервер отвечает, false в противном случае.
+     */
     static bool is_server_alive() {
         CURL* curl = curl_easy_init();
         if (!curl) return false;
@@ -154,6 +206,12 @@ protected:
     }
 };
 
+/**
+ * @brief Проверяет успешное получение баланса пользователя.
+ *
+ * Тест отправляет запрос на получение баланса и проверяет, что ответ содержит
+ * корректные данные о валюте и балансе пользователя.
+ */
 TEST_F(ServerTest, GetBalanceSuccess) {
     nlohmann::json request_data = {
         {"session_token", test_session_token}
@@ -168,6 +226,12 @@ TEST_F(ServerTest, GetBalanceSuccess) {
     EXPECT_DOUBLE_EQ(response_json[0]["balance"], 1000.0);
 }
 
+/**
+ * @brief Проверяет обработку недействительного токена сессии при получении баланса.
+ *
+ * Тест отправляет запрос на получение баланса с неверным токеном сессии
+ * и проверяет, что сервер возвращает ошибку 401.
+ */
 TEST_F(ServerTest, GetBalanceInvalidSession) {
     nlohmann::json request_data = {
         {"session_token", "invalid_token"}
@@ -177,6 +241,12 @@ TEST_F(ServerTest, GetBalanceInvalidSession) {
     EXPECT_EQ(response, "Invalid session token");
 }
 
+/**
+ * @brief Проверяет успешный перевод денег через API.
+ *
+ * Тест отправляет запрос на перевод денег и проверяет, что ответ содержит
+ * непустой `transfer_id`, подтверждающий успешное создание транзакции.
+ */
 TEST_F(ServerTest, TransferMoneySuccess) {
     nlohmann::json request_data = {
         {"session_token", test_session_token},
@@ -192,6 +262,12 @@ TEST_F(ServerTest, TransferMoneySuccess) {
     EXPECT_FALSE(response_json["transfer_id"].empty());
 }
 
+/**
+ * @brief Проверяет обработку недостаточных средств при переводе денег.
+ *
+ * Тест отправляет запрос на перевод суммы, превышающей доступный баланс пользователя,
+ * и проверяет, что сервер возвращает соответствующее сообщение об ошибке.
+ */
 TEST_F(ServerTest, TransferMoneyInsufficientFunds) {
     nlohmann::json request_data = {
         {"session_token", test_session_token},
@@ -204,6 +280,12 @@ TEST_F(ServerTest, TransferMoneyInsufficientFunds) {
     EXPECT_EQ(response, "Insufficient funds.");
 }
 
+/**
+ * @brief Проверяет получение истории транзакций пользователя.
+ *
+ * Тест сначала выполняет перевод, а затем отправляет запрос на получение истории транзакций.
+ * Проверяет, что ответ содержит корректные данные о транзакции, включая сумму и статус.
+ */
 TEST_F(ServerTest, GetTransactionHistory) {
     // Make a transfer first
     nlohmann::json transfer_data = {

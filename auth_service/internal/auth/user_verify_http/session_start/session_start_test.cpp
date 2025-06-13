@@ -11,6 +11,12 @@
 #include "../../../../storage/postgres_connect/connect.h"
 #include "../../../../storage/redis_connect/connect_redis.h"
 
+/**
+ * @brief Тестовый класс для интеграционных тестов SessionStart.
+ *
+ * Настраивает и очищает тестовую среду с использованием реальных подключений к PostgreSQL и Redis,
+ * а также тестовых пользователей.
+ */
 class ProdSessionTest : public ::testing::Test {
 protected:
     pqxx::connection pg_conn;
@@ -21,11 +27,22 @@ protected:
     std::string test_hash = "5f4dcc3b5aa765d61d8327deb882cf99";
     std::string test_username = "aboba";
 
+    /**
+     * @brief Конструктор класса ProdSessionTest.
+     *
+     * Инициализирует соединения с тестовыми базами данных PostgreSQL и Redis,
+     * а также UserVerifier.
+     */
     ProdSessionTest()
         : pg_conn(connect_to_database(load_config("database_config/test_postgres_config.json"))),
           redis_conn(connect_to_redis(load_redis_config("database_config/test_redis_config.json"))),
           verifier(pg_conn, redis_conn) {}
 
+    /**
+     * @brief Настраивает тестовую среду перед каждым тестом.
+     *
+     * Вставляет тестового пользователя в базу данных PostgreSQL.
+     */
     void SetUp() override {
         pqxx::work txn(pg_conn);
         txn.exec_params(
@@ -35,6 +52,11 @@ protected:
         txn.commit();
     }
 
+    /**
+     * @brief Очищает тестовую среду после каждого теста.
+     *
+     * Удаляет тестового пользователя из базы данных PostgreSQL.
+     */
     void TearDown() override {
         pqxx::work txn(pg_conn);
         txn.exec_params("DELETE FROM users WHERE email = $1", test_email);
@@ -42,6 +64,12 @@ protected:
     }
 };
 
+/**
+ * @brief Проверяет интеграцию с реальной базой данных для начала сессии.
+ *
+ * Тест использует реальные соединения с базами данных для начала сессии
+ * и проверяет, что токен успешно генерируется и нет ошибок.
+ */
 TEST_F(ProdSessionTest, RealDbIntegration) {
     SessionStart session_handler(verifier);
 

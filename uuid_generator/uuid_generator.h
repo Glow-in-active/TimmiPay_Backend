@@ -10,6 +10,11 @@ public:
     UUIDGenerator& operator=(const UUIDGenerator&) = default;
     ~UUIDGenerator() = default;
 
+    /**
+     * @brief Генерирует новый UUID.
+     *
+     * @return Строка, представляющая сгенерированный UUID.
+     */
     std::string generateUUID();
 };
 

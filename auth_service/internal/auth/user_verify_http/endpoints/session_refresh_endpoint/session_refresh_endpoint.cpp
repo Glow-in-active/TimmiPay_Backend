@@ -1,6 +1,17 @@
 #include "session_refresh_endpoint.h"
 #include <nlohmann/json.hpp>
 
+/**
+ * @brief Создает обработчик HTTP-запросов для обновления сессии.
+ *
+ * Этот обработчик принимает запрос Crow, извлекает тело запроса в формате JSON,
+ * передает его обработчику `SessionHold` и формирует HTTP-ответ в зависимости от результата.
+ * Обрабатывает различные ошибки, такие как неверный формат JSON, ненайденный или
+ * истекший токен и внутренние ошибки сервера.
+ *
+ * @param handler Объект SessionHold, который обрабатывает логику удержания/обновления сессии.
+ * @return Функция, которая принимает `crow::request` и возвращает `crow::response`.
+ */
 std::function<crow::response(const crow::request&)> create_session_refresh_handler(SessionHold& handler) {
     return [&handler](const crow::request& req) {
         try {

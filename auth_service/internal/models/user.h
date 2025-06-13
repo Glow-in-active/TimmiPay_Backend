@@ -3,6 +3,9 @@
 
 #include <string>
 
+/**
+ * @brief Структура, представляющая пользователя в системе аутентификации.
+ */
 struct User {
     std::string id;
     std::string email;

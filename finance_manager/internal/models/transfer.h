@@ -3,6 +3,9 @@
 #include <string>
 #include <pqxx/pqxx>
 
+/**
+ * @brief Структура, представляющая финансовую транзакцию (перевод).
+ */
 struct Transfer {
     std::string id;
     std::string from_account;
@@ -13,6 +16,12 @@ struct Transfer {
     std::string created_at;
     std::string updated_at;
 
+    /**
+     * @brief Создает объект Transfer из строки результата запроса pqxx.
+     *
+     * @param row Объект pqxx::row, содержащий данные транзакции из базы данных.
+     * @return Объект Transfer, заполненный данными из строки.
+     */
     static Transfer from_row(const pqxx::row& row) {
         Transfer transfer;
         transfer.id = row["id"].as<std::string>();

@@ -4,6 +4,14 @@
 #include "../../../storage/redis_connect/connect_redis.h"
 #include "../../../storage/redis_config/config_redis.h"
 
+/**
+ * @brief Инициализирует соединения с базами данных PostgreSQL и Redis.
+ *
+ * Загружает конфигурации для PostgreSQL и Redis, устанавливает соединения и возвращает их.
+ *
+ * @return Структура DBConnections, содержащая установленные соединения с PostgreSQL и Redis.
+ * @throws std::runtime_error Если инициализация базы данных завершается с ошибкой.
+ */
 DBConnections initialize_databases() {
     try {
         Config postgres_config = load_config("database_config/prod_postgres_config.json");

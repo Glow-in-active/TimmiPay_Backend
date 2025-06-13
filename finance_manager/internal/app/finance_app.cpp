@@ -4,6 +4,13 @@
 #include <iostream>
 #include <string>
 
+/**
+ * @brief Запускает финансовое приложение.
+ *
+ * Инициализирует соединения с базами данных, создает и запускает финансовый сервер.
+ *
+ * @return 0 в случае успешного выполнения, 1 в случае ошибки.
+ */
 int run_finance_app() {
     try {
         DBConnections db = initialize_databases();

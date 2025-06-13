@@ -11,10 +11,45 @@
 #include "../../../storage/postgres_connect/connect.h"
 #include "../finance/finance_service.h"
 
+/**
+ * @brief Проверяет валидность токена сессии.
+ *
+ * Использует SessionVerifier для проверки токена сессии и извлечения ID пользователя.
+ *
+ * @param session_token Токен сессии для проверки.
+ * @param user_id Ссылка на строку, в которую будет записан ID пользователя, если сессия действительна.
+ * @return true, если сессия действительна, false в противном случае.
+ */
 bool FinanceServer::verify_session(const std::string& session_token, std::string& user_id) {
     return session_verifier->verify_session(session_token, user_id);
 }
 
+/**
+ * @brief Конструктор для FinanceServer.
+ *
+ * Инициализирует FinanceServer с предоставленными соединениями с PostgreSQL и Redis,
+ * а также настраивает маршруты API для получения баланса, перевода денег и получения истории транзакций.
+ *
+ * @param postgres Ссылка на активное соединение с базой данных PostgreSQL.
+ * @param redis Ссылка на активное соединение с Redis.
+ *
+ * @section balance_endpoint Баланс пользователя (/api/v1/balance)
+ * Обрабатывает POST-запросы для получения баланса пользователя. Требует `session_token` в теле запроса.
+ * Возвращает массив объектов, каждый из которых содержит `currency` и `balance`.
+ * Возвращает 401, если токен сессии недействителен, или 500 в случае внутренней ошибки сервера.
+ *
+ * @section transfer_endpoint Перевод денег (/api/v1/transfer)
+ * Обрабатывает POST-запросы для перевода денег между пользователями. Требует `session_token`,
+ * `to_username`, `amount` и `currency` в теле запроса. Возвращает `transfer_id` при успешном выполнении.
+ * Возвращает 401, если токен сессии недействителен, 400 в случае ошибки бизнес-логики (например, недостаток средств),
+ * или 500 в случае внутренней ошибки сервера.
+ *
+ * @section history_endpoint История транзакций (/api/v1/history)
+ * Обрабатывает POST-запросы для получения истории транзакций пользователя. Требует `session_token`
+ * в теле запроса. Поддерживает необязательные параметры `page` и `limit` для пагинации.
+ * Возвращает массив объектов, каждый из которых содержит `transfer_id`, `amount`, `status` и `created_at`.
+ * Возвращает 401, если токен сессии недействителен, или 500 в случае внутренней ошибки сервера.
+ */
 FinanceServer::FinanceServer(pqxx::connection& postgres, sw::redis::Redis& redis) 
     : db_conn(postgres) {
     try {
@@ -126,10 +161,22 @@ FinanceServer::FinanceServer(pqxx::connection& postgres, sw::redis::Redis& redis
     });
 }
 
+/**
+ * @brief Запускает сервер Crow на указанном порту.
+ *
+ * Сервер будет работать в многопоточном режиме.
+ *
+ * @param port Номер порта, на котором будет запущен сервер.
+ */
 void FinanceServer::run(int port) {
     app.port(port).multithreaded().run();
 }
 
+/**
+ * @brief Останавливает сервер Crow.
+ *
+ * Завершает работу приложения Crow.
+ */
 void FinanceServer::stop_server() {
     app.stop();
 } 

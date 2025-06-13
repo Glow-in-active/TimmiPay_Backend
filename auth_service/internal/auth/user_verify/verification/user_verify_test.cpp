@@ -12,8 +12,20 @@
 const std::string VALID_PASSWORD_HASH = 
     "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8";
 
+/**
+ * @brief Тестовый класс для UserVerifier.
+ *
+ * Настраивает и очищает тестовую среду, включая подключение к PostgreSQL и Redis,
+ * а также вставку и удаление тестовых пользователей.
+ */
 class UserVerifierTest : public ::testing::Test {
 protected:
+    /**
+     * @brief Настраивает тестовую среду перед каждым тестом.
+     *
+     * Устанавливает соединения с тестовыми базами данных PostgreSQL и Redis,
+     * генерирует тестового пользователя и вставляет его в базу данных.
+     */
     void SetUp() override {
         try {
             Config postgres_config = load_config("database_config/test_postgres_config.json");
@@ -35,6 +47,11 @@ protected:
         }
     }
 
+    /**
+     * @brief Очищает тестовую среду после каждого теста.
+     *
+     * Удаляет тестового пользователя и связанные с ним данные из базы данных.
+     */
     void TearDown() override {
         pqxx::work txn(*conn);
         try {
@@ -62,6 +79,12 @@ protected:
         }
     }
 
+    /**
+     * @brief Вставляет тестового пользователя в базу данных.
+     *
+     * Вставляет запись о тестовом пользователе с предопределенными данными и хешем пароля
+     * в таблицу `users`.
+     */
     void insertTestUser() {
         pqxx::work txn(*conn);
         try {
@@ -87,6 +110,12 @@ protected:
     std::string testEmail;
 };
 
+/**
+ * @brief Проверяет, что при неверном email выбрасывается исключение.
+ *
+ * Тест пытается сгенерировать токен с несуществующим email и ожидает
+ * `std::runtime_error`.
+ */
 TEST_F(UserVerifierTest, ThrowsExceptionForWrongEmail) {
     UserVerifier verifier(*conn, *redis);
 
@@ -95,6 +124,12 @@ TEST_F(UserVerifierTest, ThrowsExceptionForWrongEmail) {
     }, std::runtime_error);
 }
 
+/**
+ * @brief Проверяет, что при неверном пароле выбрасывается исключение.
+ *
+ * Тест пытается сгенерировать токен с неверным хешем пароля для существующего email
+ * и ожидает `std::runtime_error`.
+ */
 TEST_F(UserVerifierTest, ThrowsExceptionForWrongPassword) {
     UserVerifier verifier(*conn, *redis);
 

@@ -10,8 +10,18 @@
 #include "../../postgres_connect/connect.h"
 #include "../../redis_connect/connect_redis.h"
 
+/**
+ * @brief Тестовый класс для функций установки и продления токенов Redis.
+ *
+ * Настраивает соединение с Redis и очищает базу данных перед каждым тестом.
+ */
 class RedisSetTokenTest : public ::testing::Test {
 protected:
+    /**
+     * @brief Настраивает тестовую среду перед каждым тестом.
+     *
+     * Инициализирует соединение с Redis и очищает базу данных Redis.
+     */
     void SetUp() override {
         ConfigRedis redis_config = load_redis_config("database_config/test_redis_config.json");
 
@@ -19,6 +29,11 @@ protected:
         redis->flushdb();
     }
 
+    /**
+     * @brief Очищает тестовую среду после каждого теста.
+     *
+     * Очищает базу данных Redis.
+     */
     void TearDown() override {
         redis->flushdb();
     }
@@ -26,6 +41,12 @@ protected:
     std::unique_ptr<sw::redis::Redis> redis;
 };
 
+/**
+ * @brief Проверяет запись валидных данных с TTL.
+ *
+ * Тест устанавливает токен в Redis, затем проверяет, что ID пользователя и время истечения срока действия сохранены
+ * правильно, а TTL находится в ожидаемом диапазоне.
+ */
 TEST_F(RedisSetTokenTest, WritesValidDataWithTTL) {
     const std::string token = "test_token_abc";
     const std::string id = "user_123";
@@ -44,6 +65,12 @@ TEST_F(RedisSetTokenTest, WritesValidDataWithTTL) {
     EXPECT_LE(ttl, 600);
 }
 
+/**
+ * @brief Проверяет корректность времени истечения срока действия.
+ *
+ * Тест устанавливает токен и проверяет, что рассчитанное время истечения срока действия находится
+ * в пределах ожидаемого диапазона относительно времени установки.
+ */
 TEST_F(RedisSetTokenTest, ExpirationTimeIsCorrect) {
     const std::string token = "test_token_time";
     const std::string id = "user_456";
@@ -66,6 +93,12 @@ TEST_F(RedisSetTokenTest, ExpirationTimeIsCorrect) {
     EXPECT_LT(expiration_time, max_expected);
 }
 
+/**
+ * @brief Проверяет перезапись существующего токена.
+ *
+ * Тест устанавливает токен с одним ID, затем перезаписывает его другим ID и проверяет, что ID обновлен
+ * и TTL также обновлен.
+ */
 TEST_F(RedisSetTokenTest, OverwritesExistingToken) {
     const std::string token = "test_token_overwrite";
     const std::string id1 = "user_old";
@@ -86,6 +119,12 @@ TEST_F(RedisSetTokenTest, OverwritesExistingToken) {
     EXPECT_GT(new_ttl, 598);
 }
 
+/**
+ * @brief Проверяет сохранение данных до истечения срока действия.
+ *
+ * Тест устанавливает токен с коротким TTL и проверяет, что токен существует до истечения срока действия
+ * и удаляется после него.
+ */
 TEST_F(RedisSetTokenTest, DataPersistsUntilExpiration) {
     const std::string token = "test_token_persist";
     const std::string id = "user_789";

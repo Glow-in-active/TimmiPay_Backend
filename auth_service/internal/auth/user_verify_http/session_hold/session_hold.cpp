@@ -3,8 +3,25 @@
 #include <stdexcept>
 #include <nlohmann/json.hpp>
 
+/**
+ * @brief Конструктор класса SessionHold.
+ *
+ * Инициализирует SessionHold с необходимым соединением Redis.
+ *
+ * @param redis Ссылка на объект sw::redis::Redis для взаимодействия с Redis.
+ */
 SessionHold::SessionHold(sw::redis::Redis& redis) : redis_(redis) {}
 
+/**
+ * @brief Обрабатывает запрос на удержание (обновление) токена сессии.
+ *
+ * Извлекает токен из данных запроса, вызывает `hold_token` для обновления времени жизни токена в Redis.
+ * Возвращает успешный ответ, если токен существует, или ошибку, если токен не найден, истек
+ * или формат JSON неверен.
+ *
+ * @param request_data Входящие данные запроса в формате JSON, содержащие поле "token".
+ * @return JSON-объект с результатом операции (status: "success" или error: "...").
+ */
 nlohmann::json SessionHold::HandleRequest(const nlohmann::json& request_data) {
     try {
         const std::string token = request_data.at("token").get<std::string>();

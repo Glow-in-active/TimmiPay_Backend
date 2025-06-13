@@ -2,6 +2,11 @@
 #include <gtest/gtest.h>
 #include <regex>
 
+/**
+ * @brief Проверяет, что сгенерированный UUID имеет правильный формат.
+ *
+ * Тест генерирует UUID и проверяет его соответствие регулярному выражению для формата UUID v4.
+ */
 TEST(UUIDGeneratorTest, GeneratesValidFormat) {
     UUIDGenerator generator;
     const std::string uuid = generator.generateUUID();
@@ -18,6 +23,11 @@ TEST(UUIDGeneratorTest, GeneratesValidFormat) {
         << "Invalid UUID format: " << uuid;
 }
 
+/**
+ * @brief Проверяет, что сгенерированные UUID уникальны.
+ *
+ * Тест генерирует два UUID и убеждается, что они не идентичны.
+ */
 TEST(UUIDGeneratorTest, GeneratesUniqueValues) {
     UUIDGenerator generator;
     const std::string uuid1 = generator.generateUUID();
@@ -27,6 +37,11 @@ TEST(UUIDGeneratorTest, GeneratesUniqueValues) {
         << "Generated identical UUIDs: " << uuid1 << " and " << uuid2;
 }
 
+/**
+ * @brief Проверяет, что генерация UUID не выбрасывает исключений.
+ *
+ * Тест вызывает метод генерации UUID и проверяет, что он не приводит к исключениям.
+ */
 TEST(UUIDGeneratorTest, NoExceptionsThrown) {
     UUIDGenerator generator;
     EXPECT_NO_THROW({
