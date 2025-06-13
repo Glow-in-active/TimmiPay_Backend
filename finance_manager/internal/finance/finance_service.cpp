@@ -32,52 +32,68 @@ std::string FinanceService::transfer_money(
 ) {
     pqxx::transaction tx(db_conn);
     std::string transfer_id;
+    std::string error_message;
 
     try {
-        // Получаем ID валюты
+        // Step 1: Preliminary checks and get IDs for initial pending transaction
         std::string currency_id = get_currency_id(tx, currency_code);
         if (currency_id.empty()) {
-            throw std::runtime_error("Invalid currency code");
+            error_message = "Invalid currency code.";
+            throw std::runtime_error(error_message);
         }
 
-        // Получаем ID получателя
         std::string to_user_id = get_user_id_by_username(tx, to_username);
         if (to_user_id.empty()) {
-            throw std::runtime_error("Recipient not found");
+            error_message = "Recipient not found.";
+            throw std::runtime_error(error_message);
         }
 
-        // Получаем счета
-        Account from_account = get_account(tx, from_user_id, currency_id);
-        Account to_account = get_account(tx, to_user_id, currency_id);
+        std::optional<std::string> from_account_id_opt = get_account_id(tx, from_user_id, currency_id);
+        if (!from_account_id_opt) {
+            error_message = "Sender account not found for this currency.";
+            throw std::runtime_error(error_message);
+        }
+        std::string from_account_id = *from_account_id_opt;
 
-        // Создаем запись о переводе со статусом 'pending'
+        std::optional<std::string> to_account_id_opt = get_account_id(tx, to_user_id, currency_id);
+        if (!to_account_id_opt) {
+            error_message = "Recipient account not found for this currency.";
+            throw std::runtime_error(error_message);
+        }
+        std::string to_account_id = *to_account_id_opt;
+
+        // Step 2: Insert transaction with 'pending' status immediately
         transfer_id = tx.exec_params(
             "INSERT INTO transfers (from_account, to_account, amount, status) "
             "VALUES ($1, $2, $3, 'pending') RETURNING id",
-            from_account.id,
-            to_account.id,
+            from_account_id,
+            to_account_id,
             amount
         )[0]["id"].as<std::string>();
 
-        // Проверяем баланс
+        // Step 3: Perform detailed checks and update transaction status
+        // Retrieve full Account objects to check balances (these can throw if accounts are not found, but we already have their IDs)
+        Account from_account = get_account(tx, from_user_id, currency_id).value(); 
+        Account to_account = get_account(tx, to_user_id, currency_id).value();
+
         if (from_account.balance < amount) {
-            throw std::runtime_error("Insufficient funds");
+            error_message = "Insufficient funds.";
+            throw std::runtime_error(error_message);
         }
 
-        // Обновляем балансы
         update_account_balance(tx, from_account.id, -amount);
         update_account_balance(tx, to_account.id, amount);
 
-        // Обновляем статус перевода на 'completed' после успешного выполнения
         tx.exec_params(
             "UPDATE transfers SET status = 'completed' WHERE id = $1",
             transfer_id
         );
 
-        tx.commit(); // Commit if successful
+        tx.commit();
 
     } catch (const std::exception& e) {
-        if (!transfer_id.empty()) { // Only update if a transfer record was created
+        if (!transfer_id.empty()) {
+            // Update the status to 'failed' only if a transfer record was created
             tx.exec_params(
                 "UPDATE transfers SET status = 'failed', error_message = $1 WHERE id = $2",
                 e.what(),
@@ -85,9 +101,9 @@ std::string FinanceService::transfer_money(
             );
             tx.commit(); // Commit the failed status
         } else {
-            tx.abort(); // Abort the transaction for early failures (no transfer_id)
+            tx.abort(); // Abort the transaction for early failures (no transfer_id, e.g. invalid currency)
         }
-        throw; // Re-throw the exception for Crow to handle (e.g., return 500)
+        throw; // Re-throw the exception for Crow to handle
     }
 
     return transfer_id;
@@ -142,7 +158,7 @@ std::string FinanceService::get_user_id_by_username(pqxx::work& txn, const std::
     return result[0]["id"].as<std::string>();
 }
 
-Account FinanceService::get_account(pqxx::work& txn, const std::string& user_id, const std::string& currency_id) {
+std::optional<Account> FinanceService::get_account(pqxx::work& txn, const std::string& user_id, const std::string& currency_id) {
     auto result = txn.exec_params(
         "SELECT * FROM accounts WHERE user_id = $1 AND currency_id = $2",
         user_id,
@@ -150,10 +166,24 @@ Account FinanceService::get_account(pqxx::work& txn, const std::string& user_id,
     );
 
     if (result.empty()) {
-        throw std::runtime_error("Account not found");
+        return std::nullopt; // Return nullopt if account not found
     }
 
     return Account::from_row(result[0]);
+}
+
+std::optional<std::string> FinanceService::get_account_id(pqxx::work& txn, const std::string& user_id, const std::string& currency_id) {
+    auto result = txn.exec_params(
+        "SELECT id FROM accounts WHERE user_id = $1 AND currency_id = $2",
+        user_id,
+        currency_id
+    );
+
+    if (result.empty()) {
+        return std::nullopt; // Return nullopt if account ID not found
+    }
+
+    return result[0]["id"].as<std::string>();
 }
 
 void FinanceService::update_account_balance(pqxx::work& txn, const std::string& account_id, double amount) {

@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <pqxx/pqxx>
+#include <optional>
 #include "../models/account.h"
 #include "../models/transfer.h"
 #include "../models/currency.h"
@@ -32,6 +33,7 @@ private:
     // Вспомогательные методы
     std::string get_currency_id(pqxx::work& txn, const std::string& currency_code);
     std::string get_user_id_by_username(pqxx::work& txn, const std::string& username);
-    Account get_account(pqxx::work& txn, const std::string& user_id, const std::string& currency_id);
+    std::optional<Account> get_account(pqxx::work& txn, const std::string& user_id, const std::string& currency_id);
+    std::optional<std::string> get_account_id(pqxx::work& txn, const std::string& user_id, const std::string& currency_id);
     void update_account_balance(pqxx::work& txn, const std::string& account_id, double amount);
 }; 
