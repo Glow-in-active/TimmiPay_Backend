@@ -59,7 +59,6 @@ FinanceServer::FinanceServer(pqxx::connection& postgres, sw::redis::Redis& redis
         throw std::runtime_error("Failed to initialize: " + std::string(e.what()));
     }
 
-    // Get balance endpoint
     CROW_ROUTE(app, "/api/v1/balance")
     .methods("POST"_method)
     ([this](const crow::request& req) {
@@ -88,7 +87,6 @@ FinanceServer::FinanceServer(pqxx::connection& postgres, sw::redis::Redis& redis
         }
     });
 
-    // Transfer money endpoint
     CROW_ROUTE(app, "/api/v1/transfer")
     .methods("POST"_method)
     ([this](const crow::request& req) {
@@ -121,12 +119,10 @@ FinanceServer::FinanceServer(pqxx::connection& postgres, sw::redis::Redis& redis
         }
     });
 
-    // Get transaction history endpoint
     CROW_ROUTE(app, "/api/v1/history")
     .methods("POST"_method)
     ([this](const crow::request& req) {
         try {
-            // Clean the request body by removing non-printable ASCII characters and null characters
             std::string cleaned_body = req.body;
             cleaned_body.erase(std::remove_if(cleaned_body.begin(), cleaned_body.end(),
                                             [](unsigned char c) { return c < 0x20 || c == 0x7F; }),
@@ -134,8 +130,8 @@ FinanceServer::FinanceServer(pqxx::connection& postgres, sw::redis::Redis& redis
             
             auto body = nlohmann::json::parse(cleaned_body);
             std::string session_token = body["session_token"];
-            int page = body.count("page") ? body["page"].get<int>() : 1; // Default to page 1
-            int limit = body.count("limit") ? body["limit"].get<int>() : 10; // Default to 10 items per page
+            int page = body.count("page") ? body["page"].get<int>() : 1;
+            int limit = body.count("limit") ? body["limit"].get<int>() : 10;
 
             std::string user_id;
             if (!verify_session(session_token, user_id)) {

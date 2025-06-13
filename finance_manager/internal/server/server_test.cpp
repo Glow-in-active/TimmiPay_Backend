@@ -37,23 +37,19 @@ protected:
      * FinanceServer в отдельном потоке, а затем ожидает его готовности.
      */
     static void SetUpTestSuite() {
-        // Initialize static connections
         Config postgres_config = load_config("database_config/test_postgres_config.json");
         ConfigRedis redis_config = load_redis_config("database_config/test_redis_config.json");
 
         postgres_conn = std::make_unique<pqxx::connection>(connect_to_database(postgres_config));
         redis_conn = std::make_unique<sw::redis::Redis>(connect_to_redis(redis_config));
 
-        // Initialize static server
         server = std::make_unique<FinanceServer>(*postgres_conn, *redis_conn);
         
-        // Start server in a separate thread
         server_thread = std::thread([]() {
             server->run(8080);
         });
         
-        // Wait for server to start
-        for (int i = 0; i < 100; ++i) { // Increased attempts to ensure server is alive
+        for (int i = 0; i < 100; ++i) { 
             if (is_server_alive()) return;
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
@@ -69,23 +65,19 @@ protected:
     static void TearDownTestSuite() {
         // Stop server
         if (server) {
-            server->stop_server(); // Use the public method to stop the server
+            server->stop_server();
         }
         if (server_thread.joinable()) {
             server_thread.join();
         }
-        // Close connections
-        // postgres_conn and redis_conn are std::unique_ptr and will be destroyed automatically
-        // No explicit disconnect() needed for pqxx::connection
+
     }
 
     void SetUp() override {
-        // Each test sets up its own data
         setupTestData();
     }
 
     void TearDown() override {
-        // Each test cleans up its own data
         cleanupTestData();
     }
 
@@ -98,28 +90,24 @@ protected:
     void setupTestData() {
         pqxx::work txn(*postgres_conn);
         
-        // Create test users
         test_user1_id = uuid_gen.generateUUID();
         test_user2_id = uuid_gen.generateUUID();
         txn.exec_params("INSERT INTO users (id, username, email, password_hash) VALUES ($1, 'test_user1', 'test1@example.com', 'password_hash_1')", test_user1_id);
         txn.exec_params("INSERT INTO users (id, username, email, password_hash) VALUES ($1, 'test_user2', 'test2@example.com', 'password_hash_2')", test_user2_id);
         
-        // Create test currencies
         test_usd_id = uuid_gen.generateUUID();
         test_eur_id = uuid_gen.generateUUID();
         txn.exec_params("INSERT INTO currencies (id, code, name) VALUES ($1, 'USD', 'United States Dollar')", test_usd_id);
         txn.exec_params("INSERT INTO currencies (id, code, name) VALUES ($1, 'EUR', 'Euro')", test_eur_id);
         
-        // Create test accounts
         txn.exec_params("INSERT INTO accounts (id, user_id, currency_id, balance) VALUES ($1, $2, $3, 1000.0)", uuid_gen.generateUUID(), test_user1_id, test_usd_id);
         txn.exec_params("INSERT INTO accounts (id, user_id, currency_id, balance) VALUES ($1, $2, $3, 500.0)", uuid_gen.generateUUID(), test_user2_id, test_usd_id);
         
         txn.commit();
 
-        // Set up test session in Redis
-        test_session_token = uuid_gen.generateUUID(); // Generate UUID for session token
+        test_session_token = uuid_gen.generateUUID();
         redis_conn->hset(test_session_token, "id", test_user1_id);
-        redis_conn->expire(test_session_token, 60); // Set a short expiration for test tokens
+        redis_conn->expire(test_session_token, 60);
     }
 
     /**

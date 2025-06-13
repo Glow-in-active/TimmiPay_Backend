@@ -108,7 +108,6 @@ TEST_F(FinanceServiceTest, TransferMoneySuccess) {
     std::string transfer_id = finance_service->transfer_money(test_user1_id, "test_user2", 100.0, "USD");
     EXPECT_FALSE(transfer_id.empty());
 
-    // Verify balances after transfer
     auto sender_balances = finance_service->get_user_balance(test_user1_id);
     auto receiver_balances = finance_service->get_user_balance(test_user2_id);
     
@@ -147,16 +146,13 @@ TEST_F(FinanceServiceTest, TransferMoneyInvalidCurrency) {
  * проверяя размер истории, сумму транзакции и ее статус.
  */
 TEST_F(FinanceServiceTest, GetTransactionHistory) {
-    // Make a transfer first
     finance_service->transfer_money(test_user1_id, "test_user2", 100.0, "USD");
     
-    // Get history for sender
     auto sender_history = finance_service->get_transaction_history(test_user1_id, 1, 10);
     ASSERT_EQ(sender_history.size(), 1);
     EXPECT_DOUBLE_EQ(sender_history[0].amount, 100.0);
     EXPECT_EQ(sender_history[0].status, "completed");
     
-    // Get history for receiver
     auto receiver_history = finance_service->get_transaction_history(test_user2_id, 1, 10);
     ASSERT_EQ(receiver_history.size(), 1);
     EXPECT_DOUBLE_EQ(receiver_history[0].amount, 100.0);

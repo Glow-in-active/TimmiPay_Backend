@@ -13,7 +13,6 @@
 #include "../../../storage/postgres_connect/connect.h"
 #include "../finance/finance_service.h"
 
-// Forward declarations
 namespace sw { namespace redis { class Redis; } }
 
 /**

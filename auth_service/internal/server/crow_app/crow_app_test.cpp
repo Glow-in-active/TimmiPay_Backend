@@ -24,6 +24,12 @@ static size_t CurlWriteCallback(void* contents, size_t size, size_t nmemb, std::
     return size * nmemb;
 }
 
+/**
+ * @brief Реализация SessionStart для интеграционных тестов.
+ *
+ * Инициализирует все необходимые зависимости для работы SessionStart с реальными
+ * подключениями к тестовым базам данных.
+ */
 class RealSessionStart : public SessionStart {
 public:
     /**
@@ -48,6 +54,12 @@ private:
     UserVerifier user_verifier_;
 };
 
+/**
+ * @brief Реализация SessionHold для интеграционных тестов.
+ *
+ * Инициализирует все необходимые зависимости для работы SessionHold с реальными
+ * подключениями к тестовой базе данных Redis.
+ */
 class RealSessionHold : public SessionHold {
 public:
     /**
@@ -66,6 +78,12 @@ private:
     sw::redis::Redis redis_;
 };
 
+/**
+ * @brief Фикстура для интеграционных тестов сервера CrowApp.
+ *
+ * Настраивает и запускает тестовый HTTP-сервер Crow перед выполнением тестового набора
+ * и останавливает его после завершения.
+ */
 class CrowAppServerFixture : public ::testing::Test {
 protected:
     /**
@@ -124,12 +142,12 @@ protected:
     static inline std::thread server_thread;
 };
 
+/**
+ * @brief Проверяет доступность маршрута /session_start.
+ *
+ * Тест отправляет POST-запрос на /session_start и проверяет, что ответ получен успешно и не пуст.
+ */
 TEST_F(CrowAppServerFixture, SessionStartRouteIsAvailable) {
-    /**
-     * @brief Проверяет доступность маршрута /session_start.
-     *
-     * Тест отправляет POST-запрос на /session_start и проверяет, что ответ получен успешно и не пуст.
-     */
     CURL* curl = curl_easy_init();
     ASSERT_TRUE(curl != nullptr);
 
@@ -149,12 +167,12 @@ TEST_F(CrowAppServerFixture, SessionStartRouteIsAvailable) {
     EXPECT_FALSE(response.empty());
 }
 
+/**
+ * @brief Проверяет доступность маршрута /session_refresh.
+ *
+ * Тест отправляет POST-запрос на /session_refresh и проверяет, что ответ получен успешно и не пуст.
+ */
 TEST_F(CrowAppServerFixture, SessionRefreshRouteIsAvailable) {
-    /**
-     * @brief Проверяет доступность маршрута /session_refresh.
-     *
-     * Тест отправляет POST-запрос на /session_refresh и проверяет, что ответ получен успешно и не пуст.
-     */
     CURL* curl = curl_easy_init();
     ASSERT_TRUE(curl != nullptr);
 

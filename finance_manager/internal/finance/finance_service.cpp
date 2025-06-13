@@ -65,7 +65,6 @@ std::string FinanceService::transfer_money(
     std::string error_message;
 
     try {
-        // Step 1: Preliminary checks and get IDs for initial pending transaction
         std::string currency_id = get_currency_id(tx, currency_code);
         if (currency_id.empty()) {
             error_message = "Invalid currency code.";
@@ -92,7 +91,6 @@ std::string FinanceService::transfer_money(
         }
         std::string to_account_id = *to_account_id_opt;
 
-        // Step 2: Insert transaction with 'pending' status immediately
         transfer_id = tx.exec_params(
             "INSERT INTO transfers (from_account, to_account, amount, status) "
             "VALUES ($1, $2, $3, 'pending') RETURNING id",
@@ -101,8 +99,6 @@ std::string FinanceService::transfer_money(
             amount
         )[0]["id"].as<std::string>();
 
-        // Step 3: Perform detailed checks and update transaction status
-        // Retrieve full Account objects to check balances (these can throw if accounts are not found, but we already have their IDs)
         Account from_account = get_account(tx, from_user_id, currency_id).value(); 
         Account to_account = get_account(tx, to_user_id, currency_id).value();
 
@@ -123,17 +119,16 @@ std::string FinanceService::transfer_money(
 
     } catch (const std::exception& e) {
         if (!transfer_id.empty()) {
-            // Update the status to 'failed' only if a transfer record was created
             tx.exec_params(
                 "UPDATE transfers SET status = 'failed', error_message = $1 WHERE id = $2",
                 e.what(),
                 transfer_id
             );
-            tx.commit(); // Commit the failed status
+            tx.commit();
         } else {
-            tx.abort(); // Abort the transaction for early failures (no transfer_id, e.g. invalid currency)
+            tx.abort();
         }
-        throw; // Re-throw the exception for Crow to handle
+        throw;
     }
 
     return transfer_id;
@@ -235,7 +230,7 @@ std::optional<Account> FinanceService::get_account(pqxx::work& txn, const std::s
     );
 
     if (result.empty()) {
-        return std::nullopt; // Return nullopt if account not found
+        return std::nullopt;
     }
 
     return Account::from_row(result[0]);
@@ -259,7 +254,7 @@ std::optional<std::string> FinanceService::get_account_id(pqxx::work& txn, const
     );
 
     if (result.empty()) {
-        return std::nullopt; // Return nullopt if account ID not found
+        return std::nullopt;
     }
 
     return result[0]["id"].as<std::string>();

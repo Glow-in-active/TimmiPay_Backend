@@ -36,22 +36,18 @@ protected:
             conn = std::make_unique<pqxx::connection>(connect_to_database(postgres_config));
             financeService = new FinanceService(*conn);
 
-            // Clean up any lingering data from previous runs
             ClearTestDatabase();
 
-            // Insert test currencies
             InsertCurrency("USD", "US Dollar");
             InsertCurrency("EUR", "Euro");
             currencyUSDId = GetCurrencyId("USD");
             currencyEURId = GetCurrencyId("EUR");
 
-            // Insert test users
             testUser1Id = uuidGenerator.generateUUID();
             InsertUser(testUser1Id, testUser1Username, "user1@example.com", "password_hash_1");
             testUser2Id = uuidGenerator.generateUUID();
             InsertUser(testUser2Id, testUser2Username, "user2@example.com", "password_hash_2");
 
-            // Insert test accounts
             testUser1AccountUSDId = uuidGenerator.generateUUID();
             InsertAccount(testUser1AccountUSDId, testUser1Id, currencyUSDId, 1000.0);
             testUser2AccountUSDId = uuidGenerator.generateUUID();

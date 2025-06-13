@@ -2,7 +2,7 @@
 #define USER_STORAGE_H
 
 #include <pqxx/pqxx>
-#include "../../models/user.h"
+#include "../../auth/user_verify/models/user.h"
 
 /**
  * @brief Класс для взаимодействия с хранилищем пользователей в базе данных.
