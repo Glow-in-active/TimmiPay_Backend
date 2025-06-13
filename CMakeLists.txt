@@ -37,6 +37,7 @@ add_library(app_lib
     auth_service/internal/server/start_server/start_server.cpp
     finance_manager/internal/server/server.cpp
     finance_manager/internal/finance/finance_service.cpp
+    finance_manager/internal/app/finance_app.cpp
 )
 
 target_include_directories(app_lib PUBLIC
@@ -62,6 +63,7 @@ target_include_directories(app_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/server/start_server
     ${CMAKE_CURRENT_SOURCE_DIR}/finance_manager/internal/server
     ${CMAKE_CURRENT_SOURCE_DIR}/finance_manager/internal/service
+    ${CMAKE_CURRENT_SOURCE_DIR}/finance_manager/internal/app
 )
 
 target_link_libraries(app_lib PUBLIC
