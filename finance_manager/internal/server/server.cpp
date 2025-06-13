@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <nlohmann/json.hpp>
+#include <algorithm>
 #include "../../../storage/session_verify/session_verify.h"
 #include "../../../storage/config/config.h"
 #include "../../../storage/postgres_connect/connect.h"
@@ -97,7 +98,13 @@ public:
         .methods("POST"_method)
         ([this](const crow::request& req) {
             try {
-                auto body = nlohmann::json::parse(req.body);
+                // Clean the request body by removing non-printable ASCII characters and null characters
+                std::string cleaned_body = req.body;
+                cleaned_body.erase(std::remove_if(cleaned_body.begin(), cleaned_body.end(),
+                                                [](unsigned char c) { return c < 0x20 || c == 0x7F; }),
+                                cleaned_body.end());
+                
+                auto body = nlohmann::json::parse(cleaned_body);
                 std::string session_token = body["session_token"];
 
                 std::string user_id;
