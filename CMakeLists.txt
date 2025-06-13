@@ -101,10 +101,9 @@ add_executable(all_tests
     auth_service/internal/server/db_init/db_init_test.cpp
     auth_service/internal/server/dependencies/dependencies_test.cpp
     auth_service/internal/server/start_server/start_server_test.cpp
-    finance_manager/internal/finance/finance_service_test.cpp
-    #finance_manager/internal/server/finance_server_test.cpp
-    #finance_manager/internal/models/transaction_test.cpp
-    #finance_manager/internal/models/balance_test.cpp
+    finance_manager/internal/finance/finance_app_test.cpp
+    finance_manager/internal/server/db_init/db_init_test.cpp
+    finance_manager/internal/server/server_test.cpp
 )
 
 target_include_directories(all_tests PRIVATE
@@ -127,9 +126,8 @@ target_include_directories(all_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/server/dependencies
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/server/start_server
     ${CMAKE_CURRENT_SOURCE_DIR}/finance_manager/internal/finance
-    #${CMAKE_CURRENT_SOURCE_DIR}/finance_manager/internal/server
-    #${CMAKE_CURRENT_SOURCE_DIR}/finance_manager/internal/service
-    #${CMAKE_CURRENT_SOURCE_DIR}/finance_manager/internal/models
+    ${CMAKE_CURRENT_SOURCE_DIR}/finance_manager/internal/server
+    ${CMAKE_CURRENT_SOURCE_DIR}/finance_manager/internal/server/db_init
 )
 
 target_link_libraries(all_tests PRIVATE

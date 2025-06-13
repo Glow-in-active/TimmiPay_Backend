@@ -5,7 +5,7 @@
 #include "../../../storage/postgres_connect/connect.h"
 #include "../../../storage/redis_connect/connect_redis.h"
 
-DBConnections initialize_test_databases() {
+DBConnections initialize_auth_test_databases() {
     try {
         Config postgres_config = load_config("database_config/test_postgres_config.json");
         ConfigRedis redis_config = load_redis_config("database_config/test_redis_config.json");
@@ -26,12 +26,12 @@ DBConnections initialize_test_databases() {
 }
 
 TEST(DBInitTest, TestPostgresConnectionIsOpen) {
-    DBConnections db = initialize_test_databases();
+    DBConnections db = initialize_auth_test_databases();
     EXPECT_TRUE(db.postgres.is_open());
 }
 
 TEST(DBInitTest, TestRedisConnectionIsAlive) {
-    DBConnections db = initialize_test_databases();
+    DBConnections db = initialize_auth_test_databases();
     EXPECT_NO_THROW({
         std::string pong = db.redis.ping();
         EXPECT_EQ(pong, "PONG");
