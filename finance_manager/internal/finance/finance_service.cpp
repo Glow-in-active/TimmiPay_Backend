@@ -30,68 +30,66 @@ std::string FinanceService::transfer_money(
     double amount,
     const std::string& currency_code
 ) {
-    pqxx::work txn(db_conn);
-
-    // Получаем ID валюты
-    std::string currency_id = get_currency_id(txn, currency_code);
-    if (currency_id.empty()) {
-        throw std::runtime_error("Invalid currency code");
-    }
-
-    // Получаем ID получателя
-    std::string to_user_id = get_user_id_by_username(txn, to_username);
-    if (to_user_id.empty()) {
-        throw std::runtime_error("Recipient not found");
-    }
-
-    // Получаем счета
-    Account from_account = get_account(txn, from_user_id, currency_id);
-    Account to_account = get_account(txn, to_user_id, currency_id);
-
-    // Создаем запись о переводе со статусом 'pending'
-    auto transfer_id = txn.exec_params(
-        "INSERT INTO transfers (from_account, to_account, amount, status) "
-        "VALUES ($1, $2, $3, 'pending') RETURNING id",
-        from_account.id,
-        to_account.id,
-        amount
-    )[0]["id"].as<std::string>();
+    pqxx::transaction tx(db_conn);
+    std::string transfer_id;
 
     try {
+        // Получаем ID валюты
+        std::string currency_id = get_currency_id(tx, currency_code);
+        if (currency_id.empty()) {
+            throw std::runtime_error("Invalid currency code");
+        }
+
+        // Получаем ID получателя
+        std::string to_user_id = get_user_id_by_username(tx, to_username);
+        if (to_user_id.empty()) {
+            throw std::runtime_error("Recipient not found");
+        }
+
+        // Получаем счета
+        Account from_account = get_account(tx, from_user_id, currency_id);
+        Account to_account = get_account(tx, to_user_id, currency_id);
+
+        // Создаем запись о переводе со статусом 'pending'
+        transfer_id = tx.exec_params(
+            "INSERT INTO transfers (from_account, to_account, amount, status) "
+            "VALUES ($1, $2, $3, 'pending') RETURNING id",
+            from_account.id,
+            to_account.id,
+            amount
+        )[0]["id"].as<std::string>();
+
         // Проверяем баланс
         if (from_account.balance < amount) {
             throw std::runtime_error("Insufficient funds");
         }
 
         // Обновляем балансы
-        update_account_balance(txn, from_account.id, -amount);
-        update_account_balance(txn, to_account.id, amount);
+        update_account_balance(tx, from_account.id, -amount);
+        update_account_balance(tx, to_account.id, amount);
 
         // Обновляем статус перевода на 'completed' после успешного выполнения
-        txn.exec_params(
+        tx.exec_params(
             "UPDATE transfers SET status = 'completed' WHERE id = $1",
             transfer_id
         );
 
-    } catch (const std::runtime_error& e) {
-        // Обновляем статус перевода на 'failed' и записываем ошибку
-        txn.exec_params(
-            "UPDATE transfers SET status = 'failed', error_message = $1 WHERE id = $2",
-            e.what(),
-            transfer_id
-        );
-        throw; // Перебрасываем исключение, чтобы Crow обрабатывал ошибку
+        tx.commit(); // Commit if successful
+
     } catch (const std::exception& e) {
-        // Ловим другие возможные исключения и также устанавливаем статус 'failed'
-        txn.exec_params(
-            "UPDATE transfers SET status = 'failed', error_message = $1 WHERE id = $2",
-            e.what(),
-            transfer_id
-        );
-        throw; // Перебрасываем исключение
+        if (!transfer_id.empty()) { // Only update if a transfer record was created
+            tx.exec_params(
+                "UPDATE transfers SET status = 'failed', error_message = $1 WHERE id = $2",
+                e.what(),
+                transfer_id
+            );
+            tx.commit(); // Commit the failed status
+        } else {
+            tx.abort(); // Abort the transaction for early failures (no transfer_id)
+        }
+        throw; // Re-throw the exception for Crow to handle (e.g., return 500)
     }
 
-    txn.commit();
     return transfer_id;
 }
 
