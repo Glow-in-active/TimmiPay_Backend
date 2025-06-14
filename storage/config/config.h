@@ -3,15 +3,16 @@
 #include <string>
 
 /**
- * @brief Структура для хранения параметров конфигурации подключения к базе данных PostgreSQL.
+ * @brief Структура для хранения параметров конфигурации подключения к базе
+ * данных PostgreSQL.
  */
 struct Config {
-    std::string host;
-    int port;
-    std::string user;
-    std::string password;
-    std::string dbname;
-    std::string sslmode;
+  std::string host;
+  int port;
+  std::string user;
+  std::string password;
+  std::string dbname;
+  std::string sslmode;
 };
 
 /**
@@ -21,8 +22,9 @@ struct Config {
  *
  * @param filename Путь к JSON-файлу с конфигурацией.
  * @return Структура Config с параметрами конфигурации.
- * @throws std::runtime_error Если файл не удалось открыть или произошла ошибка при парсинге.
- * 
+ * @throws std::runtime_error Если файл не удалось открыть или произошла ошибка
+ * при парсинге.
+ *
  * Пример JSON-файла:
  * @code{.json}
  * {

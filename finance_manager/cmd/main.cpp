@@ -7,6 +7,4 @@
  *
  * @return Код завершения работы приложения.
  */
-int main() {
-    return run_finance_app();
-} 
+int main() { return run_finance_app(); }

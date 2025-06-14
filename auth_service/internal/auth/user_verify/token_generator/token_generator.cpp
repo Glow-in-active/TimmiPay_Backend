@@ -1,6 +1,7 @@
 #include "token_generator.h"
-#include "../../../../storage/user_verify/redis_set/redis_set_token.h"
+
 #include "../../../../storage/user_verify/auth/user_verify.h"
+#include "../../../../storage/user_verify/redis_set/redis_set_token.h"
 
 /**
  * @brief Генерирует новый токен для пользователя и сохраняет его в Redis.
@@ -12,11 +13,11 @@
  * @return Сгенерированный строковый токен.
  */
 std::string TokenGenerator::GenerateToken(const User& user) {
-    const std::string token = uuid_gen_.generateUUID();
+  const std::string token = uuid_gen_.generateUUID();
 
-    set_token(redis_, token, user.id);
-    
-    return token;
+  set_token(redis_, token, user.id);
+
+  return token;
 }
 
 /**
@@ -28,6 +29,4 @@ std::string TokenGenerator::GenerateToken(const User& user) {
  * @param redis Ссылка на объект sw::redis::Redis для взаимодействия с Redis.
  */
 TokenGenerator::TokenGenerator(UUIDGenerator& uuid_gen, sw::redis::Redis& redis)
-    : uuid_gen_(uuid_gen), 
-      redis_(redis) 
-{}
+    : uuid_gen_(uuid_gen), redis_(redis) {}

@@ -10,4 +10,4 @@
  */
 int run_finance_app();
 
-#endif // FINANCE_APP_H 
+#endif  // FINANCE_APP_H
