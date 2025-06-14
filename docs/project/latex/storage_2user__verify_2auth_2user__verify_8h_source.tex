@@ -1,0 +1,24 @@
+\doxysection{user\+\_\+verify.\+h}
+\hypertarget{storage_2user__verify_2auth_2user__verify_8h_source}{}\label{storage_2user__verify_2auth_2user__verify_8h_source}\index{storage/user\_verify/auth/user\_verify.h@{storage/user\_verify/auth/user\_verify.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ USER\_STORAGE\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ USER\_STORAGE\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <pqxx/pqxx>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}../../../auth\_service/internal/models/user.h"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classUserStorage_ace18a47ca74d0ff81d61ad925a5aa2b7}{UserStorage}}\ \{}
+\DoxyCodeLine{00015\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ \ \ \mbox{\hyperlink{classUserStorage_ace18a47ca74d0ff81d61ad925a5aa2b7}{UserStorage}}(pqxx::connection\&\ conn);}
+\DoxyCodeLine{00030\ \ \ \mbox{\hyperlink{structUser}{User}}\ \mbox{\hyperlink{classUserStorage_ae6bc5919accbea396fddf52f60dff145}{GetUserByEmail}}(\textcolor{keyword}{const}\ std::string\&\ email);}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classUserStorage_a0708ff6c786883b4048f297b0a49cd17}{VerifyPassword}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structUser}{User}}\&\ user,\ \textcolor{keyword}{const}\ std::string\&\ password\_hash);}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00041\ \ \ pqxx::connection\&\ conn\_;}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

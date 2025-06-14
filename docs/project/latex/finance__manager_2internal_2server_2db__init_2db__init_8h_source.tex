@@ -1,0 +1,21 @@
+\doxysection{db\+\_\+init.\+h}
+\hypertarget{finance__manager_2internal_2server_2db__init_2db__init_8h_source}{}\label{finance__manager_2internal_2server_2db__init_2db__init_8h_source}\index{finance\_manager/internal/server/db\_init/db\_init.h@{finance\_manager/internal/server/db\_init/db\_init.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <sw/redis++/redis++.h>}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <pqxx/pqxx>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}../../../storage/config/config.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}../../../storage/redis\_config/config\_redis.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structDBConnections}{DBConnections}}\ \{}
+\DoxyCodeLine{00014\ \ \ pqxx::connection\ postgres;}
+\DoxyCodeLine{00015\ \ \ sw::redis::Redis\ redis;}
+\DoxyCodeLine{00016\ \};}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00024\ \mbox{\hyperlink{structDBConnections}{DBConnections}}\ initialize\_databases();}
+
+\end{DoxyCode}

@@ -1,0 +1,22 @@
+\doxysection{session\+\_\+hold.\+h}
+\hypertarget{session__hold_8h_source}{}\label{session__hold_8h_source}\index{auth\_service/internal/auth/user\_verify\_http/session\_hold/session\_hold.h@{auth\_service/internal/auth/user\_verify\_http/session\_hold/session\_hold.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ SESSION\_HOLD\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ SESSION\_HOLD\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <sw/redis++/redis++.h>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <nlohmann/json.hpp>}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classSessionHold_ad302dd2c2b1f5047675cbe1fa3c730cd}{SessionHold}}\ \{}
+\DoxyCodeLine{00015\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classSessionHold_ad302dd2c2b1f5047675cbe1fa3c730cd}{SessionHold}}(sw::redis::Redis\&\ redis);}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00030\ \ \ nlohmann::json\ \mbox{\hyperlink{classSessionHold_ab11e4a8517a7ca1c6cc30fa0aef552b1}{HandleRequest}}(\textcolor{keyword}{const}\ nlohmann::json\&\ request\_data);}
+\DoxyCodeLine{00031\ \ \ sw::redis::Redis\&\ redis\_;}
+\DoxyCodeLine{00032\ \};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

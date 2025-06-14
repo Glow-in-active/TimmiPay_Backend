@@ -1,0 +1,26 @@
+\doxysection{account.\+h}
+\hypertarget{account_8h_source}{}\label{account_8h_source}\index{finance\_manager/internal/models/account.h@{finance\_manager/internal/models/account.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <pqxx/pqxx>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structAccount}{Account}}\ \{}
+\DoxyCodeLine{00010\ \ \ std::string\ id;}
+\DoxyCodeLine{00011\ \ \ std::string\ user\_id;}
+\DoxyCodeLine{00012\ \ \ std::string\ currency\_id;}
+\DoxyCodeLine{00013\ \ \ \textcolor{keywordtype}{double}\ balance;}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structAccount}{Account}}\ \mbox{\hyperlink{structAccount_a95083ce54b016731133df90ee24b7a8e}{from\_row}}(\textcolor{keyword}{const}\ pqxx::row\&\ row)\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \mbox{\hyperlink{structAccount}{Account}}\ account;}
+\DoxyCodeLine{00023\ \ \ \ \ account.id\ =\ row[\textcolor{stringliteral}{"{}id"{}}].as<std::string>();}
+\DoxyCodeLine{00024\ \ \ \ \ account.user\_id\ =\ row[\textcolor{stringliteral}{"{}user\_id"{}}].as<std::string>();}
+\DoxyCodeLine{00025\ \ \ \ \ account.currency\_id\ =\ row[\textcolor{stringliteral}{"{}currency\_id"{}}].as<std::string>();}
+\DoxyCodeLine{00026\ \ \ \ \ account.balance\ =\ row[\textcolor{stringliteral}{"{}balance"{}}].as<\textcolor{keywordtype}{double}>();}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{return}\ account;}
+\DoxyCodeLine{00028\ \ \ \}}
+\DoxyCodeLine{00029\ \};}
+
+\end{DoxyCode}

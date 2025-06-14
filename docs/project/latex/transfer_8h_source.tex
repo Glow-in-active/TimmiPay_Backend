@@ -1,0 +1,38 @@
+\doxysection{transfer.\+h}
+\hypertarget{transfer_8h_source}{}\label{transfer_8h_source}\index{finance\_manager/internal/models/transfer.h@{finance\_manager/internal/models/transfer.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <pqxx/pqxx>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTransfer}{Transfer}}\ \{}
+\DoxyCodeLine{00010\ \ \ std::string\ id;}
+\DoxyCodeLine{00011\ \ \ std::string\ from\_account;}
+\DoxyCodeLine{00012\ \ \ std::string\ to\_account;}
+\DoxyCodeLine{00013\ \ \ \textcolor{keywordtype}{double}\ amount;}
+\DoxyCodeLine{00014\ \ \ std::string\ status;}
+\DoxyCodeLine{00015\ \ \ std::string\ error\_message;}
+\DoxyCodeLine{00016\ \ \ std::string\ created\_at;}
+\DoxyCodeLine{00017\ \ \ std::string\ updated\_at;}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structTransfer}{Transfer}}\ \mbox{\hyperlink{structTransfer_a441ad069a176bf1b3d3c87a25306e43e}{from\_row}}(\textcolor{keyword}{const}\ pqxx::row\&\ row)\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \mbox{\hyperlink{structTransfer}{Transfer}}\ transfer;}
+\DoxyCodeLine{00027\ \ \ \ \ transfer.id\ =\ row[\textcolor{stringliteral}{"{}id"{}}].as<std::string>();}
+\DoxyCodeLine{00028\ \ \ \ \ transfer.from\_account\ =\ row[\textcolor{stringliteral}{"{}from\_account"{}}].as<std::string>();}
+\DoxyCodeLine{00029\ \ \ \ \ transfer.to\_account\ =\ row[\textcolor{stringliteral}{"{}to\_account"{}}].as<std::string>();}
+\DoxyCodeLine{00030\ \ \ \ \ transfer.amount\ =\ row[\textcolor{stringliteral}{"{}amount"{}}].as<\textcolor{keywordtype}{double}>();}
+\DoxyCodeLine{00031\ \ \ \ \ transfer.status\ =\ row[\textcolor{stringliteral}{"{}status"{}}].as<std::string>();}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{if}\ (row[\textcolor{stringliteral}{"{}error\_message"{}}].is\_null())\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ transfer.error\_message\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00034\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ transfer.error\_message\ =\ row[\textcolor{stringliteral}{"{}error\_message"{}}].as<std::string>();}
+\DoxyCodeLine{00036\ \ \ \ \ \}}
+\DoxyCodeLine{00037\ \ \ \ \ transfer.created\_at\ =\ row[\textcolor{stringliteral}{"{}created\_at"{}}].as<std::string>();}
+\DoxyCodeLine{00038\ \ \ \ \ transfer.updated\_at\ =\ row[\textcolor{stringliteral}{"{}updated\_at"{}}].as<std::string>();}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{return}\ transfer;}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ \};}
+
+\end{DoxyCode}

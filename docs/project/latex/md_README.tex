@@ -1,0 +1,144 @@
+\chapter{Timmi\+Pay Backend}
+\hypertarget{md_README}{}\label{md_README}\index{TimmiPay Backend@{TimmiPay Backend}}
+\label{md_README_autotoc_md0}%
+\Hypertarget{md_README_autotoc_md0}%
+
+
+Этот проект представляет собой бэкэнд-\/систему для приложения Timmi\+Pay, включающую сервисы аутентификации пользователей и управления финансовыми операциями.\hypertarget{md_README_autotoc_md1}{}\doxysection{\texorpdfstring{Назначение проекта}{Назначение проекта}}\label{md_README_autotoc_md1}
+Основная цель проекта Timmi\+Pay Backend — предоставить надежную и масштабируемую основу для обработки пользовательских аутентификаций и финансовых транзакций. Система разработана с учетом модульности, что позволяет легко расширять функционал и интегрировать новые возможности.\hypertarget{md_README_autotoc_md2}{}\doxysection{\texorpdfstring{Функционал}{Функционал}}\label{md_README_autotoc_md2}
+Проект состоит из двух основных сервисов\+:\hypertarget{md_README_autotoc_md3}{}\doxysubsection{\texorpdfstring{1. Сервис Аутентификации ({\ttfamily auth\+\_\+service})}{1. Сервис Аутентификации ({\ttfamily auth\+\_\+service})}}\label{md_README_autotoc_md3}
+Отвечает за управление пользовательскими сессиями, включая\+:
+
+
+\begin{DoxyItemize}
+\item {\bfseries{Начало сессии (аутентификация)}}\+: Проверка учетных данных пользователя (email и хеш пароля) и выдача токена сессии.
+\item {\bfseries{Обновление сессии}}\+: Продление срока действия существующего токена сессии.
+\end{DoxyItemize}
+
+{\bfseries{Хранение сессионных токенов\+:}} Сервис аутентификации использует {\bfseries{Redis}} для эффективного хранения и управления сессионными токенами. Токены сохраняются в Redis с заданным сроком жизни, что позволяет быстро проверять их валидность и продлевать сессии пользователей.\hypertarget{md_README_autotoc_md4}{}\doxysubsection{\texorpdfstring{2. Сервис Управления Финансами ({\ttfamily finance\+\_\+manager})}{2. Сервис Управления Финансами ({\ttfamily finance\+\_\+manager})}}\label{md_README_autotoc_md4}
+Предоставляет API для выполнения финансовых операций\+:
+
+
+\begin{DoxyItemize}
+\item {\bfseries{Получение баланса}}\+: Отображение текущего баланса пользователя по различным валютам.
+\item {\bfseries{Перевод денег}}\+: Осуществление переводов средств между пользователями.
+\item {\bfseries{История транзакций}}\+: Получение списка всех транзакций пользователя с возможностью пагинации.
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md5}{}\doxysection{\texorpdfstring{Установка и Запуск}{Установка и Запуск}}\label{md_README_autotoc_md5}
+\hypertarget{md_README_autotoc_md6}{}\doxysubsection{\texorpdfstring{Требования}{Требования}}\label{md_README_autotoc_md6}
+
+\begin{DoxyItemize}
+\item {\bfseries{CMake}} (минимум 3.\+10)
+\item {\bfseries{C++17}} совместимый компилятор (GCC, Clang и т.\+д.)
+\item {\bfseries{Git}}
+\item {\bfseries{Docker}} и {\bfseries{Docker Compose}} (для Postgre\+SQL и Redis)
+\item {\bfseries{vcpkg}} (для управления C++ зависимостями)
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md7}{}\doxysubsection{\texorpdfstring{Шаги по установке}{Шаги по установке}}\label{md_README_autotoc_md7}
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Клонирование репозитория\+:}}
+
+{\ttfamily bash git clone \href{https://github.com/your-repo/TimmiPay_Backend.git}{\texttt{ https\+://github.\+com/your-\/repo/\+Timmi\+Pay\+\_\+\+Backend.\+git}} cd Timmi\+Pay\+\_\+\+Backend }
+\item {\bfseries{Установка vcpkg (если не установлен)\+:}}
+
+Следуйте инструкциям на официальном сайте vcpkg или выполните\+:
+
+{\ttfamily bash git clone \href{https://github.com/Microsoft/vcpkg.git}{\texttt{ https\+://github.\+com/\+Microsoft/vcpkg.\+git}} ./vcpkg/bootstrap-\/vcpkg.sh \# или bootstrap-\/vcpkg.\+bat для Windows ./vcpkg/vcpkg integrate install }
+\item {\bfseries{Установка C++ зависимостей через vcpkg\+:}}
+
+Проект использует следующие библиотеки. {\ttfamily vcpkg} автоматически установит их при первой сборке CMake, но вы также можете установить их вручную\+:
+
+{\ttfamily bash ./vcpkg/vcpkg install nlohmann-\/json\+:x64-\/linux@3.\+12.\+0 ./vcpkg/vcpkg install gtest\+:x64-\/linux@1.\+16.\+0\#1 ./vcpkg/vcpkg install libpqxx\+:x64-\/linux@7.\+10.\+0 ./vcpkg/vcpkg install boost-\/uuid\+:x64-\/linux@1.\+88.\+0 ./vcpkg/vcpkg install redis-\/plus-\/plus\+:x64-\/linux@1.\+3.\+14 ./vcpkg/vcpkg install crow\+:x64-\/linux@1.\+2.\+1.\+2 ./vcpkg/vcpkg install curl\+:x64-\/linux@8.\+14.\+1 } (Обратите внимание, что версии пакетов могут отличаться в зависимости от актуального состояния vcpkg. Если возникнут ошибки, попробуйте установить пакеты без указания версии, например\+: {\ttfamily ./vcpkg/vcpkg install nlohmann-\/json}.)
+\item {\bfseries{Запуск Баз Данных (Postgre\+SQL и Redis) через Docker Compose\+:}}
+
+Убедитесь, что Docker запущен.
+
+{\ttfamily bash docker-\/compose up -\/d }
+
+Это поднимет контейнеры Postgre\+SQL и Redis. Инициализация базы данных Postgre\+SQL будет выполнена автоматически с помощью файла {\ttfamily init.\+sql}.
+\item {\bfseries{Сборка проекта с CMake\+:}}
+
+Создайте директорию для сборки, перейдите в нее и скомпилируйте проект\+:
+
+{\ttfamily bash mkdir build cd build cmake .. -\/DCMAKE\+\_\+\+TOOLCHAIN\+\_\+\+FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake cmake -\/-\/build . }
+
+Если вы используете другую директорию для {\ttfamily vcpkg}, убедитесь, что путь к {\ttfamily CMAKE\+\_\+\+TOOLCHAIN\+\_\+\+FILE} указан правильно.
+\end{DoxyEnumerate}\hypertarget{md_README_autotoc_md8}{}\doxysubsection{\texorpdfstring{Запуск сервисов}{Запуск сервисов}}\label{md_README_autotoc_md8}
+После успешной сборки исполняемые файлы будут находиться в директории {\ttfamily build}.
+
+
+\begin{DoxyItemize}
+\item {\bfseries{Запуск сервиса аутентификации\+:}} {\ttfamily bash ./auth\+\_\+service }
+\item {\bfseries{Запуск сервиса управления финансами\+:}} {\ttfamily bash ./finance\+\_\+manager } Каждый сервис по умолчанию будет слушать на своем порту.
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md9}{}\doxysection{\texorpdfstring{Тестирование}{Тестирование}}\label{md_README_autotoc_md9}
+Проект использует {\bfseries{Google Test}} для модульного тестирования. Тесты интегрированы с {\ttfamily ctest}.
+
+Для запуска всех тестов из директории сборки\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cd\ build}
+\DoxyCodeLine{ctest}
+
+\end{DoxyCode}
+ или 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cd\ build}
+\DoxyCodeLine{./all\_tests}
+
+\end{DoxyCode}
+\hypertarget{md_README_autotoc_md10}{}\doxysection{\texorpdfstring{Примеры использования API}{Примеры использования API}}\label{md_README_autotoc_md10}
+Ниже приведены примеры использования основных эндпоинтов API с помощью {\ttfamily curl}. Предполагается, что сервисы запущены и доступны на {\ttfamily \href{http://localhost:8080}{\texttt{ http\+://localhost\+:8080}}}.\hypertarget{md_README_autotoc_md11}{}\doxysubsection{\texorpdfstring{1. Сервис Аутентификации ({\ttfamily auth\+\_\+service})}{1. Сервис Аутентификации ({\ttfamily auth\+\_\+service})}}\label{md_README_autotoc_md11}
+\hypertarget{md_README_autotoc_md12}{}\doxysubsubsection{\texorpdfstring{1.\+1. Начало сессии (Аутентификация)}{1.\+1. Начало сессии (Аутентификация)}}\label{md_README_autotoc_md12}
+
+\begin{DoxyItemize}
+\item {\bfseries{Эндпоинт\+:}} {\ttfamily /session\+\_\+start}
+\item {\bfseries{Метод\+:}} {\ttfamily POST}
+\item {\bfseries{Описание\+:}} Аутентификация пользователя по email и хешу пароля.
+\item {\bfseries{Запрос\+:}} {\ttfamily bash curl -\/X POST \href{http://localhost:8080/session_start}{\texttt{ http\+://localhost\+:8080/session\+\_\+start}} -\/H "{}\+Content-\/\+Type\+: application/json"{} -\/d \textquotesingle{}\{ "{}email"{}\+: "{}user@example.\+com"{}, "{}password\+\_\+hash"{}\+: "{}your\+\_\+hashed\+\_\+password"{} \}\textquotesingle{} }
+\item {\bfseries{Пример успешного ответа\+:}} {\ttfamily json \{ "{}token"{}\+: "{}generated\+\_\+session\+\_\+token(uuid)"{} \} }
+\item {\bfseries{Пример ответа с ошибкой\+:}} {\ttfamily json \{ "{}error"{}\+: "{}\+Invalid credentials"{} \} }
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md13}{}\doxysubsubsection{\texorpdfstring{1.\+2. Обновление сессии}{1.\+2. Обновление сессии}}\label{md_README_autotoc_md13}
+
+\begin{DoxyItemize}
+\item {\bfseries{Эндпоинт\+:}} {\ttfamily /session\+\_\+refresh}
+\item {\bfseries{Метод\+:}} {\ttfamily POST}
+\item {\bfseries{Описание\+:}} Обновление срока действия существующего токена сессии.
+\item {\bfseries{Запрос\+:}} {\ttfamily bash curl -\/X POST \href{http://localhost:8080/session_refresh}{\texttt{ http\+://localhost\+:8080/session\+\_\+refresh}} -\/H "{}\+Content-\/\+Type\+: application/json"{} -\/d \textquotesingle{}\{ "{}token"{}\+: "{}existing\+\_\+session\+\_\+token(uuid)"{} \}\textquotesingle{} }
+\item {\bfseries{Пример успешного ответа\+:}} {\ttfamily json \{ "{}status"{}\+: "{}success"{}, \} }
+\item {\bfseries{Пример ответа с ошибкой\+:}} {\ttfamily json \{ "{}status"{}\+: "{}error"{}, "{}message"{}\+: "{}\+Invalid or expired token."{} \} }
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md14}{}\doxysubsection{\texorpdfstring{2. Сервис Управления Финансами ({\ttfamily finance\+\_\+manager})}{2. Сервис Управления Финансами ({\ttfamily finance\+\_\+manager})}}\label{md_README_autotoc_md14}
+
+\begin{DoxyItemize}
+\item {\bfseries{Примечание\+:}} Для всех запросов к {\ttfamily finance\+\_\+manager} требуется валидный {\ttfamily session\+\_\+token}, полученный от {\ttfamily auth\+\_\+service}.
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md15}{}\doxysubsubsection{\texorpdfstring{2.\+1. Получение баланса пользователя}{2.\+1. Получение баланса пользователя}}\label{md_README_autotoc_md15}
+
+\begin{DoxyItemize}
+\item {\bfseries{Эндпоинт\+:}} {\ttfamily /api/v1/balance}
+\item {\bfseries{Метод\+:}} {\ttfamily POST}
+\item {\bfseries{Описание\+:}} Получение баланса пользователя по всем валютам.
+\item {\bfseries{Запрос\+:}} {\ttfamily bash curl -\/X POST \href{http://localhost:8181/api/v1/balance}{\texttt{ http\+://localhost\+:8181/api/v1/balance}} -\/H "{}\+Content-\/\+Type\+: application/json"{} -\/d \textquotesingle{}\{ "{}session\+\_\+token"{}\+: "{}valid\+\_\+session\+\_\+token(uuid)"{} \}\textquotesingle{} }
+\item {\bfseries{Пример успешного ответа\+:}} {\ttfamily json \mbox{[} \{ "{}currency"{}\+: "{}\+USD"{}, "{}balance"{}\+: 1500.\+75 \}, \{ "{}currency"{}\+: "{}\+EUR"{}, "{}balance"{}\+: 500.\+00 \} \mbox{]} }
+\item {\bfseries{Пример ответа с ошибкой (неверный токен)\+:}} {\ttfamily  Invalid session token }
+\item {\bfseries{Пример ответа с ошибкой (внутренняя ошибка)\+:}} {\ttfamily  Internal server error }
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md16}{}\doxysubsubsection{\texorpdfstring{2.\+2. Перевод денег}{2.\+2. Перевод денег}}\label{md_README_autotoc_md16}
+
+\begin{DoxyItemize}
+\item {\bfseries{Эндпоинт\+:}} {\ttfamily /api/v1/transfer}
+\item {\bfseries{Метод\+:}} {\ttfamily POST}
+\item {\bfseries{Описание\+:}} Перевод средств между пользователями.
+\item {\bfseries{Запрос\+:}} {\ttfamily bash curl -\/X POST \href{http://localhost:8181/api/v1/transfer}{\texttt{ http\+://localhost\+:8181/api/v1/transfer}} -\/H "{}\+Content-\/\+Type\+: application/json"{} -\/d \textquotesingle{}\{ "{}session\+\_\+token"{}\+: "{}valid\+\_\+session\+\_\+token(uuid)"{}, "{}to\+\_\+username"{}\+: "{}recipient\+\_\+username"{}, "{}amount"{}\+: 100.\+00, "{}currency"{}\+: "{}\+USD"{} \}\textquotesingle{} }
+\item {\bfseries{Пример успешного ответа\+:}} {\ttfamily json \{ "{}transfer\+\_\+id"{}\+: "{}unique\+\_\+transfer\+\_\+id"{} \} }
+\item {\bfseries{Пример ответа с ошибкой (неверный токен)\+:}} {\ttfamily  Invalid session token }
+\item {\bfseries{Пример ответа с ошибкой (недостаточно средств/бизнес-\/логика)\+:}} {\ttfamily json \{ "{}error"{}\+: "{}\+Insufficient funds"{} \} }
+\item {\bfseries{Пример ответа с ошибкой (внутренняя ошибка)\+:}} {\ttfamily json \{ "{}error"{}\+: "{}\+Internal server error"{} \} }
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md17}{}\doxysubsubsection{\texorpdfstring{2.\+3. История транзакций}{2.\+3. История транзакций}}\label{md_README_autotoc_md17}
+
+\begin{DoxyItemize}
+\item {\bfseries{Эндпоинт\+:}} {\ttfamily /api/v1/history}
+\item {\bfseries{Метод\+:}} {\ttfamily POST}
+\item {\bfseries{Описание\+:}} Получение истории транзакций пользователя с опциональной пагинацией.
+\item {\bfseries{Запрос\+:}} {\ttfamily bash curl -\/X POST \href{http://localhost:8181/api/v1/history}{\texttt{ http\+://localhost\+:8181/api/v1/history}} -\/H "{}\+Content-\/\+Type\+: application/json"{} -\/d \textquotesingle{}\{ "{}session\+\_\+token"{}\+: "{}valid\+\_\+session\+\_\+token(uuid)"{}, "{}page"{}\+: 1, "{}limit"{}\+: 5 \}\textquotesingle{} } Параметры {\ttfamily page} и {\ttfamily limit} опциональны. Если не указаны, используются значения по умолчанию (page=1, limit=10).
+\item {\bfseries{Пример успешного ответа\+:}} {\ttfamily json \mbox{[} \{ "{}transfer\+\_\+id"{}\+: "{}transfer\+\_\+id\+\_\+1"{}, "{}amount"{}\+: 50.\+00, "{}status"{}\+: "{}completed"{}, "{}created\+\_\+at"{}\+: "{}2023-\/10-\/27\+T10\+:00\+:00\+Z"{} \}, \{ "{}transfer\+\_\+id"{}\+: "{}transfer\+\_\+id\+\_\+2"{}, "{}amount"{}\+: 25.\+50, "{}status"{}\+: "{}pending"{}, "{}created\+\_\+at"{}\+: "{}2023-\/10-\/27\+T09\+:30\+:00\+Z"{} \} \mbox{]} }
+\item {\bfseries{Пример ответа с ошибкой (неверный токен)\+:}} {\ttfamily  Invalid session token }
+\item {\bfseries{Пример ответа с ошибкой (внутренняя ошибка)\+:}} {\ttfamily json \{ "{}error"{}\+: "{}\+Internal server error"{} \} } 
+\end{DoxyItemize}

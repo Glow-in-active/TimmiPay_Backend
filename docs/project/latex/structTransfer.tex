@@ -1,0 +1,72 @@
+\doxysection{Transfer Struct Reference}
+\hypertarget{structTransfer}{}\label{structTransfer}\index{Transfer@{Transfer}}
+
+
+Структура, представляющая финансовую транзакцию (перевод).  
+
+
+
+
+{\ttfamily \#include $<$transfer.\+h$>$}
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{structTransfer}{Transfer}} \mbox{\hyperlink{structTransfer_a441ad069a176bf1b3d3c87a25306e43e}{from\+\_\+row}} (const pqxx\+::row \&row)
+\begin{DoxyCompactList}\small\item\em Создает объект \doxylink{structTransfer}{Transfer} из строки результата запроса pqxx. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structTransfer_a095b60030022038bd47d4eb0843a11a5}\label{structTransfer_a095b60030022038bd47d4eb0843a11a5} 
+std\+::string {\bfseries id}
+\item 
+\Hypertarget{structTransfer_afd04ea84872f9660e2b7938053533da1}\label{structTransfer_afd04ea84872f9660e2b7938053533da1} 
+std\+::string {\bfseries from\+\_\+account}
+\item 
+\Hypertarget{structTransfer_a63064d782e945f91450a1b739ebb41e3}\label{structTransfer_a63064d782e945f91450a1b739ebb41e3} 
+std\+::string {\bfseries to\+\_\+account}
+\item 
+\Hypertarget{structTransfer_a60aed8e4a3a7f50fe50d018c6b9ca2cc}\label{structTransfer_a60aed8e4a3a7f50fe50d018c6b9ca2cc} 
+double {\bfseries amount}
+\item 
+\Hypertarget{structTransfer_a8e735aca4716b5311bbb2f08037b4e9a}\label{structTransfer_a8e735aca4716b5311bbb2f08037b4e9a} 
+std\+::string {\bfseries status}
+\item 
+\Hypertarget{structTransfer_a76dde84f73aa05fb3d1bd0d5f9c77706}\label{structTransfer_a76dde84f73aa05fb3d1bd0d5f9c77706} 
+std\+::string {\bfseries error\+\_\+message}
+\item 
+\Hypertarget{structTransfer_a9998a86d7d11a3e30908fbbe651fcf30}\label{structTransfer_a9998a86d7d11a3e30908fbbe651fcf30} 
+std\+::string {\bfseries created\+\_\+at}
+\item 
+\Hypertarget{structTransfer_aa52e1fc93481227cb050a6b87c1010f8}\label{structTransfer_aa52e1fc93481227cb050a6b87c1010f8} 
+std\+::string {\bfseries updated\+\_\+at}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Структура, представляющая финансовую транзакцию (перевод). 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structTransfer_a441ad069a176bf1b3d3c87a25306e43e}\index{Transfer@{Transfer}!from\_row@{from\_row}}
+\index{from\_row@{from\_row}!Transfer@{Transfer}}
+\doxysubsubsection{\texorpdfstring{from\_row()}{from\_row()}}
+{\footnotesize\ttfamily \label{structTransfer_a441ad069a176bf1b3d3c87a25306e43e} 
+static \mbox{\hyperlink{structTransfer}{Transfer}} Transfer\+::from\+\_\+row (\begin{DoxyParamCaption}\item[{const pqxx\+::row \&}]{row}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Создает объект \doxylink{structTransfer}{Transfer} из строки результата запроса pqxx. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em row} & Объект pqxx\+::row, содержащий данные транзакции из базы данных. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Объект \doxylink{structTransfer}{Transfer}, заполненный данными из строки. 
+\end{DoxyReturn}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+finance\+\_\+manager/internal/models/transfer.\+h\end{DoxyCompactItemize}

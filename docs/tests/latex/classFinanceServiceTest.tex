@@ -1,0 +1,251 @@
+\doxysection{Finance\+Service\+Test Class Reference}
+\hypertarget{classFinanceServiceTest}{}\label{classFinanceServiceTest}\index{FinanceServiceTest@{FinanceServiceTest}}
+
+
+Тестовый класс для Finance\+Service, использующий реальное соединение с базой данных.  
+
+
+Inheritance diagram for Finance\+Service\+Test\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classFinanceServiceTest}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classFinanceServiceTest_a1ea5fdf564f71038b919d86aba7d0e54}{Set\+Up}} () override
+\begin{DoxyCompactList}\small\item\em Настраивает тестовую среду перед каждым тестом. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classFinanceServiceTest_a0183f1af17b873331f080417fbd34ad6}{Tear\+Down}} () override
+\begin{DoxyCompactList}\small\item\em Очищает тестовую среду после каждого теста. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classFinanceServiceTest_a1098d89aa01f77d8270705bddf46d995}{setup\+Test\+Data}} ()
+\begin{DoxyCompactList}\small\item\em Настраивает тестовые данные в базе данных. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classFinanceServiceTest_a3c0cc8e7635b4198bb4afc363ac0ced5}{cleanup\+Test\+Data}} ()
+\begin{DoxyCompactList}\small\item\em Очищает тестовые данные из базы данных. \end{DoxyCompactList}\item 
+\Hypertarget{classFinanceServiceTest_a1ea5fdf564f71038b919d86aba7d0e54}\label{classFinanceServiceTest_a1ea5fdf564f71038b919d86aba7d0e54} 
+void {\bfseries Set\+Up} () override
+\item 
+\Hypertarget{classFinanceServiceTest_a0183f1af17b873331f080417fbd34ad6}\label{classFinanceServiceTest_a0183f1af17b873331f080417fbd34ad6} 
+void {\bfseries Tear\+Down} () override
+\item 
+\Hypertarget{classFinanceServiceTest_a49e58cc31a9fc8faf412b5366dffc792}\label{classFinanceServiceTest_a49e58cc31a9fc8faf412b5366dffc792} 
+void {\bfseries Clear\+Test\+Database} ()
+\item 
+void \mbox{\hyperlink{classFinanceServiceTest_aa5918af876f11e0f978cd2879c9c05ad}{Insert\+User}} (const std\+::string \&id, const std\+::string \&username, const std\+::string \&email, const std\+::string \&password\+\_\+hash)
+\begin{DoxyCompactList}\small\item\em Вставляет нового тестового пользователя в базу данных. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classFinanceServiceTest_a27c35c83680242db25061c83c74ccd64}{Insert\+Currency}} (const std\+::string \&code, const std\+::string \&name)
+\begin{DoxyCompactList}\small\item\em Вставляет новую тестовую валюту в базу данных. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classFinanceServiceTest_a0a29275e7adce34eb0f49ff92994eaee}{Get\+Currency\+Id}} (const std\+::string \&code)
+\begin{DoxyCompactList}\small\item\em Получает ID валюты по ее коду. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classFinanceServiceTest_a4e2546399f3beb5a3b8e4c1875b0faed}{Insert\+Account}} (const std\+::string \&id, const std\+::string \&user\+\_\+id, const std\+::string \&currency\+\_\+id, double balance)
+\begin{DoxyCompactList}\small\item\em Вставляет новый тестовый счет в базу данных. \end{DoxyCompactList}\item 
+Account \mbox{\hyperlink{classFinanceServiceTest_a6f419ba4315a050e870aae49e9a2239f}{Get\+Account\+From\+Db}} (const std\+::string \&user\+\_\+id, const std\+::string \&currency\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Получает объект счета из базы данных по ID пользователя и ID валюты. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classFinanceServiceTest_a2659567b2fdb897b6d460ee87a74430a}\label{classFinanceServiceTest_a2659567b2fdb897b6d460ee87a74430a} 
+std\+::string {\bfseries test\+\_\+user1\+\_\+id}
+\item 
+\Hypertarget{classFinanceServiceTest_af9154dcc41125e661b8f57cc42be0c92}\label{classFinanceServiceTest_af9154dcc41125e661b8f57cc42be0c92} 
+std\+::string {\bfseries test\+\_\+user2\+\_\+id}
+\item 
+\Hypertarget{classFinanceServiceTest_a7ae4bb176869f5b548b2cff961fc3668}\label{classFinanceServiceTest_a7ae4bb176869f5b548b2cff961fc3668} 
+std\+::string {\bfseries test\+\_\+usd\+\_\+id}
+\item 
+\Hypertarget{classFinanceServiceTest_a9218638c4586a0e39e33ed170ac2b680}\label{classFinanceServiceTest_a9218638c4586a0e39e33ed170ac2b680} 
+std\+::string {\bfseries test\+\_\+eur\+\_\+id}
+\item 
+\Hypertarget{classFinanceServiceTest_a308a6d61109370ef6495b3dc279f7d62}\label{classFinanceServiceTest_a308a6d61109370ef6495b3dc279f7d62} 
+UUIDGenerator {\bfseries uuid\+\_\+gen}
+\item 
+\Hypertarget{classFinanceServiceTest_a82ef6524022474616ca2e9aaae20db91}\label{classFinanceServiceTest_a82ef6524022474616ca2e9aaae20db91} 
+std\+::unique\+\_\+ptr$<$ pqxx\+::connection $>$ {\bfseries db\+\_\+conn}
+\item 
+\Hypertarget{classFinanceServiceTest_a545badb5914503d7121175df249153d3}\label{classFinanceServiceTest_a545badb5914503d7121175df249153d3} 
+std\+::unique\+\_\+ptr$<$ Finance\+Service $>$ {\bfseries finance\+\_\+service}
+\item 
+\Hypertarget{classFinanceServiceTest_a0f876a44d754ff7fa6259adea3f4b03d}\label{classFinanceServiceTest_a0f876a44d754ff7fa6259adea3f4b03d} 
+std\+::unique\+\_\+ptr$<$ pqxx\+::connection $>$ {\bfseries conn}
+\item 
+\Hypertarget{classFinanceServiceTest_acd8381f42e11df7877cb32ecbcbef0ff}\label{classFinanceServiceTest_acd8381f42e11df7877cb32ecbcbef0ff} 
+Finance\+Service \texorpdfstring{$\ast$}{*} {\bfseries finance\+Service}
+\item 
+\Hypertarget{classFinanceServiceTest_a187e0cb956c2a5d582c5476f497ea57c}\label{classFinanceServiceTest_a187e0cb956c2a5d582c5476f497ea57c} 
+std\+::string {\bfseries test\+User1\+Id}
+\item 
+\Hypertarget{classFinanceServiceTest_a18be79a3b73fc26574e19190b3ec310b}\label{classFinanceServiceTest_a18be79a3b73fc26574e19190b3ec310b} 
+std\+::string {\bfseries test\+User1\+Username} = "{}testuser1"{}
+\item 
+\Hypertarget{classFinanceServiceTest_adf58e6dd5323461a33ef4fe1b56e3200}\label{classFinanceServiceTest_adf58e6dd5323461a33ef4fe1b56e3200} 
+std\+::string {\bfseries test\+User2\+Id}
+\item 
+\Hypertarget{classFinanceServiceTest_a084b043032ef16a45c7edcae1f148eeb}\label{classFinanceServiceTest_a084b043032ef16a45c7edcae1f148eeb} 
+std\+::string {\bfseries test\+User2\+Username} = "{}testuser2"{}
+\item 
+\Hypertarget{classFinanceServiceTest_a39a597423d81a4bec71fe5de87203a8b}\label{classFinanceServiceTest_a39a597423d81a4bec71fe5de87203a8b} 
+std\+::string {\bfseries currency\+USDId}
+\item 
+\Hypertarget{classFinanceServiceTest_ae07d232d0582a893011aa7f64c51195c}\label{classFinanceServiceTest_ae07d232d0582a893011aa7f64c51195c} 
+std\+::string {\bfseries currency\+EURId}
+\item 
+\Hypertarget{classFinanceServiceTest_aae022d63e2b90d1698244ab3d779ff3c}\label{classFinanceServiceTest_aae022d63e2b90d1698244ab3d779ff3c} 
+std\+::string {\bfseries test\+User1\+Account\+USDId}
+\item 
+\Hypertarget{classFinanceServiceTest_a06b473a26726fc3bb454420e2878b1e7}\label{classFinanceServiceTest_a06b473a26726fc3bb454420e2878b1e7} 
+std\+::string {\bfseries test\+User2\+Account\+USDId}
+\item 
+\Hypertarget{classFinanceServiceTest_ad68a353224ad627cba7d1a8e17ab8334}\label{classFinanceServiceTest_ad68a353224ad627cba7d1a8e17ab8334} 
+std\+::string {\bfseries test\+User1\+Account\+EURId}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Тестовый класс для Finance\+Service, использующий реальное соединение с базой данных. 
+
+Настраивает и очищает тестовые данные в базе данных для каждого теста. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classFinanceServiceTest_a3c0cc8e7635b4198bb4afc363ac0ced5}\index{FinanceServiceTest@{FinanceServiceTest}!cleanupTestData@{cleanupTestData}}
+\index{cleanupTestData@{cleanupTestData}!FinanceServiceTest@{FinanceServiceTest}}
+\doxysubsubsection{\texorpdfstring{cleanupTestData()}{cleanupTestData()}}
+{\footnotesize\ttfamily \label{classFinanceServiceTest_a3c0cc8e7635b4198bb4afc363ac0ced5} 
+void Finance\+Service\+Test\+::cleanup\+Test\+Data (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Очищает тестовые данные из базы данных. 
+
+Удаляет все записи из таблиц transfers, accounts, currencies и users. \Hypertarget{classFinanceServiceTest_a6f419ba4315a050e870aae49e9a2239f}\index{FinanceServiceTest@{FinanceServiceTest}!GetAccountFromDb@{GetAccountFromDb}}
+\index{GetAccountFromDb@{GetAccountFromDb}!FinanceServiceTest@{FinanceServiceTest}}
+\doxysubsubsection{\texorpdfstring{GetAccountFromDb()}{GetAccountFromDb()}}
+{\footnotesize\ttfamily \label{classFinanceServiceTest_a6f419ba4315a050e870aae49e9a2239f} 
+Account Finance\+Service\+Test\+::\+Get\+Account\+From\+Db (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{user\+\_\+id}{, }\item[{const std\+::string \&}]{currency\+\_\+id}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Получает объект счета из базы данных по ID пользователя и ID валюты. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em user\+\_\+id} & ID пользователя, которому принадлежит счет. \\
+\hline
+{\em currency\+\_\+id} & ID валюты счета. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Объект Account, содержащий данные счета. 
+\end{DoxyReturn}
+\Hypertarget{classFinanceServiceTest_a0a29275e7adce34eb0f49ff92994eaee}\index{FinanceServiceTest@{FinanceServiceTest}!GetCurrencyId@{GetCurrencyId}}
+\index{GetCurrencyId@{GetCurrencyId}!FinanceServiceTest@{FinanceServiceTest}}
+\doxysubsubsection{\texorpdfstring{GetCurrencyId()}{GetCurrencyId()}}
+{\footnotesize\ttfamily \label{classFinanceServiceTest_a0a29275e7adce34eb0f49ff92994eaee} 
+std\+::string Finance\+Service\+Test\+::\+Get\+Currency\+Id (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{code}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Получает ID валюты по ее коду. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em code} & Трехбуквенный код валюты. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ID валюты в виде строки, или пустая строка, если валюта не найдена. 
+\end{DoxyReturn}
+\Hypertarget{classFinanceServiceTest_a4e2546399f3beb5a3b8e4c1875b0faed}\index{FinanceServiceTest@{FinanceServiceTest}!InsertAccount@{InsertAccount}}
+\index{InsertAccount@{InsertAccount}!FinanceServiceTest@{FinanceServiceTest}}
+\doxysubsubsection{\texorpdfstring{InsertAccount()}{InsertAccount()}}
+{\footnotesize\ttfamily \label{classFinanceServiceTest_a4e2546399f3beb5a3b8e4c1875b0faed} 
+void Finance\+Service\+Test\+::\+Insert\+Account (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{id}{, }\item[{const std\+::string \&}]{user\+\_\+id}{, }\item[{const std\+::string \&}]{currency\+\_\+id}{, }\item[{double}]{balance}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Вставляет новый тестовый счет в базу данных. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & Уникальный ID счета. \\
+\hline
+{\em user\+\_\+id} & ID пользователя, которому принадлежит счет. \\
+\hline
+{\em currency\+\_\+id} & ID валюты счета. \\
+\hline
+{\em balance} & Начальный баланс счета. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classFinanceServiceTest_a27c35c83680242db25061c83c74ccd64}\index{FinanceServiceTest@{FinanceServiceTest}!InsertCurrency@{InsertCurrency}}
+\index{InsertCurrency@{InsertCurrency}!FinanceServiceTest@{FinanceServiceTest}}
+\doxysubsubsection{\texorpdfstring{InsertCurrency()}{InsertCurrency()}}
+{\footnotesize\ttfamily \label{classFinanceServiceTest_a27c35c83680242db25061c83c74ccd64} 
+void Finance\+Service\+Test\+::\+Insert\+Currency (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{code}{, }\item[{const std\+::string \&}]{name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Вставляет новую тестовую валюту в базу данных. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em code} & Трехбуквенный код валюты (например, "{}\+USD"{}). \\
+\hline
+{\em name} & Полное название валюты (например, "{}\+United States Dollar"{}). \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classFinanceServiceTest_aa5918af876f11e0f978cd2879c9c05ad}\index{FinanceServiceTest@{FinanceServiceTest}!InsertUser@{InsertUser}}
+\index{InsertUser@{InsertUser}!FinanceServiceTest@{FinanceServiceTest}}
+\doxysubsubsection{\texorpdfstring{InsertUser()}{InsertUser()}}
+{\footnotesize\ttfamily \label{classFinanceServiceTest_aa5918af876f11e0f978cd2879c9c05ad} 
+void Finance\+Service\+Test\+::\+Insert\+User (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{id}{, }\item[{const std\+::string \&}]{username}{, }\item[{const std\+::string \&}]{email}{, }\item[{const std\+::string \&}]{password\+\_\+hash}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Вставляет нового тестового пользователя в базу данных. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & Уникальный ID пользователя. \\
+\hline
+{\em username} & Имя пользователя. \\
+\hline
+{\em email} & Адрес электронной почты пользователя. \\
+\hline
+{\em password\+\_\+hash} & Хеш пароля пользователя. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classFinanceServiceTest_a1ea5fdf564f71038b919d86aba7d0e54}\index{FinanceServiceTest@{FinanceServiceTest}!SetUp@{SetUp}}
+\index{SetUp@{SetUp}!FinanceServiceTest@{FinanceServiceTest}}
+\doxysubsubsection{\texorpdfstring{SetUp()}{SetUp()}}
+{\footnotesize\ttfamily \label{classFinanceServiceTest_a1ea5fdf564f71038b919d86aba7d0e54} 
+void Finance\+Service\+Test\+::\+Set\+Up (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+
+Настраивает тестовую среду перед каждым тестом. 
+
+Инициализирует соединение с базой данных, создает Finance\+Service и настраивает тестовые данные. \Hypertarget{classFinanceServiceTest_a1098d89aa01f77d8270705bddf46d995}\index{FinanceServiceTest@{FinanceServiceTest}!setupTestData@{setupTestData}}
+\index{setupTestData@{setupTestData}!FinanceServiceTest@{FinanceServiceTest}}
+\doxysubsubsection{\texorpdfstring{setupTestData()}{setupTestData()}}
+{\footnotesize\ttfamily \label{classFinanceServiceTest_a1098d89aa01f77d8270705bddf46d995} 
+void Finance\+Service\+Test\+::setup\+Test\+Data (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Настраивает тестовые данные в базе данных. 
+
+Вставляет тестовых пользователей, валюты и счета для использования в тестах. \Hypertarget{classFinanceServiceTest_a0183f1af17b873331f080417fbd34ad6}\index{FinanceServiceTest@{FinanceServiceTest}!TearDown@{TearDown}}
+\index{TearDown@{TearDown}!FinanceServiceTest@{FinanceServiceTest}}
+\doxysubsubsection{\texorpdfstring{TearDown()}{TearDown()}}
+{\footnotesize\ttfamily \label{classFinanceServiceTest_a0183f1af17b873331f080417fbd34ad6} 
+void Finance\+Service\+Test\+::\+Tear\+Down (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+
+Очищает тестовую среду после каждого теста. 
+
+Удаляет тестовые данные из базы данных. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+finance\+\_\+manager/internal/app/finance\+\_\+app\+\_\+test.\+cpp\item 
+finance\+\_\+manager/internal/finance/finance\+\_\+service\+\_\+test.\+cpp\end{DoxyCompactItemize}

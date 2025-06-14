@@ -1,0 +1,20 @@
+\doxysection{config.\+h}
+\hypertarget{config_8h_source}{}\label{config_8h_source}\index{storage/config/config.h@{storage/config/config.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structConfig}{Config}}\ \{}
+\DoxyCodeLine{00010\ \ \ std::string\ host;}
+\DoxyCodeLine{00011\ \ \ \textcolor{keywordtype}{int}\ port;}
+\DoxyCodeLine{00012\ \ \ std::string\ user;}
+\DoxyCodeLine{00013\ \ \ std::string\ password;}
+\DoxyCodeLine{00014\ \ \ std::string\ dbname;}
+\DoxyCodeLine{00015\ \ \ std::string\ sslmode;}
+\DoxyCodeLine{00016\ \};}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00040\ \mbox{\hyperlink{structConfig}{Config}}\ load\_config(\textcolor{keyword}{const}\ std::string\&\ filename);}
+
+\end{DoxyCode}

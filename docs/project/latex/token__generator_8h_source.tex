@@ -1,0 +1,26 @@
+\doxysection{token\+\_\+generator.\+h}
+\hypertarget{token__generator_8h_source}{}\label{token__generator_8h_source}\index{auth\_service/internal/auth/user\_verify/token\_generator/token\_generator.h@{auth\_service/internal/auth/user\_verify/token\_generator/token\_generator.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ TOKEN\_GENERATOR\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ TOKEN\_GENERATOR\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <sw/redis++/redis++.h>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}../../../../uuid\_generator/uuid\_generator.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}../../models/user.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTokenGenerator_a6e5627b05a8ee0e55dd1e29a5bcb11dd}{TokenGenerator}}\ \{}
+\DoxyCodeLine{00016\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ \mbox{\hyperlink{classTokenGenerator_a6e5627b05a8ee0e55dd1e29a5bcb11dd}{TokenGenerator}}(\mbox{\hyperlink{classUUIDGenerator}{UUIDGenerator}}\&\ uuid\_gen,\ sw::redis::Redis\&\ redis);}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00031\ \ \ std::string\ \mbox{\hyperlink{classTokenGenerator_ada50be7ca95ee55ff3e2c3c456e3485d}{GenerateToken}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structUser}{User}}\&\ user);}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00034\ \ \ \mbox{\hyperlink{classUUIDGenerator}{UUIDGenerator}}\&\ uuid\_gen\_;}
+\DoxyCodeLine{00035\ \ \ sw::redis::Redis\&\ redis\_;}
+\DoxyCodeLine{00036\ \};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

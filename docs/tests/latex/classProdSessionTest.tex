@@ -1,0 +1,89 @@
+\doxysection{Prod\+Session\+Test Class Reference}
+\hypertarget{classProdSessionTest}{}\label{classProdSessionTest}\index{ProdSessionTest@{ProdSessionTest}}
+
+
+Тестовый класс для интеграционных тестов Session\+Start.  
+
+
+Inheritance diagram for Prod\+Session\+Test\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classProdSessionTest}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classProdSessionTest_acb16019785d8c2b6c6ed8a9480d782e4}{Prod\+Session\+Test}} ()
+\begin{DoxyCompactList}\small\item\em Конструктор класса \doxylink{classProdSessionTest}{Prod\+Session\+Test}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classProdSessionTest_afb4277c725c967d9609e59081e98255c}{Set\+Up}} () override
+\begin{DoxyCompactList}\small\item\em Настраивает тестовую среду перед каждым тестом. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classProdSessionTest_a1dfd25655053784b8a35d896ee22ce30}{Tear\+Down}} () override
+\begin{DoxyCompactList}\small\item\em Очищает тестовую среду после каждого теста. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classProdSessionTest_a87339e85e9d9619d3944edf278e72bd3}\label{classProdSessionTest_a87339e85e9d9619d3944edf278e72bd3} 
+pqxx\+::connection {\bfseries pg\+\_\+conn}
+\item 
+\Hypertarget{classProdSessionTest_a8b85a3e9822df05e394398cb8170f9ca}\label{classProdSessionTest_a8b85a3e9822df05e394398cb8170f9ca} 
+sw\+::redis\+::\+Redis {\bfseries redis\+\_\+conn}
+\item 
+\Hypertarget{classProdSessionTest_aecf0709778b124c75599ccd6159854dd}\label{classProdSessionTest_aecf0709778b124c75599ccd6159854dd} 
+User\+Verifier {\bfseries verifier}
+\item 
+\Hypertarget{classProdSessionTest_a200f368ad55ab16da62dbeef766fdb89}\label{classProdSessionTest_a200f368ad55ab16da62dbeef766fdb89} 
+std\+::string {\bfseries test\+\_\+email} = "{}test\+\_\+user@example.\+com"{}
+\item 
+\Hypertarget{classProdSessionTest_af583e8a966d956657eb6b22961c2f7fc}\label{classProdSessionTest_af583e8a966d956657eb6b22961c2f7fc} 
+std\+::string {\bfseries test\+\_\+hash} = "{}5f4dcc3b5aa765d61d8327deb882cf99"{}
+\item 
+\Hypertarget{classProdSessionTest_ab60b9752519f5942fae1f78117ff1ccb}\label{classProdSessionTest_ab60b9752519f5942fae1f78117ff1ccb} 
+std\+::string {\bfseries test\+\_\+username} = "{}aboba"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Тестовый класс для интеграционных тестов Session\+Start. 
+
+Настраивает и очищает тестовую среду с использованием реальных подключений к Postgre\+SQL и Redis, а также тестовых пользователей. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classProdSessionTest_acb16019785d8c2b6c6ed8a9480d782e4}\index{ProdSessionTest@{ProdSessionTest}!ProdSessionTest@{ProdSessionTest}}
+\index{ProdSessionTest@{ProdSessionTest}!ProdSessionTest@{ProdSessionTest}}
+\doxysubsubsection{\texorpdfstring{ProdSessionTest()}{ProdSessionTest()}}
+{\footnotesize\ttfamily \label{classProdSessionTest_acb16019785d8c2b6c6ed8a9480d782e4} 
+Prod\+Session\+Test\+::\+Prod\+Session\+Test (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Конструктор класса \doxylink{classProdSessionTest}{Prod\+Session\+Test}. 
+
+Инициализирует соединения с тестовыми базами данных Postgre\+SQL и Redis, а также User\+Verifier. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classProdSessionTest_afb4277c725c967d9609e59081e98255c}\index{ProdSessionTest@{ProdSessionTest}!SetUp@{SetUp}}
+\index{SetUp@{SetUp}!ProdSessionTest@{ProdSessionTest}}
+\doxysubsubsection{\texorpdfstring{SetUp()}{SetUp()}}
+{\footnotesize\ttfamily \label{classProdSessionTest_afb4277c725c967d9609e59081e98255c} 
+void Prod\+Session\+Test\+::\+Set\+Up (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+
+Настраивает тестовую среду перед каждым тестом. 
+
+Вставляет тестового пользователя в базу данных Postgre\+SQL. \Hypertarget{classProdSessionTest_a1dfd25655053784b8a35d896ee22ce30}\index{ProdSessionTest@{ProdSessionTest}!TearDown@{TearDown}}
+\index{TearDown@{TearDown}!ProdSessionTest@{ProdSessionTest}}
+\doxysubsubsection{\texorpdfstring{TearDown()}{TearDown()}}
+{\footnotesize\ttfamily \label{classProdSessionTest_a1dfd25655053784b8a35d896ee22ce30} 
+void Prod\+Session\+Test\+::\+Tear\+Down (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+
+Очищает тестовую среду после каждого теста. 
+
+Удаляет тестового пользователя из базы данных Postgre\+SQL. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+auth\+\_\+service/internal/auth/user\+\_\+verify\+\_\+http/session\+\_\+start/session\+\_\+start\+\_\+test.\+cpp\end{DoxyCompactItemize}

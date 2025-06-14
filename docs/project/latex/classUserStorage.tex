@@ -1,0 +1,119 @@
+\doxysection{User\+Storage Class Reference}
+\hypertarget{classUserStorage}{}\label{classUserStorage}\index{UserStorage@{UserStorage}}
+
+
+Класс для взаимодействия с хранилищем пользователей в базе данных.  
+
+
+
+
+{\ttfamily \#include $<$user\+\_\+verify.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classUserStorage_ace18a47ca74d0ff81d61ad925a5aa2b7}{User\+Storage}} (pqxx\+::connection \&conn)
+\begin{DoxyCompactList}\small\item\em Конструктор для \doxylink{classUserStorage}{User\+Storage}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structUser}{User}} \mbox{\hyperlink{classUserStorage_ae6bc5919accbea396fddf52f60dff145}{Get\+User\+By\+Email}} (const std\+::string \&email)
+\begin{DoxyCompactList}\small\item\em Получает информацию о пользователе по адресу электронной почты. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classUserStorage_a0708ff6c786883b4048f297b0a49cd17}{Verify\+Password}} (const \mbox{\hyperlink{structUser}{User}} \&user, const std\+::string \&password\+\_\+hash)
+\begin{DoxyCompactList}\small\item\em Проверяет совпадение хеша пароля пользователя. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Класс для взаимодействия с хранилищем пользователей в базе данных. 
+
+Предоставляет методы для получения информации о пользователях и верификации паролей. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classUserStorage_ace18a47ca74d0ff81d61ad925a5aa2b7}\index{UserStorage@{UserStorage}!UserStorage@{UserStorage}}
+\index{UserStorage@{UserStorage}!UserStorage@{UserStorage}}
+\doxysubsubsection{\texorpdfstring{UserStorage()}{UserStorage()}}
+{\footnotesize\ttfamily \label{classUserStorage_ace18a47ca74d0ff81d61ad925a5aa2b7} 
+User\+Storage\+::\+User\+Storage (\begin{DoxyParamCaption}\item[{pqxx\+::connection \&}]{conn}{}\end{DoxyParamCaption})}
+
+
+
+Конструктор для \doxylink{classUserStorage}{User\+Storage}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em conn} & Ссылка на объект pqxx\+::connection, используемый для взаимодействия с базой данных.\\
+\hline
+\end{DoxyParams}
+Инициализирует \doxylink{classUserStorage}{User\+Storage} с предоставленным соединением с базой данных Postgre\+SQL.
+
+
+\begin{DoxyParams}{Parameters}
+{\em conn} & Ссылка на объект pqxx\+::connection, используемый для взаимодействия с базой данных. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classUserStorage_ae6bc5919accbea396fddf52f60dff145}\index{UserStorage@{UserStorage}!GetUserByEmail@{GetUserByEmail}}
+\index{GetUserByEmail@{GetUserByEmail}!UserStorage@{UserStorage}}
+\doxysubsubsection{\texorpdfstring{GetUserByEmail()}{GetUserByEmail()}}
+{\footnotesize\ttfamily \label{classUserStorage_ae6bc5919accbea396fddf52f60dff145} 
+\mbox{\hyperlink{structUser}{User}} User\+Storage\+::\+Get\+User\+By\+Email (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{email}{}\end{DoxyParamCaption})}
+
+
+
+Получает информацию о пользователе по адресу электронной почты. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em email} & Адрес электронной почты пользователя. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Объект \doxylink{structUser}{User}, содержащий данные пользователя, или пустой объект \doxylink{structUser}{User}, если пользователь не найден.
+\end{DoxyReturn}
+Выполняет запрос к базе данных для поиска пользователя по его электронной почте.
+
+
+\begin{DoxyParams}{Parameters}
+{\em email} & Адрес электронной почты пользователя. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Объект \doxylink{structUser}{User}, содержащий данные пользователя, или пустой объект \doxylink{structUser}{User}, если пользователь не найден или произошла ошибка. 
+\end{DoxyReturn}
+\Hypertarget{classUserStorage_a0708ff6c786883b4048f297b0a49cd17}\index{UserStorage@{UserStorage}!VerifyPassword@{VerifyPassword}}
+\index{VerifyPassword@{VerifyPassword}!UserStorage@{UserStorage}}
+\doxysubsubsection{\texorpdfstring{VerifyPassword()}{VerifyPassword()}}
+{\footnotesize\ttfamily \label{classUserStorage_a0708ff6c786883b4048f297b0a49cd17} 
+bool User\+Storage\+::\+Verify\+Password (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structUser}{User}} \&}]{user}{, }\item[{const std\+::string \&}]{password\+\_\+hash}{}\end{DoxyParamCaption})}
+
+
+
+Проверяет совпадение хеша пароля пользователя. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em user} & Объект \doxylink{structUser}{User}, содержащий данные пользователя. \\
+\hline
+{\em password\+\_\+hash} & Хеш пароля для проверки. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, если хеши совпадают, false в противном случае.
+\end{DoxyReturn}
+Сравнивает предоставленный хеш пароля с хешем пароля, хранящимся в объекте пользователя.
+
+
+\begin{DoxyParams}{Parameters}
+{\em user} & Объект \doxylink{structUser}{User}, содержащий данные пользователя. \\
+\hline
+{\em password\+\_\+hash} & Хеш пароля для проверки. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, если хеши совпадают, false в противном случае. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+storage/user\+\_\+verify/auth/user\+\_\+verify.\+h\item 
+storage/user\+\_\+verify/auth/user\+\_\+verify.\+cpp\end{DoxyCompactItemize}

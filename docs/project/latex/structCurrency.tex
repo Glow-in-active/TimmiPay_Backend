@@ -1,0 +1,57 @@
+\doxysection{Currency Struct Reference}
+\hypertarget{structCurrency}{}\label{structCurrency}\index{Currency@{Currency}}
+
+
+Структура, представляющая валюту.  
+
+
+
+
+{\ttfamily \#include $<$currency.\+h$>$}
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{structCurrency}{Currency}} \mbox{\hyperlink{structCurrency_acd1b2a60ec3fab90fab8ca13553a24c7}{from\+\_\+row}} (const pqxx\+::row \&row)
+\begin{DoxyCompactList}\small\item\em Создает объект \doxylink{structCurrency}{Currency} из строки результата запроса pqxx. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structCurrency_a5f95f73b8a9b9ece10a30321d89befcd}\label{structCurrency_a5f95f73b8a9b9ece10a30321d89befcd} 
+std\+::string {\bfseries id}
+\item 
+\Hypertarget{structCurrency_a6fdd71ab56aa73dec341e190ca865da3}\label{structCurrency_a6fdd71ab56aa73dec341e190ca865da3} 
+std\+::string {\bfseries code}
+\item 
+\Hypertarget{structCurrency_af61154245d377bd11ec189ff7b2a3bd6}\label{structCurrency_af61154245d377bd11ec189ff7b2a3bd6} 
+std\+::string {\bfseries name}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Структура, представляющая валюту. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structCurrency_acd1b2a60ec3fab90fab8ca13553a24c7}\index{Currency@{Currency}!from\_row@{from\_row}}
+\index{from\_row@{from\_row}!Currency@{Currency}}
+\doxysubsubsection{\texorpdfstring{from\_row()}{from\_row()}}
+{\footnotesize\ttfamily \label{structCurrency_acd1b2a60ec3fab90fab8ca13553a24c7} 
+static \mbox{\hyperlink{structCurrency}{Currency}} Currency\+::from\+\_\+row (\begin{DoxyParamCaption}\item[{const pqxx\+::row \&}]{row}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Создает объект \doxylink{structCurrency}{Currency} из строки результата запроса pqxx. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em row} & Объект pqxx\+::row, содержащий данные валюты из базы данных. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Объект \doxylink{structCurrency}{Currency}, заполненный данными из строки. 
+\end{DoxyReturn}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+finance\+\_\+manager/internal/models/currency.\+h\end{DoxyCompactItemize}

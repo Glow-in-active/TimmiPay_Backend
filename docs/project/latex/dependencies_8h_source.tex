@@ -1,0 +1,20 @@
+\doxysection{dependencies.\+h}
+\hypertarget{dependencies_8h_source}{}\label{dependencies_8h_source}\index{auth\_service/internal/server/dependencies/dependencies.h@{auth\_service/internal/server/dependencies/dependencies.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}../../auth/user\_verify/verification/user\_verify.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../../auth/user\_verify\_http/session\_hold/session\_hold.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}../../auth/user\_verify\_http/session\_start/session\_start.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}../db\_init/db\_init.h"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structDependencies}{Dependencies}}\ \{}
+\DoxyCodeLine{00016\ \ \ \mbox{\hyperlink{classUserVerifier}{UserVerifier}}\ user\_verifier;}
+\DoxyCodeLine{00017\ \ \ \mbox{\hyperlink{classSessionStart}{SessionStart}}\ session\_start\_handler;}
+\DoxyCodeLine{00018\ \ \ \mbox{\hyperlink{classSessionHold}{SessionHold}}\ session\_hold\_handler;}
+\DoxyCodeLine{00019\ \};}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00028\ \mbox{\hyperlink{structDependencies}{Dependencies}}\ initialize\_dependencies(\mbox{\hyperlink{structDBConnections}{DBConnections}}\&\ db);}
+
+\end{DoxyCode}

@@ -1,0 +1,47 @@
+\doxysection{server.\+h}
+\hypertarget{server_8h_source}{}\label{server_8h_source}\index{finance\_manager/internal/server/server.h@{finance\_manager/internal/server/server.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ FINANCE\_SERVER\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ FINANCE\_SERVER\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <crow.h>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <nlohmann/json.hpp>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <pqxx/pqxx>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}../../../storage/config/config.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}../../../storage/postgres\_connect/connect.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}../../../storage/session\_verify/session\_verify.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}../finance/finance\_service.h"{}}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }sw\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{namespace\ }redis\ \{}
+\DoxyCodeLine{00020\ \textcolor{keyword}{class\ }Redis;}
+\DoxyCodeLine{00021\ \}}
+\DoxyCodeLine{00022\ \}\ \ \textcolor{comment}{//\ namespace\ sw}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classFinanceServer_a9a6f4149290d57a81731b4294848888f}{FinanceServer}}\ \{}
+\DoxyCodeLine{00031\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00032\ \ \ crow::SimpleApp\ app;}
+\DoxyCodeLine{00033\ \ \ pqxx::connection\&\ db\_conn;}
+\DoxyCodeLine{00034\ \ \ std::shared\_ptr<SessionVerifier>\ session\_verifier;}
+\DoxyCodeLine{00035\ \ \ std::shared\_ptr<FinanceService>\ finance\_service;}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{bool}\ verify\_session(\textcolor{keyword}{const}\ std::string\&\ session\_token,\ std::string\&\ user\_id);}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00057\ \ \ \mbox{\hyperlink{classFinanceServer_a9a6f4149290d57a81731b4294848888f}{FinanceServer}}(pqxx::connection\&\ postgres,\ sw::redis::Redis\&\ redis);}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classFinanceServer_a1638032d789503426fe0ab548a524fc3}{run}}(\textcolor{keywordtype}{int}\ port);}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classFinanceServer_a6f1234518390f3c9ed8d69be1c2e150b}{stop\_server}}();}
+\DoxyCodeLine{00070\ \};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ FINANCE\_SERVER\_H}}
+
+\end{DoxyCode}

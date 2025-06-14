@@ -1,0 +1,18 @@
+\doxysection{config\+\_\+redis.\+h}
+\hypertarget{config__redis_8h_source}{}\label{config__redis_8h_source}\index{storage/redis\_config/config\_redis.h@{storage/redis\_config/config\_redis.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structConfigRedis}{ConfigRedis}}\ \{}
+\DoxyCodeLine{00009\ \ \ std::string\ host;}
+\DoxyCodeLine{00010\ \ \ \textcolor{keywordtype}{int}\ port;}
+\DoxyCodeLine{00011\ \ \ std::string\ password;}
+\DoxyCodeLine{00012\ \ \ \textcolor{keywordtype}{int}\ db;}
+\DoxyCodeLine{00013\ \};}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00026\ \mbox{\hyperlink{structConfigRedis}{ConfigRedis}}\ load\_redis\_config(\textcolor{keyword}{const}\ std::string\&\ filename);}
+
+\end{DoxyCode}

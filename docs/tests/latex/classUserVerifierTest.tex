@@ -1,0 +1,83 @@
+\doxysection{User\+Verifier\+Test Class Reference}
+\hypertarget{classUserVerifierTest}{}\label{classUserVerifierTest}\index{UserVerifierTest@{UserVerifierTest}}
+
+
+Тестовый класс для User\+Verifier.  
+
+
+Inheritance diagram for User\+Verifier\+Test\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classUserVerifierTest}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classUserVerifierTest_ae7558b0bb52a8d83489c8f6b9d81ea6b}{Set\+Up}} () override
+\begin{DoxyCompactList}\small\item\em Настраивает тестовую среду перед каждым тестом. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classUserVerifierTest_af668fd0128665d9b94ef865079a0e39d}{Tear\+Down}} () override
+\begin{DoxyCompactList}\small\item\em Очищает тестовую среду после каждого теста. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classUserVerifierTest_ae5e4bc8f48870e7f5274e74eaccbd929}{insert\+Test\+User}} ()
+\begin{DoxyCompactList}\small\item\em Вставляет тестового пользователя в базу данных. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classUserVerifierTest_aee453b0c40ea914fc1db1abeccec9a66}\label{classUserVerifierTest_aee453b0c40ea914fc1db1abeccec9a66} 
+std\+::unique\+\_\+ptr$<$ pqxx\+::connection $>$ {\bfseries conn}
+\item 
+\Hypertarget{classUserVerifierTest_afa3823e975777ba607473abf326dee07}\label{classUserVerifierTest_afa3823e975777ba607473abf326dee07} 
+std\+::unique\+\_\+ptr$<$ UUIDGenerator $>$ {\bfseries uuid\+Generator}
+\item 
+\Hypertarget{classUserVerifierTest_ae06f0d26e5bcf803f9928bf3d9123b91}\label{classUserVerifierTest_ae06f0d26e5bcf803f9928bf3d9123b91} 
+std\+::unique\+\_\+ptr$<$ sw\+::redis\+::\+Redis $>$ {\bfseries redis}
+\item 
+\Hypertarget{classUserVerifierTest_a58943efaa0405606501f5a63ee864e00}\label{classUserVerifierTest_a58943efaa0405606501f5a63ee864e00} 
+std\+::string {\bfseries test\+User\+Id}
+\item 
+\Hypertarget{classUserVerifierTest_a7de9f24662e5033a331151331075170f}\label{classUserVerifierTest_a7de9f24662e5033a331151331075170f} 
+std\+::string {\bfseries test\+Email}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Тестовый класс для User\+Verifier. 
+
+Настраивает и очищает тестовую среду, включая подключение к Postgre\+SQL и Redis, а также вставку и удаление тестовых пользователей. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classUserVerifierTest_ae5e4bc8f48870e7f5274e74eaccbd929}\index{UserVerifierTest@{UserVerifierTest}!insertTestUser@{insertTestUser}}
+\index{insertTestUser@{insertTestUser}!UserVerifierTest@{UserVerifierTest}}
+\doxysubsubsection{\texorpdfstring{insertTestUser()}{insertTestUser()}}
+{\footnotesize\ttfamily \label{classUserVerifierTest_ae5e4bc8f48870e7f5274e74eaccbd929} 
+void User\+Verifier\+Test\+::insert\+Test\+User (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Вставляет тестового пользователя в базу данных. 
+
+Вставляет запись о тестовом пользователе с предопределенными данными и хешем пароля в таблицу {\ttfamily users}. \Hypertarget{classUserVerifierTest_ae7558b0bb52a8d83489c8f6b9d81ea6b}\index{UserVerifierTest@{UserVerifierTest}!SetUp@{SetUp}}
+\index{SetUp@{SetUp}!UserVerifierTest@{UserVerifierTest}}
+\doxysubsubsection{\texorpdfstring{SetUp()}{SetUp()}}
+{\footnotesize\ttfamily \label{classUserVerifierTest_ae7558b0bb52a8d83489c8f6b9d81ea6b} 
+void User\+Verifier\+Test\+::\+Set\+Up (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+
+Настраивает тестовую среду перед каждым тестом. 
+
+Устанавливает соединения с тестовыми базами данных Postgre\+SQL и Redis, генерирует тестового пользователя и вставляет его в базу данных. \Hypertarget{classUserVerifierTest_af668fd0128665d9b94ef865079a0e39d}\index{UserVerifierTest@{UserVerifierTest}!TearDown@{TearDown}}
+\index{TearDown@{TearDown}!UserVerifierTest@{UserVerifierTest}}
+\doxysubsubsection{\texorpdfstring{TearDown()}{TearDown()}}
+{\footnotesize\ttfamily \label{classUserVerifierTest_af668fd0128665d9b94ef865079a0e39d} 
+void User\+Verifier\+Test\+::\+Tear\+Down (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+
+Очищает тестовую среду после каждого теста. 
+
+Удаляет тестового пользователя и связанные с ним данные из базы данных. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+auth\+\_\+service/internal/auth/user\+\_\+verify/verification/user\+\_\+verify\+\_\+test.\+cpp\end{DoxyCompactItemize}

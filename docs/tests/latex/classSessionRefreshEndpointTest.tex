@@ -1,0 +1,58 @@
+\doxysection{Session\+Refresh\+Endpoint\+Test Class Reference}
+\hypertarget{classSessionRefreshEndpointTest}{}\label{classSessionRefreshEndpointTest}\index{SessionRefreshEndpointTest@{SessionRefreshEndpointTest}}
+
+
+Тестовый класс для эндпоинта обновления сессии.  
+
+
+Inheritance diagram for Session\+Refresh\+Endpoint\+Test\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classSessionRefreshEndpointTest}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Config\+Redis \mbox{\hyperlink{classSessionRefreshEndpointTest_aa68569831b55c1eea3e47588f56f27a5}{redis\+\_\+config}}
+\item 
+\Hypertarget{classSessionRefreshEndpointTest_a4cf4b04e8681b6e5ce240c605a501a21}\label{classSessionRefreshEndpointTest_a4cf4b04e8681b6e5ce240c605a501a21} 
+sw\+::redis\+::\+Redis {\bfseries redis\+\_\+conn} = connect\+\_\+to\+\_\+redis(redis\+\_\+config)
+\item 
+\Hypertarget{classSessionRefreshEndpointTest_ac6822d7d110787f02e3042b89fb80b96}\label{classSessionRefreshEndpointTest_ac6822d7d110787f02e3042b89fb80b96} 
+\mbox{\hyperlink{classMockSessionHold}{Mock\+Session\+Hold}} {\bfseries handler} \{redis\+\_\+conn\}
+\item 
+\Hypertarget{classSessionRefreshEndpointTest_aec58aa6f8b8288313fcef38d0c8939ca}\label{classSessionRefreshEndpointTest_aec58aa6f8b8288313fcef38d0c8939ca} 
+crow\+::request {\bfseries req}
+\item 
+\Hypertarget{classSessionRefreshEndpointTest_aa02b55913bb1456a36021dee419aedfc}\label{classSessionRefreshEndpointTest_aa02b55913bb1456a36021dee419aedfc} 
+UUIDGenerator {\bfseries uuid\+\_\+gen}
+\item 
+\Hypertarget{classSessionRefreshEndpointTest_afdb01ed34c70e42b02ac5e06e3c9e3ac}\label{classSessionRefreshEndpointTest_afdb01ed34c70e42b02ac5e06e3c9e3ac} 
+Token\+Generator {\bfseries token\+\_\+gen} \{uuid\+\_\+gen, redis\+\_\+conn\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Тестовый класс для эндпоинта обновления сессии. 
+
+Настраивает тестовую среду, включая мок-\/объект Session\+Hold, и проверяет корректность обработки различных сценариев запросов к эндпоинту. 
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classSessionRefreshEndpointTest_aa68569831b55c1eea3e47588f56f27a5}\index{SessionRefreshEndpointTest@{SessionRefreshEndpointTest}!redis\_config@{redis\_config}}
+\index{redis\_config@{redis\_config}!SessionRefreshEndpointTest@{SessionRefreshEndpointTest}}
+\doxysubsubsection{\texorpdfstring{redis\_config}{redis\_config}}
+{\footnotesize\ttfamily \label{classSessionRefreshEndpointTest_aa68569831b55c1eea3e47588f56f27a5} 
+Config\+Redis Session\+Refresh\+Endpoint\+Test\+::redis\+\_\+config\hspace{0.3cm}{\ttfamily [protected]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ load\_redis\_config(\textcolor{stringliteral}{"{}database\_config/test\_redis\_config.json"{}})}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+auth\+\_\+service/internal/auth/user\+\_\+verify\+\_\+http/endpoints/session\+\_\+refresh\+\_\+endpoint/session\+\_\+refresh\+\_\+endpoint\+\_\+test.\+cpp\end{DoxyCompactItemize}
