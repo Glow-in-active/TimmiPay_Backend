@@ -1,0 +1,91 @@
+\doxysection{Session\+Hold Class Reference}
+\hypertarget{classSessionHold}{}\label{classSessionHold}\index{SessionHold@{SessionHold}}
+
+
+Класс для обработки запросов на удержание (обновление) сессии.  
+
+
+
+
+{\ttfamily \#include $<$session\+\_\+hold.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classSessionHold_ad302dd2c2b1f5047675cbe1fa3c730cd}{Session\+Hold}} (sw\+::redis\+::\+Redis \&redis)
+\begin{DoxyCompactList}\small\item\em Конструктор класса \doxylink{classSessionHold}{Session\+Hold}. \end{DoxyCompactList}\item 
+nlohmann\+::json \mbox{\hyperlink{classSessionHold_ab11e4a8517a7ca1c6cc30fa0aef552b1}{Handle\+Request}} (const nlohmann\+::json \&request\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Обрабатывает запрос на удержание (обновление) токена сессии. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classSessionHold_ad505c8c6f0eaacda8a20fd2c288fcb18}\label{classSessionHold_ad505c8c6f0eaacda8a20fd2c288fcb18} 
+sw\+::redis\+::\+Redis \& {\bfseries redis\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Класс для обработки запросов на удержание (обновление) сессии. 
+
+Отвечает за взаимодействие с Redis для обновления времени жизни токенов сессий. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classSessionHold_ad302dd2c2b1f5047675cbe1fa3c730cd}\index{SessionHold@{SessionHold}!SessionHold@{SessionHold}}
+\index{SessionHold@{SessionHold}!SessionHold@{SessionHold}}
+\doxysubsubsection{\texorpdfstring{SessionHold()}{SessionHold()}}
+{\footnotesize\ttfamily \label{classSessionHold_ad302dd2c2b1f5047675cbe1fa3c730cd} 
+Session\+Hold\+::\+Session\+Hold (\begin{DoxyParamCaption}\item[{sw\+::redis\+::\+Redis \&}]{redis}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Конструктор класса \doxylink{classSessionHold}{Session\+Hold}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em redis} & Ссылка на объект sw\+::redis\+::\+Redis для взаимодействия с Redis.\\
+\hline
+\end{DoxyParams}
+Инициализирует \doxylink{classSessionHold}{Session\+Hold} с необходимым соединением Redis.
+
+
+\begin{DoxyParams}{Parameters}
+{\em redis} & Ссылка на объект sw\+::redis\+::\+Redis для взаимодействия с Redis. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classSessionHold_ab11e4a8517a7ca1c6cc30fa0aef552b1}\index{SessionHold@{SessionHold}!HandleRequest@{HandleRequest}}
+\index{HandleRequest@{HandleRequest}!SessionHold@{SessionHold}}
+\doxysubsubsection{\texorpdfstring{HandleRequest()}{HandleRequest()}}
+{\footnotesize\ttfamily \label{classSessionHold_ab11e4a8517a7ca1c6cc30fa0aef552b1} 
+nlohmann\+::json Session\+Hold\+::\+Handle\+Request (\begin{DoxyParamCaption}\item[{const nlohmann\+::json \&}]{request\+\_\+data}{}\end{DoxyParamCaption})}
+
+
+
+Обрабатывает запрос на удержание (обновление) токена сессии. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em request\+\_\+data} & Входящие данные запроса в формате JSON, содержащие поле "{}token"{}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+JSON-\/объект с результатом операции.
+\end{DoxyReturn}
+Извлекает токен из данных запроса, вызывает {\ttfamily hold\+\_\+token} для обновления времени жизни токена в Redis. Возвращает успешный ответ, если токен существует, или ошибку, если токен не найден, истек или формат JSON неверен.
+
+
+\begin{DoxyParams}{Parameters}
+{\em request\+\_\+data} & Входящие данные запроса в формате JSON, содержащие поле "{}token"{}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+JSON-\/объект с результатом операции (status\+: "{}success"{} или error\+: "{}..."{}). 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+auth\+\_\+service/internal/auth/user\+\_\+verify\+\_\+http/session\+\_\+hold/session\+\_\+hold.\+h\item 
+auth\+\_\+service/internal/auth/user\+\_\+verify\+\_\+http/session\+\_\+hold/session\+\_\+hold.\+cpp\end{DoxyCompactItemize}

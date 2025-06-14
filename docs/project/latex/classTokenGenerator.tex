@@ -1,0 +1,91 @@
+\doxysection{Token\+Generator Class Reference}
+\hypertarget{classTokenGenerator}{}\label{classTokenGenerator}\index{TokenGenerator@{TokenGenerator}}
+
+
+Класс для генерации и управления токенами сессий.  
+
+
+
+
+{\ttfamily \#include $<$token\+\_\+generator.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classTokenGenerator_a6e5627b05a8ee0e55dd1e29a5bcb11dd}{Token\+Generator}} (\mbox{\hyperlink{classUUIDGenerator}{UUIDGenerator}} \&uuid\+\_\+gen, sw\+::redis\+::\+Redis \&redis)
+\begin{DoxyCompactList}\small\item\em Конструктор класса \doxylink{classTokenGenerator}{Token\+Generator}. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classTokenGenerator_ada50be7ca95ee55ff3e2c3c456e3485d}{Generate\+Token}} (const \mbox{\hyperlink{structUser}{User}} \&user)
+\begin{DoxyCompactList}\small\item\em Генерирует новый токен для пользователя. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Класс для генерации и управления токенами сессий. 
+
+Использует \doxylink{classUUIDGenerator}{UUIDGenerator} для создания уникальных токенов и Redis для их хранения. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classTokenGenerator_a6e5627b05a8ee0e55dd1e29a5bcb11dd}\index{TokenGenerator@{TokenGenerator}!TokenGenerator@{TokenGenerator}}
+\index{TokenGenerator@{TokenGenerator}!TokenGenerator@{TokenGenerator}}
+\doxysubsubsection{\texorpdfstring{TokenGenerator()}{TokenGenerator()}}
+{\footnotesize\ttfamily \label{classTokenGenerator_a6e5627b05a8ee0e55dd1e29a5bcb11dd} 
+Token\+Generator\+::\+Token\+Generator (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classUUIDGenerator}{UUIDGenerator}} \&}]{uuid\+\_\+gen}{, }\item[{sw\+::redis\+::\+Redis \&}]{redis}{}\end{DoxyParamCaption})}
+
+
+
+Конструктор класса \doxylink{classTokenGenerator}{Token\+Generator}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em uuid\+\_\+gen} & Ссылка на объект \doxylink{classUUIDGenerator}{UUIDGenerator} для генерации UUID. \\
+\hline
+{\em redis} & Ссылка на объект sw\+::redis\+::\+Redis для взаимодействия с Redis.\\
+\hline
+\end{DoxyParams}
+Инициализирует \doxylink{classTokenGenerator}{Token\+Generator} с необходимыми зависимостями.
+
+
+\begin{DoxyParams}{Parameters}
+{\em uuid\+\_\+gen} & Ссылка на объект \doxylink{classUUIDGenerator}{UUIDGenerator} для генерации UUID. \\
+\hline
+{\em redis} & Ссылка на объект sw\+::redis\+::\+Redis для взаимодействия с Redis. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classTokenGenerator_ada50be7ca95ee55ff3e2c3c456e3485d}\index{TokenGenerator@{TokenGenerator}!GenerateToken@{GenerateToken}}
+\index{GenerateToken@{GenerateToken}!TokenGenerator@{TokenGenerator}}
+\doxysubsubsection{\texorpdfstring{GenerateToken()}{GenerateToken()}}
+{\footnotesize\ttfamily \label{classTokenGenerator_ada50be7ca95ee55ff3e2c3c456e3485d} 
+std\+::string Token\+Generator\+::\+Generate\+Token (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structUser}{User}} \&}]{user}{}\end{DoxyParamCaption})}
+
+
+
+Генерирует новый токен для пользователя. 
+
+Генерирует новый токен для пользователя и сохраняет его в Redis.
+
+
+\begin{DoxyParams}{Parameters}
+{\em user} & Объект \doxylink{structUser}{User}, для которого генерируется токен. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Сгенерированный токен.
+\end{DoxyReturn}
+Использует \doxylink{classUUIDGenerator}{UUIDGenerator} для создания уникального токена и сохраняет его вместе с ID пользователя в Redis с помощью {\ttfamily set\+\_\+token}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em user} & Объект \doxylink{structUser}{User}, для которого генерируется токен. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Сгенерированный строковый токен. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+auth\+\_\+service/internal/auth/user\+\_\+verify/token\+\_\+generator/token\+\_\+generator.\+h\item 
+auth\+\_\+service/internal/auth/user\+\_\+verify/token\+\_\+generator/token\+\_\+generator.\+cpp\end{DoxyCompactItemize}

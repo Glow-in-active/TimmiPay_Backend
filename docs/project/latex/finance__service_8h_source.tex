@@ -1,0 +1,52 @@
+\doxysection{finance\+\_\+service.\+h}
+\hypertarget{finance__service_8h_source}{}\label{finance__service_8h_source}\index{finance\_manager/internal/finance/finance\_service.h@{finance\_manager/internal/finance/finance\_service.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <optional>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <pqxx/pqxx>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}../models/account.h"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}../models/currency.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}../models/transfer.h"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classFinanceService_a48056a693a5ac947bca7427352e88bb3}{FinanceService}}\ \{}
+\DoxyCodeLine{00018\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classFinanceService_a48056a693a5ac947bca7427352e88bb3}{FinanceService}}(pqxx::connection\&\ db\_conn);}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00037\ \ \ std::vector<std::pair<std::string,\ double>>\ \mbox{\hyperlink{classFinanceService_a3f32cb2f5588658b14b02c63ceb43ad1}{get\_user\_balance}}(}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ user\_id);}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00049\ \ \ std::string\ \mbox{\hyperlink{classFinanceService_a94ab6f2036a8b5a37416ca7921abb98d}{transfer\_money}}(\textcolor{keyword}{const}\ std::string\&\ from\_user\_id,}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ to\_username,\ \textcolor{keywordtype}{double}\ amount,}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ currency);}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00062\ \ \ std::vector<Transfer>\ \mbox{\hyperlink{classFinanceService_a4c6c4ec1f7d3e8fad0c723f0a3f1202d}{get\_transaction\_history}}(\textcolor{keyword}{const}\ std::string\&\ user\_id,}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ page,\ \textcolor{keywordtype}{int}\ limit);}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00066\ \ \ pqxx::connection\&\ db\_conn;}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00075\ \ \ std::string\ get\_currency\_id(pqxx::work\&\ txn,}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ currency\_code);}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00086\ \ \ std::string\ get\_user\_id\_by\_username(pqxx::work\&\ txn,}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ username);}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00098\ \ \ std::optional<Account>\ get\_account(pqxx::work\&\ txn,}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ user\_id,}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ currency\_id);}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00111\ \ \ std::optional<std::string>\ get\_account\_id(pqxx::work\&\ txn,}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ user\_id,}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ currency\_id);}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00123\ \ \ \textcolor{keywordtype}{void}\ update\_account\_balance(pqxx::work\&\ txn,\ \textcolor{keyword}{const}\ std::string\&\ account\_id,}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ amount);}
+\DoxyCodeLine{00125\ \};}
+
+\end{DoxyCode}

@@ -1,0 +1,199 @@
+#include "crow_app.h"
+
+#include <crow.h>
+#include <curl/curl.h>
+#include <gtest/gtest.h>
+
+#include <thread>
+
+#include "../../../storage/config/config.h"
+#include "../../../storage/postgres_connect/connect.h"
+#include "../../../storage/redis_config/config_redis.h"
+#include "../../../storage/redis_connect/connect_redis.h"
+#include "../../auth/user_verify_http/session_hold/session_hold.h"
+#include "../../auth/user_verify_http/session_start/session_start.h"
+
+/**
+ * @brief Callback-функция для записи данных, полученных от cURL.
+ *
+ * @param contents Указатель на полученные данные.
+ * @param size Размер одного элемента данных.
+ * @param nmemb Количество элементов данных.
+ * @param s Указатель на строку, куда будут добавлены данные.
+ * @return Фактическое количество записанных байт.
+ */
+static size_t CurlWriteCallback(void* contents, size_t size, size_t nmemb,
+                                std::string* s) {
+  s->append((char*)contents, size * nmemb);
+  return size * nmemb;
+}
+
+/**
+ * @brief Реализация SessionStart для интеграционных тестов.
+ *
+ * Инициализирует все необходимые зависимости для работы SessionStart с
+ * реальными подключениями к тестовым базам данных.
+ */
+class RealSessionStart : public SessionStart {
+ public:
+  /**
+   * @brief Конструктор для RealSessionStart.
+   *
+   * Инициализирует конфигурацию базы данных, Redis, устанавливает соединения и
+   * создает UserVerifier.
+   */
+  RealSessionStart()
+      : config_(load_config("database_config/test_postgres_config.json")),
+        redis_config_(
+            load_redis_config("database_config/test_redis_config.json")),
+        conn_(connect_to_database(config_)),
+        redis_(connect_to_redis(redis_config_)),
+        user_verifier_(conn_, redis_),
+        SessionStart(user_verifier_) {}
+
+ private:
+  Config config_;
+  ConfigRedis redis_config_;
+  pqxx::connection conn_;
+  sw::redis::Redis redis_;
+  UserVerifier user_verifier_;
+};
+
+/**
+ * @brief Реализация SessionHold для интеграционных тестов.
+ *
+ * Инициализирует все необходимые зависимости для работы SessionHold с реальными
+ * подключениями к тестовой базе данных Redis.
+ */
+class RealSessionHold : public SessionHold {
+ public:
+  /**
+   * @brief Конструктор для RealSessionHold.
+   *
+   * Инициализирует конфигурацию Redis и устанавливает соединение.
+   */
+  RealSessionHold()
+      : redis_config_(
+            load_redis_config("database_config/test_redis_config.json")),
+        redis_(connect_to_redis(redis_config_)),
+        SessionHold(redis_) {}
+
+ private:
+  ConfigRedis redis_config_;
+  sw::redis::Redis redis_;
+};
+
+/**
+ * @brief Фикстура для интеграционных тестов сервера CrowApp.
+ *
+ * Настраивает и запускает тестовый HTTP-сервер Crow перед выполнением тестового
+ * набора и останавливает его после завершения.
+ */
+class CrowAppServerFixture : public ::testing::Test {
+ protected:
+  /**
+   * @brief Настраивает тестовый набор перед выполнением всех тестов.
+   *
+   * Инициализирует приложение Crow, запускает его в отдельном потоке и ожидает
+   * готовности сервера.
+   */
+  static void SetUpTestSuite() {
+    app = &create_crow_app(session_start, session_hold);
+
+    server_thread =
+        std::thread([]() { app->port(18081).multithreaded().run(); });
+
+    for (int i = 0; i < 10; ++i) {
+      if (is_server_alive()) return;
+      std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+    FAIL() << "CrowApp: Server did not start in time";
+  }
+
+  /**
+   * @brief Очищает ресурсы после выполнения всех тестов.
+   *
+   * Останавливает приложение Crow и завершает поток сервера.
+   */
+  static void TearDownTestSuite() {
+    app->stop();
+    if (server_thread.joinable()) server_thread.join();
+  }
+
+  /**
+   * @brief Проверяет доступность сервера.
+   *
+   * Отправляет HTTP-запрос к серверу и проверяет успешность соединения.
+   *
+   * @return true, если сервер доступен, false в противном случае.
+   */
+  static bool is_server_alive() {
+    CURL* curl = curl_easy_init();
+    if (!curl) return false;
+
+    curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:18081/session_start");
+    curl_easy_setopt(curl, CURLOPT_NOBODY, 1L);
+    curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 200L);
+
+    CURLcode res = curl_easy_perform(curl);
+    curl_easy_cleanup(curl);
+    return res == CURLE_OK;
+  }
+
+  static inline crow::App<crow::CORSHandler>* app;
+  static inline RealSessionStart session_start;
+  static inline RealSessionHold session_hold;
+  static inline std::thread server_thread;
+};
+
+/**
+ * @brief Проверяет доступность маршрута /session_start.
+ *
+ * Тест отправляет POST-запрос на /session_start и проверяет, что ответ получен
+ * успешно и не пуст.
+ */
+TEST_F(CrowAppServerFixture, SessionStartRouteIsAvailable) {
+  CURL* curl = curl_easy_init();
+  ASSERT_TRUE(curl != nullptr);
+
+  curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:18081/session_start");
+  curl_easy_setopt(curl, CURLOPT_POST, 1L);
+  curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "{}");
+  curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 1000L);
+
+  std::string response;
+  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWriteCallback);
+  curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+
+  CURLcode res = curl_easy_perform(curl);
+  curl_easy_cleanup(curl);
+
+  EXPECT_EQ(res, CURLE_OK);
+  EXPECT_FALSE(response.empty());
+}
+
+/**
+ * @brief Проверяет доступность маршрута /session_refresh.
+ *
+ * Тест отправляет POST-запрос на /session_refresh и проверяет, что ответ
+ * получен успешно и не пуст.
+ */
+TEST_F(CrowAppServerFixture, SessionRefreshRouteIsAvailable) {
+  CURL* curl = curl_easy_init();
+  ASSERT_TRUE(curl != nullptr);
+
+  curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:18081/session_refresh");
+  curl_easy_setopt(curl, CURLOPT_POST, 1L);
+  curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "{}");
+  curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 1000L);
+
+  std::string response;
+  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWriteCallback);
+  curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+
+  CURLcode res = curl_easy_perform(curl);
+  curl_easy_cleanup(curl);
+
+  EXPECT_EQ(res, CURLE_OK);
+  EXPECT_FALSE(response.empty());
+}

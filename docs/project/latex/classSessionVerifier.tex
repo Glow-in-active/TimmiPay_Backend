@@ -1,0 +1,151 @@
+\doxysection{Session\+Verifier Class Reference}
+\hypertarget{classSessionVerifier}{}\label{classSessionVerifier}\index{SessionVerifier@{SessionVerifier}}
+
+
+Класс для верификации и управления сессиями пользователей в Redis.  
+
+
+
+
+{\ttfamily \#include $<$session\+\_\+verify.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classSessionVerifier_a115dd823f5bdfa58d0eb9debaec8ffc6}{Session\+Verifier}} (sw\+::redis\+::\+Redis \&redis)
+\begin{DoxyCompactList}\small\item\em Конструктор для \doxylink{classSessionVerifier}{Session\+Verifier}. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classSessionVerifier_aa6a4c267c47fa157a4413d4bee63ac98}{verify\+\_\+session}} (const std\+::string \&session\+\_\+token, std\+::string \&user\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Проверяет сессию по токену. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classSessionVerifier_acde59434335c2aef469a24635fbdf885}{set\+\_\+session}} (const std\+::string \&user\+\_\+id, const std\+::string \&session\+\_\+token)
+\begin{DoxyCompactList}\small\item\em Устанавливает новую сессию для пользователя. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classSessionVerifier_a9bbef2aee399acad2ec3b15602690862}{remove\+\_\+session}} (const std\+::string \&session\+\_\+token)
+\begin{DoxyCompactList}\small\item\em Удаляет сессию по токену. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Класс для верификации и управления сессиями пользователей в Redis. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classSessionVerifier_a115dd823f5bdfa58d0eb9debaec8ffc6}\index{SessionVerifier@{SessionVerifier}!SessionVerifier@{SessionVerifier}}
+\index{SessionVerifier@{SessionVerifier}!SessionVerifier@{SessionVerifier}}
+\doxysubsubsection{\texorpdfstring{SessionVerifier()}{SessionVerifier()}}
+{\footnotesize\ttfamily \label{classSessionVerifier_a115dd823f5bdfa58d0eb9debaec8ffc6} 
+Session\+Verifier\+::\+Session\+Verifier (\begin{DoxyParamCaption}\item[{sw\+::redis\+::\+Redis \&}]{redis}{}\end{DoxyParamCaption})}
+
+
+
+Конструктор для \doxylink{classSessionVerifier}{Session\+Verifier}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em redis} & Ссылка на объект sw\+::redis\+::\+Redis, используемый для взаимодействия с Redis.\\
+\hline
+\end{DoxyParams}
+Инициализирует \doxylink{classSessionVerifier}{Session\+Verifier} с предоставленным клиентом Redis.
+
+
+\begin{DoxyParams}{Parameters}
+{\em redis} & Ссылка на объект sw\+::redis\+::\+Redis, используемый для взаимодействия с Redis. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classSessionVerifier_a9bbef2aee399acad2ec3b15602690862}\index{SessionVerifier@{SessionVerifier}!remove\_session@{remove\_session}}
+\index{remove\_session@{remove\_session}!SessionVerifier@{SessionVerifier}}
+\doxysubsubsection{\texorpdfstring{remove\_session()}{remove\_session()}}
+{\footnotesize\ttfamily \label{classSessionVerifier_a9bbef2aee399acad2ec3b15602690862} 
+bool Session\+Verifier\+::remove\+\_\+session (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{session\+\_\+token}{}\end{DoxyParamCaption})}
+
+
+
+Удаляет сессию по токену. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session\+\_\+token} & Токен сессии для удаления. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, если сессия успешно удалена, false в противном случае.
+\end{DoxyReturn}
+Удаляет токен сессии и связанные с ним данные из Redis.
+
+
+\begin{DoxyParams}{Parameters}
+{\em session\+\_\+token} & Токен сессии для удаления. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, если сессия успешно удалена, false в противном случае. 
+\end{DoxyReturn}
+\Hypertarget{classSessionVerifier_acde59434335c2aef469a24635fbdf885}\index{SessionVerifier@{SessionVerifier}!set\_session@{set\_session}}
+\index{set\_session@{set\_session}!SessionVerifier@{SessionVerifier}}
+\doxysubsubsection{\texorpdfstring{set\_session()}{set\_session()}}
+{\footnotesize\ttfamily \label{classSessionVerifier_acde59434335c2aef469a24635fbdf885} 
+bool Session\+Verifier\+::set\+\_\+session (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{user\+\_\+id}{, }\item[{const std\+::string \&}]{session\+\_\+token}{}\end{DoxyParamCaption})}
+
+
+
+Устанавливает новую сессию для пользователя. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em user\+\_\+id} & ID пользователя, для которого устанавливается сессия. \\
+\hline
+{\em session\+\_\+token} & Токен сессии, который будет связан с ID пользователя. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, если сессия успешно установлена, false в противном случае.
+\end{DoxyReturn}
+Сохраняет ID пользователя, связанный с токеном сессии, в Redis и устанавливает срок действия для сессии.
+
+
+\begin{DoxyParams}{Parameters}
+{\em user\+\_\+id} & ID пользователя, для которого устанавливается сессия. \\
+\hline
+{\em session\+\_\+token} & Токен сессии, который будет связан с ID пользователя. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, если сессия успешно установлена, false в противном случае. 
+\end{DoxyReturn}
+\Hypertarget{classSessionVerifier_aa6a4c267c47fa157a4413d4bee63ac98}\index{SessionVerifier@{SessionVerifier}!verify\_session@{verify\_session}}
+\index{verify\_session@{verify\_session}!SessionVerifier@{SessionVerifier}}
+\doxysubsubsection{\texorpdfstring{verify\_session()}{verify\_session()}}
+{\footnotesize\ttfamily \label{classSessionVerifier_aa6a4c267c47fa157a4413d4bee63ac98} 
+bool Session\+Verifier\+::verify\+\_\+session (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{session\+\_\+token}{, }\item[{std\+::string \&}]{user\+\_\+id}{}\end{DoxyParamCaption})}
+
+
+
+Проверяет сессию по токену. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session\+\_\+token} & Токен сессии для проверки. \\
+\hline
+{\em user\+\_\+id} & Ссылка на строку, в которую будет записан ID пользователя, если сессия действительна. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, если сессия действительна и ID пользователя получен успешно, false в противном случае.
+\end{DoxyReturn}
+Ищет токен сессии в Redis и извлекает связанный с ним ID пользователя.
+
+
+\begin{DoxyParams}{Parameters}
+{\em session\+\_\+token} & Токен сессии для проверки. \\
+\hline
+{\em user\+\_\+id} & Ссылка на строку, в которую будет записан ID пользователя, если сессия действительна. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, если сессия действительна и ID пользователя получен успешно, false в противном случае. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+storage/session\+\_\+verify/session\+\_\+verify.\+h\item 
+storage/session\+\_\+verify/session\+\_\+verify.\+cpp\end{DoxyCompactItemize}

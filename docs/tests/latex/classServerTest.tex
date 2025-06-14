@@ -1,0 +1,192 @@
+\doxysection{Server\+Test Class Reference}
+\hypertarget{classServerTest}{}\label{classServerTest}\index{ServerTest@{ServerTest}}
+
+
+Тестовый класс для интеграционного тестирования Finance\+Server.  
+
+
+Inheritance diagram for Server\+Test\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classServerTest}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classServerTest_ae8f344926e05c7c4262db83aa54a548a}\label{classServerTest_ae8f344926e05c7c4262db83aa54a548a} 
+void {\bfseries Set\+Up} () override
+\item 
+\Hypertarget{classServerTest_a5fdb7fe648eb8809bde180bcc97852dc}\label{classServerTest_a5fdb7fe648eb8809bde180bcc97852dc} 
+void {\bfseries Tear\+Down} () override
+\item 
+void \mbox{\hyperlink{classServerTest_a22ec90b4c60d7cdc82ac8eed04694aff}{setup\+Test\+Data}} ()
+\begin{DoxyCompactList}\small\item\em Настраивает тестовые данные для каждого теста. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classServerTest_adfab862e17e305a94299ff9bf1c6906e}{cleanup\+Test\+Data}} ()
+\begin{DoxyCompactList}\small\item\em Очищает тестовые данные после каждого теста. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classServerTest_aa0660af68da43dd4b01a3ff9861f3655}{make\+Request}} (const std\+::string \&endpoint, const std\+::string \&method, const std\+::string \&data)
+\begin{DoxyCompactList}\small\item\em Выполняет HTTP-\/запрос к серверу. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classServerTest_ae04760bb52ae083c82794906907a9557}{Set\+Up\+Test\+Suite}} ()
+\begin{DoxyCompactList}\small\item\em Настраивает тестовый набор перед выполнением всех тестов. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classServerTest_af53b00feab63c4eb325099234eb31ccb}{Tear\+Down\+Test\+Suite}} ()
+\begin{DoxyCompactList}\small\item\em Очищает ресурсы тестового набора после выполнения всех тестов. \end{DoxyCompactList}\item 
+static size\+\_\+t \mbox{\hyperlink{classServerTest_a288f317c5d3fe54c1a9560f8f9044310}{Write\+Callback}} (void \texorpdfstring{$\ast$}{*}contents, size\+\_\+t size, size\+\_\+t nmemb, std\+::string \texorpdfstring{$\ast$}{*}userp)
+\begin{DoxyCompactList}\small\item\em Callback-\/функция для записи данных, полученных от c\+URL. \end{DoxyCompactList}\item 
+static bool \mbox{\hyperlink{classServerTest_a34dcab1b5053bcc92996a457539e53f5}{is\+\_\+server\+\_\+alive}} ()
+\begin{DoxyCompactList}\small\item\em Проверяет, запущен ли сервер. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classServerTest_a6f8fb53b91d07314e9eb67068a113824}\label{classServerTest_a6f8fb53b91d07314e9eb67068a113824} 
+std\+::string {\bfseries test\+\_\+user1\+\_\+id}
+\item 
+\Hypertarget{classServerTest_a20e64d6ebee7e320572f15d97a7c3f7c}\label{classServerTest_a20e64d6ebee7e320572f15d97a7c3f7c} 
+std\+::string {\bfseries test\+\_\+user2\+\_\+id}
+\item 
+\Hypertarget{classServerTest_af9a628edc718dc0b1f860ba66b66d81d}\label{classServerTest_af9a628edc718dc0b1f860ba66b66d81d} 
+std\+::string {\bfseries test\+\_\+usd\+\_\+id}
+\item 
+\Hypertarget{classServerTest_a7bc96a558a0ae98d5cf1c650ad386eb9}\label{classServerTest_a7bc96a558a0ae98d5cf1c650ad386eb9} 
+std\+::string {\bfseries test\+\_\+eur\+\_\+id}
+\item 
+\Hypertarget{classServerTest_a9fc59621d15000804884788d2ebf018f}\label{classServerTest_a9fc59621d15000804884788d2ebf018f} 
+std\+::string {\bfseries test\+\_\+session\+\_\+token}
+\item 
+\Hypertarget{classServerTest_aaf8d96bb4124ae651f3d29b27fc038f7}\label{classServerTest_aaf8d96bb4124ae651f3d29b27fc038f7} 
+UUIDGenerator {\bfseries uuid\+\_\+gen}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classServerTest_a9a7642057de0493e862549f1b26227e9}\label{classServerTest_a9a7642057de0493e862549f1b26227e9} 
+static std\+::unique\+\_\+ptr$<$ pqxx\+::connection $>$ {\bfseries postgres\+\_\+conn}
+\item 
+\Hypertarget{classServerTest_af9b5938fdedc6fc81101addced3bb90c}\label{classServerTest_af9b5938fdedc6fc81101addced3bb90c} 
+static std\+::unique\+\_\+ptr$<$ sw\+::redis\+::\+Redis $>$ {\bfseries redis\+\_\+conn}
+\item 
+\Hypertarget{classServerTest_a3590dff2a4de84837df1737a730d25ec}\label{classServerTest_a3590dff2a4de84837df1737a730d25ec} 
+static std\+::unique\+\_\+ptr$<$ Finance\+Server $>$ {\bfseries server}
+\item 
+\Hypertarget{classServerTest_a8183dd8a9a0cd54c66fb1e4537d39bd1}\label{classServerTest_a8183dd8a9a0cd54c66fb1e4537d39bd1} 
+static std\+::thread {\bfseries server\+\_\+thread}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Тестовый класс для интеграционного тестирования Finance\+Server. 
+
+Настраивает и очищает тестовую базу данных и сервер Crow для каждого тестового набора. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classServerTest_adfab862e17e305a94299ff9bf1c6906e}\index{ServerTest@{ServerTest}!cleanupTestData@{cleanupTestData}}
+\index{cleanupTestData@{cleanupTestData}!ServerTest@{ServerTest}}
+\doxysubsubsection{\texorpdfstring{cleanupTestData()}{cleanupTestData()}}
+{\footnotesize\ttfamily \label{classServerTest_adfab862e17e305a94299ff9bf1c6906e} 
+void Server\+Test\+::cleanup\+Test\+Data (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Очищает тестовые данные после каждого теста. 
+
+Удаляет тестовых пользователей, счета, валюты из Postgre\+SQL и тестовый токен сессии из Redis. \Hypertarget{classServerTest_a34dcab1b5053bcc92996a457539e53f5}\index{ServerTest@{ServerTest}!is\_server\_alive@{is\_server\_alive}}
+\index{is\_server\_alive@{is\_server\_alive}!ServerTest@{ServerTest}}
+\doxysubsubsection{\texorpdfstring{is\_server\_alive()}{is\_server\_alive()}}
+{\footnotesize\ttfamily \label{classServerTest_a34dcab1b5053bcc92996a457539e53f5} 
+static bool Server\+Test\+::is\+\_\+server\+\_\+alive (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+Проверяет, запущен ли сервер. 
+
+Отправляет небольшой запрос к серверу, чтобы убедиться, что он отвечает. \begin{DoxyReturn}{Returns}
+true, если сервер отвечает, false в противном случае. 
+\end{DoxyReturn}
+\Hypertarget{classServerTest_aa0660af68da43dd4b01a3ff9861f3655}\index{ServerTest@{ServerTest}!makeRequest@{makeRequest}}
+\index{makeRequest@{makeRequest}!ServerTest@{ServerTest}}
+\doxysubsubsection{\texorpdfstring{makeRequest()}{makeRequest()}}
+{\footnotesize\ttfamily \label{classServerTest_aa0660af68da43dd4b01a3ff9861f3655} 
+std\+::string Server\+Test\+::make\+Request (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{endpoint}{, }\item[{const std\+::string \&}]{method}{, }\item[{const std\+::string \&}]{data}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Выполняет HTTP-\/запрос к серверу. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em endpoint} & Конечная точка API (например, "{}/api/v1/balance"{}). \\
+\hline
+{\em method} & HTTP-\/метод (например, "{}\+POST"{}). \\
+\hline
+{\em data} & Тело запроса в виде строки JSON. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Строка, содержащая ответ сервера. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & Если запрос c\+URL завершается с ошибкой. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{classServerTest_a22ec90b4c60d7cdc82ac8eed04694aff}\index{ServerTest@{ServerTest}!setupTestData@{setupTestData}}
+\index{setupTestData@{setupTestData}!ServerTest@{ServerTest}}
+\doxysubsubsection{\texorpdfstring{setupTestData()}{setupTestData()}}
+{\footnotesize\ttfamily \label{classServerTest_a22ec90b4c60d7cdc82ac8eed04694aff} 
+void Server\+Test\+::setup\+Test\+Data (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Настраивает тестовые данные для каждого теста. 
+
+Вставляет тестовых пользователей, валюты и счета в базу данных Postgre\+SQL, а также создает тестовый токен сессии в Redis. \Hypertarget{classServerTest_ae04760bb52ae083c82794906907a9557}\index{ServerTest@{ServerTest}!SetUpTestSuite@{SetUpTestSuite}}
+\index{SetUpTestSuite@{SetUpTestSuite}!ServerTest@{ServerTest}}
+\doxysubsubsection{\texorpdfstring{SetUpTestSuite()}{SetUpTestSuite()}}
+{\footnotesize\ttfamily \label{classServerTest_ae04760bb52ae083c82794906907a9557} 
+static void Server\+Test\+::\+Set\+Up\+Test\+Suite (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+Настраивает тестовый набор перед выполнением всех тестов. 
+
+Инициализирует статические соединения с Postgre\+SQL и Redis, создает и запускает Finance\+Server в отдельном потоке, а затем ожидает его готовности. \Hypertarget{classServerTest_af53b00feab63c4eb325099234eb31ccb}\index{ServerTest@{ServerTest}!TearDownTestSuite@{TearDownTestSuite}}
+\index{TearDownTestSuite@{TearDownTestSuite}!ServerTest@{ServerTest}}
+\doxysubsubsection{\texorpdfstring{TearDownTestSuite()}{TearDownTestSuite()}}
+{\footnotesize\ttfamily \label{classServerTest_af53b00feab63c4eb325099234eb31ccb} 
+static void Server\+Test\+::\+Tear\+Down\+Test\+Suite (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+Очищает ресурсы тестового набора после выполнения всех тестов. 
+
+Останавливает Finance\+Server и ожидает завершения его потока. Соединения с базами данных будут закрыты автоматически при уничтожении {\ttfamily std\+::unique\+\_\+ptr}. \Hypertarget{classServerTest_a288f317c5d3fe54c1a9560f8f9044310}\index{ServerTest@{ServerTest}!WriteCallback@{WriteCallback}}
+\index{WriteCallback@{WriteCallback}!ServerTest@{ServerTest}}
+\doxysubsubsection{\texorpdfstring{WriteCallback()}{WriteCallback()}}
+{\footnotesize\ttfamily \label{classServerTest_a288f317c5d3fe54c1a9560f8f9044310} 
+static size\+\_\+t Server\+Test\+::\+Write\+Callback (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{contents}{, }\item[{size\+\_\+t}]{size}{, }\item[{size\+\_\+t}]{nmemb}{, }\item[{std\+::string \texorpdfstring{$\ast$}{*}}]{userp}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+Callback-\/функция для записи данных, полученных от c\+URL. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em contents} & Указатель на полученные данные. \\
+\hline
+{\em size} & Размер одного элемента данных. \\
+\hline
+{\em nmemb} & Количество элементов данных. \\
+\hline
+{\em userp} & Указатель на строку, куда будут добавлены данные. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Фактическое количество записанных байт. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+finance\+\_\+manager/internal/server/server\+\_\+test.\+cpp\end{DoxyCompactItemize}

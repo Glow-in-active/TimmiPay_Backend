@@ -1,0 +1,102 @@
+\doxysection{User\+Verifier Class Reference}
+\hypertarget{classUserVerifier}{}\label{classUserVerifier}\index{UserVerifier@{UserVerifier}}
+
+
+Класс для верификации пользователей и генерации токенов.  
+
+
+
+
+{\ttfamily \#include $<$user\+\_\+verify.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classUserVerifier_a718e6ee8931f268df081f74e6dcdc7e7}{User\+Verifier}} (pqxx\+::connection \&pg\+\_\+conn, sw\+::redis\+::\+Redis \&redis)
+\begin{DoxyCompactList}\small\item\em Конструктор класса \doxylink{classUserVerifier}{User\+Verifier}. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classUserVerifier_a36f65b860a449b75131b27061a2df25f}{Generate\+Token}} (const std\+::string \&email, const std\+::string \&password\+\_\+hash)
+\begin{DoxyCompactList}\small\item\em Генерирует токен аутентификации для пользователя. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Класс для верификации пользователей и генерации токенов. 
+
+Инкапсулирует логику проверки учетных данных пользователя, взаимодействия с базой данных и генерации уникальных токенов сессий. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classUserVerifier_a718e6ee8931f268df081f74e6dcdc7e7}\index{UserVerifier@{UserVerifier}!UserVerifier@{UserVerifier}}
+\index{UserVerifier@{UserVerifier}!UserVerifier@{UserVerifier}}
+\doxysubsubsection{\texorpdfstring{UserVerifier()}{UserVerifier()}}
+{\footnotesize\ttfamily \label{classUserVerifier_a718e6ee8931f268df081f74e6dcdc7e7} 
+User\+Verifier\+::\+User\+Verifier (\begin{DoxyParamCaption}\item[{pqxx\+::connection \&}]{pg\+\_\+conn}{, }\item[{sw\+::redis\+::\+Redis \&}]{redis}{}\end{DoxyParamCaption})}
+
+
+
+Конструктор класса \doxylink{classUserVerifier}{User\+Verifier}. 
+
+Инициализирует \doxylink{classUserVerifier}{User\+Verifier} с необходимыми зависимостями для работы с Postgre\+SQL и Redis.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pg\+\_\+conn} & Ссылка на объект pqxx\+::connection для взаимодействия с Postgre\+SQL. \\
+\hline
+{\em redis} & Ссылка на объект sw\+::redis\+::\+Redis для взаимодействия с Redis.\\
+\hline
+\end{DoxyParams}
+Инициализирует \doxylink{classUserVerifier}{User\+Verifier} с необходимыми зависимостями для работы с Postgre\+SQL и Redis, а также для генерации токенов.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pg\+\_\+conn} & Ссылка на объект pqxx\+::connection для взаимодействия с Postgre\+SQL. \\
+\hline
+{\em redis} & Ссылка на объект sw\+::redis\+::\+Redis для взаимодействия с Redis. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classUserVerifier_a36f65b860a449b75131b27061a2df25f}\index{UserVerifier@{UserVerifier}!GenerateToken@{GenerateToken}}
+\index{GenerateToken@{GenerateToken}!UserVerifier@{UserVerifier}}
+\doxysubsubsection{\texorpdfstring{GenerateToken()}{GenerateToken()}}
+{\footnotesize\ttfamily \label{classUserVerifier_a36f65b860a449b75131b27061a2df25f} 
+std\+::string User\+Verifier\+::\+Generate\+Token (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{email}{, }\item[{const std\+::string \&}]{password\+\_\+hash}{}\end{DoxyParamCaption})}
+
+
+
+Генерирует токен аутентификации для пользователя. 
+
+Проверяет учетные данные пользователя и, в случае успеха, генерирует новый токен.
+
+
+\begin{DoxyParams}{Parameters}
+{\em email} & Электронная почта пользователя. \\
+\hline
+{\em password\+\_\+hash} & Хеш пароля пользователя. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Сгенерированный токен аутентификации.
+\end{DoxyReturn}
+Проверяет учетные данные пользователя (email и хеш пароля) и, в случае успеха, генерирует новый токен.
+
+
+\begin{DoxyParams}{Parameters}
+{\em email} & Электронная почта пользователя. \\
+\hline
+{\em password\+\_\+hash} & Хеш пароля пользователя. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Сгенерированный токен аутентификации. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & Если логин или пароль неверны. \\
+\hline
+\end{DoxyExceptions}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+auth\+\_\+service/internal/auth/user\+\_\+verify/verification/user\+\_\+verify.\+h\item 
+auth\+\_\+service/internal/auth/user\+\_\+verify/verification/user\+\_\+verify.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,59 @@
+\doxysection{Redis\+Set\+Token\+Test Class Reference}
+\hypertarget{classRedisSetTokenTest}{}\label{classRedisSetTokenTest}\index{RedisSetTokenTest@{RedisSetTokenTest}}
+
+
+Тестовый класс для функций установки и продления токенов Redis.  
+
+
+Inheritance diagram for Redis\+Set\+Token\+Test\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classRedisSetTokenTest}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classRedisSetTokenTest_a8ebd14dded6f5b0453296187bf388ca5}{Set\+Up}} () override
+\begin{DoxyCompactList}\small\item\em Настраивает тестовую среду перед каждым тестом. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classRedisSetTokenTest_a9064844923fd657050531c2fc1ae4bb2}{Tear\+Down}} () override
+\begin{DoxyCompactList}\small\item\em Очищает тестовую среду после каждого теста. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classRedisSetTokenTest_aa378c368eefc18d6b1d262c884395b85}\label{classRedisSetTokenTest_aa378c368eefc18d6b1d262c884395b85} 
+std\+::unique\+\_\+ptr$<$ sw\+::redis\+::\+Redis $>$ {\bfseries redis}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Тестовый класс для функций установки и продления токенов Redis. 
+
+Настраивает соединение с Redis и очищает базу данных перед каждым тестом. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classRedisSetTokenTest_a8ebd14dded6f5b0453296187bf388ca5}\index{RedisSetTokenTest@{RedisSetTokenTest}!SetUp@{SetUp}}
+\index{SetUp@{SetUp}!RedisSetTokenTest@{RedisSetTokenTest}}
+\doxysubsubsection{\texorpdfstring{SetUp()}{SetUp()}}
+{\footnotesize\ttfamily \label{classRedisSetTokenTest_a8ebd14dded6f5b0453296187bf388ca5} 
+void Redis\+Set\+Token\+Test\+::\+Set\+Up (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+
+Настраивает тестовую среду перед каждым тестом. 
+
+Инициализирует соединение с Redis и очищает базу данных Redis. \Hypertarget{classRedisSetTokenTest_a9064844923fd657050531c2fc1ae4bb2}\index{RedisSetTokenTest@{RedisSetTokenTest}!TearDown@{TearDown}}
+\index{TearDown@{TearDown}!RedisSetTokenTest@{RedisSetTokenTest}}
+\doxysubsubsection{\texorpdfstring{TearDown()}{TearDown()}}
+{\footnotesize\ttfamily \label{classRedisSetTokenTest_a9064844923fd657050531c2fc1ae4bb2} 
+void Redis\+Set\+Token\+Test\+::\+Tear\+Down (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+
+Очищает тестовую среду после каждого теста. 
+
+Очищает базу данных Redis. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+storage/user\+\_\+verify/redis\+\_\+set/redis\+\_\+set\+\_\+token\+\_\+test.\+cpp\end{DoxyCompactItemize}

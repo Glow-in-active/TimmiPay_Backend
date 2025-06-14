@@ -1,0 +1,28 @@
+\doxysection{user\+\_\+verify.\+h}
+\hypertarget{auth__service_2internal_2auth_2user__verify_2verification_2user__verify_8h_source}{}\label{auth__service_2internal_2auth_2user__verify_2verification_2user__verify_8h_source}\index{auth\_service/internal/auth/user\_verify/verification/user\_verify.h@{auth\_service/internal/auth/user\_verify/verification/user\_verify.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ USER\_VERIFY\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ USER\_VERIFY\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}../../../../storage/user\_verify/auth/user\_verify.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}../token\_generator/token\_generator.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classUserVerifier_a718e6ee8931f268df081f74e6dcdc7e7}{UserVerifier}}\ \{}
+\DoxyCodeLine{00016\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ \mbox{\hyperlink{classUserVerifier_a718e6ee8931f268df081f74e6dcdc7e7}{UserVerifier}}(pqxx::connection\&\ pg\_conn,\ sw::redis::Redis\&\ redis);}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00039\ \ \ std::string\ \mbox{\hyperlink{classUserVerifier_a36f65b860a449b75131b27061a2df25f}{GenerateToken}}(\textcolor{keyword}{const}\ std::string\&\ email,}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ password\_hash);}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00043\ \ \ \mbox{\hyperlink{classUserStorage}{UserStorage}}\ user\_storage\_;}
+\DoxyCodeLine{00044\ \ \ \mbox{\hyperlink{classUUIDGenerator}{UUIDGenerator}}\ uuid\_generator\_;}
+\DoxyCodeLine{00045\ \ \ sw::redis::Redis\&\ redis\_;}
+\DoxyCodeLine{00046\ \ \ \mbox{\hyperlink{classTokenGenerator}{TokenGenerator}}\ token\_gen\_;}
+\DoxyCodeLine{00047\ \};}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,73 @@
+\doxysection{Mock\+Session\+Start Class Reference}
+\hypertarget{classMockSessionStart}{}\label{classMockSessionStart}\index{MockSessionStart@{MockSessionStart}}
+
+
+Мок-\/класс для Session\+Start, используемый в тестах.  
+
+
+Inheritance diagram for Mock\+Session\+Start\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classMockSessionStart}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classMockSessionStart_a0c7efa8404329925e8a14f2f9ea7d2ae}{Mock\+Session\+Start}} ()
+\begin{DoxyCompactList}\small\item\em Конструктор \doxylink{classMockSessionStart}{Mock\+Session\+Start}. \end{DoxyCompactList}\item 
+json \mbox{\hyperlink{classMockSessionStart_a69babef0fbed51b75090403a800333ff}{Handle\+Request}} (const json \&request\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Имитирует обработку запроса Session\+Start. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classMockSessionStart_a1e3eac4113529a5774624e7a05fda74e}\label{classMockSessionStart_a1e3eac4113529a5774624e7a05fda74e} 
+json {\bfseries last\+\_\+request}
+\item 
+\Hypertarget{classMockSessionStart_a7b04f61b21fa71b405e4e574d0fa1f0a}\label{classMockSessionStart_a7b04f61b21fa71b405e4e574d0fa1f0a} 
+json {\bfseries response\+\_\+to\+\_\+return}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Мок-\/класс для Session\+Start, используемый в тестах. 
+
+Позволяет имитировать поведение Session\+Start для тестирования обработчиков эндпоинтов, фиксируя входящие запросы и возвращая предопределенные ответы. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classMockSessionStart_a0c7efa8404329925e8a14f2f9ea7d2ae}\index{MockSessionStart@{MockSessionStart}!MockSessionStart@{MockSessionStart}}
+\index{MockSessionStart@{MockSessionStart}!MockSessionStart@{MockSessionStart}}
+\doxysubsubsection{\texorpdfstring{MockSessionStart()}{MockSessionStart()}}
+{\footnotesize\ttfamily \label{classMockSessionStart_a0c7efa8404329925e8a14f2f9ea7d2ae} 
+Mock\+Session\+Start\+::\+Mock\+Session\+Start (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Конструктор \doxylink{classMockSessionStart}{Mock\+Session\+Start}. 
+
+Инициализирует внутренние зависимости для имитации поведения Session\+Start. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classMockSessionStart_a69babef0fbed51b75090403a800333ff}\index{MockSessionStart@{MockSessionStart}!HandleRequest@{HandleRequest}}
+\index{HandleRequest@{HandleRequest}!MockSessionStart@{MockSessionStart}}
+\doxysubsubsection{\texorpdfstring{HandleRequest()}{HandleRequest()}}
+{\footnotesize\ttfamily \label{classMockSessionStart_a69babef0fbed51b75090403a800333ff} 
+json Mock\+Session\+Start\+::\+Handle\+Request (\begin{DoxyParamCaption}\item[{const json \&}]{request\+\_\+data}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Имитирует обработку запроса Session\+Start. 
+
+Сохраняет данные входящего запроса и возвращает предварительно установленный ответ. 
+\begin{DoxyParams}{Parameters}
+{\em request\+\_\+data} & Входящие данные запроса в формате JSON. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Заранее определенный ответ в формате JSON. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+auth\+\_\+service/internal/auth/user\+\_\+verify\+\_\+http/endpoints/session\+\_\+auth\+\_\+endpoint/session\+\_\+auth\+\_\+endpoint\+\_\+test.\+cpp\end{DoxyCompactItemize}

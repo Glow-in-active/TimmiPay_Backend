@@ -1,0 +1,100 @@
+\doxysection{Finance\+Server Class Reference}
+\hypertarget{classFinanceServer}{}\label{classFinanceServer}\index{FinanceServer@{FinanceServer}}
+
+
+Класс, представляющий финансовый сервер на базе Crow.  
+
+
+
+
+{\ttfamily \#include $<$server.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classFinanceServer_a9a6f4149290d57a81731b4294848888f}{Finance\+Server}} (pqxx\+::connection \&postgres, sw\+::redis\+::\+Redis \&redis)
+\begin{DoxyCompactList}\small\item\em Конструктор для \doxylink{classFinanceServer}{Finance\+Server}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classFinanceServer_a1638032d789503426fe0ab548a524fc3}{run}} (int port)
+\begin{DoxyCompactList}\small\item\em Запускает сервер Crow на указанном порту. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classFinanceServer_a6f1234518390f3c9ed8d69be1c2e150b}{stop\+\_\+server}} ()
+\begin{DoxyCompactList}\small\item\em Останавливает сервер Crow. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Класс, представляющий финансовый сервер на базе Crow. 
+
+Обрабатывает HTTP-\/запросы, связанные с финансовыми операциями, такими как получение баланса, перевод денег и получение истории транзакций. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classFinanceServer_a9a6f4149290d57a81731b4294848888f}\index{FinanceServer@{FinanceServer}!FinanceServer@{FinanceServer}}
+\index{FinanceServer@{FinanceServer}!FinanceServer@{FinanceServer}}
+\doxysubsubsection{\texorpdfstring{FinanceServer()}{FinanceServer()}}
+{\footnotesize\ttfamily \label{classFinanceServer_a9a6f4149290d57a81731b4294848888f} 
+Finance\+Server\+::\+Finance\+Server (\begin{DoxyParamCaption}\item[{pqxx\+::connection \&}]{postgres}{, }\item[{sw\+::redis\+::\+Redis \&}]{redis}{}\end{DoxyParamCaption})}
+
+
+
+Конструктор для \doxylink{classFinanceServer}{Finance\+Server}. 
+
+Инициализирует \doxylink{classFinanceServer}{Finance\+Server} с предоставленными соединениями с Postgre\+SQL и Redis, а также настраивает маршруты API.
+
+
+\begin{DoxyParams}{Parameters}
+{\em postgres} & Ссылка на активное соединение с базой данных Postgre\+SQL. \\
+\hline
+{\em redis} & Ссылка на активное соединение с Redis.\\
+\hline
+\end{DoxyParams}
+Инициализирует \doxylink{classFinanceServer}{Finance\+Server} с предоставленными соединениями с Postgre\+SQL и Redis, а также настраивает маршруты API для получения баланса, перевода денег и получения истории транзакций.
+
+
+\begin{DoxyParams}{Parameters}
+{\em postgres} & Ссылка на активное соединение с базой данных Postgre\+SQL. \\
+\hline
+{\em redis} & Ссылка на активное соединение с Redis.\\
+\hline
+\end{DoxyParams}
+\hypertarget{classFinanceServer_balance_endpoint}{}\doxysubsection{\texorpdfstring{Баланс пользователя (/api/v1/balance)}{Баланс пользователя (/api/v1/balance)}}\label{classFinanceServer_balance_endpoint}
+Обрабатывает POST-\/запросы для получения баланса пользователя. Требует {\ttfamily session\+\_\+token} в теле запроса. Возвращает массив объектов, каждый из которых содержит {\ttfamily currency} и {\ttfamily balance}. Возвращает 401, если токен сессии недействителен, или 500 в случае внутренней ошибки сервера.\hypertarget{classFinanceServer_transfer_endpoint}{}\doxysubsection{\texorpdfstring{Перевод денег (/api/v1/transfer)}{Перевод денег (/api/v1/transfer)}}\label{classFinanceServer_transfer_endpoint}
+Обрабатывает POST-\/запросы для перевода денег между пользователями. Требует {\ttfamily session\+\_\+token}, {\ttfamily to\+\_\+username}, {\ttfamily amount} и {\ttfamily currency} в теле запроса. Возвращает {\ttfamily transfer\+\_\+id} при успешном выполнении. Возвращает 401, если токен сессии недействителен, 400 в случае ошибки бизнес-\/логики (например, недостаток средств), или 500 в случае внутренней ошибки сервера.\hypertarget{classFinanceServer_history_endpoint}{}\doxysubsection{\texorpdfstring{История транзакций (/api/v1/history)}{История транзакций (/api/v1/history)}}\label{classFinanceServer_history_endpoint}
+Обрабатывает POST-\/запросы для получения истории транзакций пользователя. Требует {\ttfamily session\+\_\+token} в теле запроса. Поддерживает необязательные параметры {\ttfamily page} и {\ttfamily limit} для пагинации. Возвращает массив объектов, каждый из которых содержит {\ttfamily transfer\+\_\+id}, {\ttfamily amount}, {\ttfamily status} и {\ttfamily created\+\_\+at}. Возвращает 401, если токен сессии недействителен, или 500 в случае внутренней ошибки сервера. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classFinanceServer_a1638032d789503426fe0ab548a524fc3}\index{FinanceServer@{FinanceServer}!run@{run}}
+\index{run@{run}!FinanceServer@{FinanceServer}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily \label{classFinanceServer_a1638032d789503426fe0ab548a524fc3} 
+void Finance\+Server\+::run (\begin{DoxyParamCaption}\item[{int}]{port}{}\end{DoxyParamCaption})}
+
+
+
+Запускает сервер Crow на указанном порту. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em port} & Номер порта, на котором будет запущен сервер.\\
+\hline
+\end{DoxyParams}
+Сервер будет работать в многопоточном режиме.
+
+
+\begin{DoxyParams}{Parameters}
+{\em port} & Номер порта, на котором будет запущен сервер. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classFinanceServer_a6f1234518390f3c9ed8d69be1c2e150b}\index{FinanceServer@{FinanceServer}!stop\_server@{stop\_server}}
+\index{stop\_server@{stop\_server}!FinanceServer@{FinanceServer}}
+\doxysubsubsection{\texorpdfstring{stop\_server()}{stop\_server()}}
+{\footnotesize\ttfamily \label{classFinanceServer_a6f1234518390f3c9ed8d69be1c2e150b} 
+void Finance\+Server\+::stop\+\_\+server (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Останавливает сервер Crow. 
+
+Завершает работу приложения Crow. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+finance\+\_\+manager/internal/server/server.\+h\item 
+finance\+\_\+manager/internal/server/server.\+cpp\end{DoxyCompactItemize}

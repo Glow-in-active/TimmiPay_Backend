@@ -1,0 +1,24 @@
+\doxysection{currency.\+h}
+\hypertarget{currency_8h_source}{}\label{currency_8h_source}\index{finance\_manager/internal/models/currency.h@{finance\_manager/internal/models/currency.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <pqxx/pqxx>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structCurrency}{Currency}}\ \{}
+\DoxyCodeLine{00010\ \ \ std::string\ id;}
+\DoxyCodeLine{00011\ \ \ std::string\ code;}
+\DoxyCodeLine{00012\ \ \ std::string\ name;}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structCurrency}{Currency}}\ \mbox{\hyperlink{structCurrency_acd1b2a60ec3fab90fab8ca13553a24c7}{from\_row}}(\textcolor{keyword}{const}\ pqxx::row\&\ row)\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ \mbox{\hyperlink{structCurrency}{Currency}}\ currency;}
+\DoxyCodeLine{00022\ \ \ \ \ currency.id\ =\ row[\textcolor{stringliteral}{"{}id"{}}].as<std::string>();}
+\DoxyCodeLine{00023\ \ \ \ \ currency.code\ =\ row[\textcolor{stringliteral}{"{}code"{}}].as<std::string>();}
+\DoxyCodeLine{00024\ \ \ \ \ currency.name\ =\ row[\textcolor{stringliteral}{"{}name"{}}].as<std::string>();}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordflow}{return}\ currency;}
+\DoxyCodeLine{00026\ \ \ \}}
+\DoxyCodeLine{00027\ \};}
+
+\end{DoxyCode}

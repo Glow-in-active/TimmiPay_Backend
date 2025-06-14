@@ -1,0 +1,60 @@
+\doxysection{Account Struct Reference}
+\hypertarget{structAccount}{}\label{structAccount}\index{Account@{Account}}
+
+
+Структура, представляющая счет пользователя.  
+
+
+
+
+{\ttfamily \#include $<$account.\+h$>$}
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{structAccount}{Account}} \mbox{\hyperlink{structAccount_a95083ce54b016731133df90ee24b7a8e}{from\+\_\+row}} (const pqxx\+::row \&row)
+\begin{DoxyCompactList}\small\item\em Создает объект \doxylink{structAccount}{Account} из строки результата запроса pqxx. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structAccount_a4b15272067e9507e85487cd2096f6260}\label{structAccount_a4b15272067e9507e85487cd2096f6260} 
+std\+::string {\bfseries id}
+\item 
+\Hypertarget{structAccount_a945e394969cb58d126c1b13e6fe769ca}\label{structAccount_a945e394969cb58d126c1b13e6fe769ca} 
+std\+::string {\bfseries user\+\_\+id}
+\item 
+\Hypertarget{structAccount_afc4e461802c35ba8b6d54c565f6fe311}\label{structAccount_afc4e461802c35ba8b6d54c565f6fe311} 
+std\+::string {\bfseries currency\+\_\+id}
+\item 
+\Hypertarget{structAccount_a6e41f403b4813738ba835377f212de33}\label{structAccount_a6e41f403b4813738ba835377f212de33} 
+double {\bfseries balance}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Структура, представляющая счет пользователя. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structAccount_a95083ce54b016731133df90ee24b7a8e}\index{Account@{Account}!from\_row@{from\_row}}
+\index{from\_row@{from\_row}!Account@{Account}}
+\doxysubsubsection{\texorpdfstring{from\_row()}{from\_row()}}
+{\footnotesize\ttfamily \label{structAccount_a95083ce54b016731133df90ee24b7a8e} 
+static \mbox{\hyperlink{structAccount}{Account}} Account\+::from\+\_\+row (\begin{DoxyParamCaption}\item[{const pqxx\+::row \&}]{row}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Создает объект \doxylink{structAccount}{Account} из строки результата запроса pqxx. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em row} & Объект pqxx\+::row, содержащий данные счета из базы данных. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Объект \doxylink{structAccount}{Account}, заполненный данными из строки. 
+\end{DoxyReturn}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+finance\+\_\+manager/internal/models/account.\+h\end{DoxyCompactItemize}

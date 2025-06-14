@@ -1,0 +1,24 @@
+\doxysection{session\+\_\+start.\+h}
+\hypertarget{session__start_8h_source}{}\label{session__start_8h_source}\index{auth\_service/internal/auth/user\_verify\_http/session\_start/session\_start.h@{auth\_service/internal/auth/user\_verify\_http/session\_start/session\_start.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <nlohmann/json.hpp>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}../../user\_verify/verification/user\_verify.h"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{using\ }json\ =\ nlohmann::json;}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classSessionStart_a73977d526f4e5bb9e0576473adc8b43e}{SessionStart}}\ \{}
+\DoxyCodeLine{00016\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classSessionStart_a73977d526f4e5bb9e0576473adc8b43e}{SessionStart}}(\mbox{\hyperlink{classUserVerifier}{UserVerifier}}\&\ user\_verifier);}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00032\ \ \ json\ \mbox{\hyperlink{classSessionStart_a0640d0223bc5de2c94c6f79f6ae04a99}{HandleRequest}}(\textcolor{keyword}{const}\ json\&\ request\_data);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00035\ \ \ \mbox{\hyperlink{classUserVerifier}{UserVerifier}}\&\ user\_verifier\_;}
+\DoxyCodeLine{00036\ \};}
+
+\end{DoxyCode}

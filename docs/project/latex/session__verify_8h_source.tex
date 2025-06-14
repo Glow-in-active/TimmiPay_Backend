@@ -1,0 +1,27 @@
+\doxysection{session\+\_\+verify.\+h}
+\hypertarget{session__verify_8h_source}{}\label{session__verify_8h_source}\index{storage/session\_verify/session\_verify.h@{storage/session\_verify/session\_verify.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <sw/redis++/redis++.h>}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classSessionVerifier_a115dd823f5bdfa58d0eb9debaec8ffc6}{SessionVerifier}}\ \{}
+\DoxyCodeLine{00012\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00019\ \ \ \mbox{\hyperlink{classSessionVerifier_a115dd823f5bdfa58d0eb9debaec8ffc6}{SessionVerifier}}(sw::redis::Redis\&\ redis);}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classSessionVerifier_aa6a4c267c47fa157a4413d4bee63ac98}{verify\_session}}(\textcolor{keyword}{const}\ std::string\&\ session\_token,\ std::string\&\ user\_id);}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classSessionVerifier_acde59434335c2aef469a24635fbdf885}{set\_session}}(\textcolor{keyword}{const}\ std::string\&\ user\_id,}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ session\_token);}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classSessionVerifier_a9bbef2aee399acad2ec3b15602690862}{remove\_session}}(\textcolor{keyword}{const}\ std::string\&\ session\_token);}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00051\ \ \ sw::redis::Redis\&\ redis\_client;}
+\DoxyCodeLine{00052\ \};}
+
+\end{DoxyCode}

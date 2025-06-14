@@ -1,0 +1,94 @@
+\doxysection{Prod\+Session\+Hold\+Test Class Reference}
+\hypertarget{classProdSessionHoldTest}{}\label{classProdSessionHoldTest}\index{ProdSessionHoldTest@{ProdSessionHoldTest}}
+
+
+Тестовый класс для интеграционных тестов Session\+Hold.  
+
+
+Inheritance diagram for Prod\+Session\+Hold\+Test\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classProdSessionHoldTest}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classProdSessionHoldTest_affb9b41df96e73b0228bdeeaa20c336b}{Set\+Up}} () override
+\begin{DoxyCompactList}\small\item\em Настраивает тестовую среду перед каждым тестом. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classProdSessionHoldTest_a41f6395402e5fc4ebc7a172b09055e06}{Tear\+Down}} () override
+\begin{DoxyCompactList}\small\item\em Очищает тестовую среду после каждого теста. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classProdSessionHoldTest_a323e5f9de6c58ec131529fd073a44790}\label{classProdSessionHoldTest_a323e5f9de6c58ec131529fd073a44790} 
+Config {\bfseries pg\+\_\+config} = load\+\_\+config("{}database\+\_\+config/test\+\_\+postgres\+\_\+config.\+json"{})
+\item 
+Config\+Redis \mbox{\hyperlink{classProdSessionHoldTest_aa578bd6ac6e259b85fa0b4089b329788}{redis\+\_\+config}}
+\item 
+\Hypertarget{classProdSessionHoldTest_a918e40a206377ed2539e6919de18e0a5}\label{classProdSessionHoldTest_a918e40a206377ed2539e6919de18e0a5} 
+pqxx\+::connection {\bfseries pg\+\_\+conn} = connect\+\_\+to\+\_\+database(pg\+\_\+config)
+\item 
+\Hypertarget{classProdSessionHoldTest_a06939b4bf096c2ffd6737695252e3adf}\label{classProdSessionHoldTest_a06939b4bf096c2ffd6737695252e3adf} 
+sw\+::redis\+::\+Redis {\bfseries redis\+\_\+conn} = connect\+\_\+to\+\_\+redis(redis\+\_\+config)
+\item 
+\Hypertarget{classProdSessionHoldTest_a4abb22f10c3b71d9858786b3a95995c0}\label{classProdSessionHoldTest_a4abb22f10c3b71d9858786b3a95995c0} 
+User\+Verifier {\bfseries verifier} \{pg\+\_\+conn, redis\+\_\+conn\}
+\item 
+\Hypertarget{classProdSessionHoldTest_abf8919c8521d5575aa6bf3e912acf897}\label{classProdSessionHoldTest_abf8919c8521d5575aa6bf3e912acf897} 
+std\+::string {\bfseries test\+\_\+email} = "{}test\+\_\+user@example.\+com"{}
+\item 
+\Hypertarget{classProdSessionHoldTest_aff46ce0ba6b311451951c789a19b96be}\label{classProdSessionHoldTest_aff46ce0ba6b311451951c789a19b96be} 
+std\+::string {\bfseries test\+\_\+hash} = "{}5f4dcc3b5aa765d61d8327deb882cf99"{}
+\item 
+\Hypertarget{classProdSessionHoldTest_a0a8e73c4d5f290c65f2a5555d570c7ab}\label{classProdSessionHoldTest_a0a8e73c4d5f290c65f2a5555d570c7ab} 
+std\+::string {\bfseries test\+\_\+username} = "{}aboba"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Тестовый класс для интеграционных тестов Session\+Hold. 
+
+Настраивает и очищает тестовую среду с использованием реальных подключений к Postgre\+SQL и Redis, а также тестовых пользователей. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classProdSessionHoldTest_affb9b41df96e73b0228bdeeaa20c336b}\index{ProdSessionHoldTest@{ProdSessionHoldTest}!SetUp@{SetUp}}
+\index{SetUp@{SetUp}!ProdSessionHoldTest@{ProdSessionHoldTest}}
+\doxysubsubsection{\texorpdfstring{SetUp()}{SetUp()}}
+{\footnotesize\ttfamily \label{classProdSessionHoldTest_affb9b41df96e73b0228bdeeaa20c336b} 
+void Prod\+Session\+Hold\+Test\+::\+Set\+Up (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+
+Настраивает тестовую среду перед каждым тестом. 
+
+Вставляет тестового пользователя в базу данных Postgre\+SQL. \Hypertarget{classProdSessionHoldTest_a41f6395402e5fc4ebc7a172b09055e06}\index{ProdSessionHoldTest@{ProdSessionHoldTest}!TearDown@{TearDown}}
+\index{TearDown@{TearDown}!ProdSessionHoldTest@{ProdSessionHoldTest}}
+\doxysubsubsection{\texorpdfstring{TearDown()}{TearDown()}}
+{\footnotesize\ttfamily \label{classProdSessionHoldTest_a41f6395402e5fc4ebc7a172b09055e06} 
+void Prod\+Session\+Hold\+Test\+::\+Tear\+Down (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+
+Очищает тестовую среду после каждого теста. 
+
+Удаляет тестового пользователя из Postgre\+SQL и все связанные ключи сессий из Redis. 
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classProdSessionHoldTest_aa578bd6ac6e259b85fa0b4089b329788}\index{ProdSessionHoldTest@{ProdSessionHoldTest}!redis\_config@{redis\_config}}
+\index{redis\_config@{redis\_config}!ProdSessionHoldTest@{ProdSessionHoldTest}}
+\doxysubsubsection{\texorpdfstring{redis\_config}{redis\_config}}
+{\footnotesize\ttfamily \label{classProdSessionHoldTest_aa578bd6ac6e259b85fa0b4089b329788} 
+Config\+Redis Prod\+Session\+Hold\+Test\+::redis\+\_\+config\hspace{0.3cm}{\ttfamily [protected]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ load\_redis\_config(\textcolor{stringliteral}{"{}database\_config/test\_redis\_config.json"{}})}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+auth\+\_\+service/internal/auth/user\+\_\+verify\+\_\+http/session\+\_\+hold/session\+\_\+hold\+\_\+test.\+cpp\end{DoxyCompactItemize}

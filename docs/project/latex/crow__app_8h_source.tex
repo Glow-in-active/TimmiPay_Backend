@@ -1,0 +1,16 @@
+\doxysection{crow\+\_\+app.\+h}
+\hypertarget{crow__app_8h_source}{}\label{crow__app_8h_source}\index{auth\_service/internal/server/crow\_app/crow\_app.h@{auth\_service/internal/server/crow\_app/crow\_app.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <crow.h>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <crow/middlewares/cors.h>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}../../auth/user\_verify\_http/session\_hold/session\_hold.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}../../auth/user\_verify\_http/session\_start/session\_start.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00016\ crow::App<crow::CORSHandler>\&\ create\_crow\_app(}
+\DoxyCodeLine{00017\ \ \ \ \ \mbox{\hyperlink{classSessionStart}{SessionStart}}\&\ session\_start\_handler,\ \mbox{\hyperlink{classSessionHold}{SessionHold}}\&\ session\_hold\_handler);}
+
+\end{DoxyCode}

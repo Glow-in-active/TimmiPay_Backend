@@ -1,0 +1,85 @@
+\doxysection{Crow\+App\+Server\+Fixture Class Reference}
+\hypertarget{classCrowAppServerFixture}{}\label{classCrowAppServerFixture}\index{CrowAppServerFixture@{CrowAppServerFixture}}
+
+
+Фикстура для интеграционных тестов сервера Crow\+App.  
+
+
+Inheritance diagram for Crow\+App\+Server\+Fixture\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classCrowAppServerFixture}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classCrowAppServerFixture_a27f5f311137db23f68077364b7d88e3b}{Set\+Up\+Test\+Suite}} ()
+\begin{DoxyCompactList}\small\item\em Настраивает тестовый набор перед выполнением всех тестов. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classCrowAppServerFixture_ade4a127573c7e1ad69ff04fa55851b02}{Tear\+Down\+Test\+Suite}} ()
+\begin{DoxyCompactList}\small\item\em Очищает ресурсы после выполнения всех тестов. \end{DoxyCompactList}\item 
+static bool \mbox{\hyperlink{classCrowAppServerFixture_a47494db188a5157ef19dfb5a21819775}{is\+\_\+server\+\_\+alive}} ()
+\begin{DoxyCompactList}\small\item\em Проверяет доступность сервера. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classCrowAppServerFixture_ab13ec34609b462ffbef7b9e6c377ae73}\label{classCrowAppServerFixture_ab13ec34609b462ffbef7b9e6c377ae73} 
+static crow\+::\+App$<$ crow\+::\+CORSHandler $>$ \texorpdfstring{$\ast$}{*} {\bfseries app}
+\item 
+\Hypertarget{classCrowAppServerFixture_a5314e10ca4e35444184dbce2636bd4c3}\label{classCrowAppServerFixture_a5314e10ca4e35444184dbce2636bd4c3} 
+static \mbox{\hyperlink{classRealSessionStart}{Real\+Session\+Start}} {\bfseries session\+\_\+start}
+\item 
+\Hypertarget{classCrowAppServerFixture_a4afb35c63bd382f35fd78b87b63bd2a9}\label{classCrowAppServerFixture_a4afb35c63bd382f35fd78b87b63bd2a9} 
+static \mbox{\hyperlink{classRealSessionHold}{Real\+Session\+Hold}} {\bfseries session\+\_\+hold}
+\item 
+\Hypertarget{classCrowAppServerFixture_a01de8b014e98e49db575d29446349db2}\label{classCrowAppServerFixture_a01de8b014e98e49db575d29446349db2} 
+static std\+::thread {\bfseries server\+\_\+thread}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Фикстура для интеграционных тестов сервера Crow\+App. 
+
+Настраивает и запускает тестовый HTTP-\/сервер Crow перед выполнением тестового набора и останавливает его после завершения. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classCrowAppServerFixture_a47494db188a5157ef19dfb5a21819775}\index{CrowAppServerFixture@{CrowAppServerFixture}!is\_server\_alive@{is\_server\_alive}}
+\index{is\_server\_alive@{is\_server\_alive}!CrowAppServerFixture@{CrowAppServerFixture}}
+\doxysubsubsection{\texorpdfstring{is\_server\_alive()}{is\_server\_alive()}}
+{\footnotesize\ttfamily \label{classCrowAppServerFixture_a47494db188a5157ef19dfb5a21819775} 
+static bool Crow\+App\+Server\+Fixture\+::is\+\_\+server\+\_\+alive (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+Проверяет доступность сервера. 
+
+Отправляет HTTP-\/запрос к серверу и проверяет успешность соединения.
+
+\begin{DoxyReturn}{Returns}
+true, если сервер доступен, false в противном случае. 
+\end{DoxyReturn}
+\Hypertarget{classCrowAppServerFixture_a27f5f311137db23f68077364b7d88e3b}\index{CrowAppServerFixture@{CrowAppServerFixture}!SetUpTestSuite@{SetUpTestSuite}}
+\index{SetUpTestSuite@{SetUpTestSuite}!CrowAppServerFixture@{CrowAppServerFixture}}
+\doxysubsubsection{\texorpdfstring{SetUpTestSuite()}{SetUpTestSuite()}}
+{\footnotesize\ttfamily \label{classCrowAppServerFixture_a27f5f311137db23f68077364b7d88e3b} 
+static void Crow\+App\+Server\+Fixture\+::\+Set\+Up\+Test\+Suite (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+Настраивает тестовый набор перед выполнением всех тестов. 
+
+Инициализирует приложение Crow, запускает его в отдельном потоке и ожидает готовности сервера. \Hypertarget{classCrowAppServerFixture_ade4a127573c7e1ad69ff04fa55851b02}\index{CrowAppServerFixture@{CrowAppServerFixture}!TearDownTestSuite@{TearDownTestSuite}}
+\index{TearDownTestSuite@{TearDownTestSuite}!CrowAppServerFixture@{CrowAppServerFixture}}
+\doxysubsubsection{\texorpdfstring{TearDownTestSuite()}{TearDownTestSuite()}}
+{\footnotesize\ttfamily \label{classCrowAppServerFixture_ade4a127573c7e1ad69ff04fa55851b02} 
+static void Crow\+App\+Server\+Fixture\+::\+Tear\+Down\+Test\+Suite (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+Очищает ресурсы после выполнения всех тестов. 
+
+Останавливает приложение Crow и завершает поток сервера. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+auth\+\_\+service/internal/server/crow\+\_\+app/crow\+\_\+app\+\_\+test.\+cpp\end{DoxyCompactItemize}

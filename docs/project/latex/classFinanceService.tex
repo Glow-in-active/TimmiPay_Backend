@@ -1,0 +1,163 @@
+\doxysection{Finance\+Service Class Reference}
+\hypertarget{classFinanceService}{}\label{classFinanceService}\index{FinanceService@{FinanceService}}
+
+
+Класс для предоставления финансовых услуг, таких как получение баланса, перевод денег и история транзакций.  
+
+
+
+
+{\ttfamily \#include $<$finance\+\_\+service.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classFinanceService_a48056a693a5ac947bca7427352e88bb3}{Finance\+Service}} (pqxx\+::connection \&db\+\_\+conn)
+\begin{DoxyCompactList}\small\item\em Конструктор для \doxylink{classFinanceService}{Finance\+Service}. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::pair$<$ std\+::string, double $>$ $>$ \mbox{\hyperlink{classFinanceService_a3f32cb2f5588658b14b02c63ceb43ad1}{get\+\_\+user\+\_\+balance}} (const std\+::string \&user\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Получает баланс пользователя для каждой валюты. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classFinanceService_a94ab6f2036a8b5a37416ca7921abb98d}{transfer\+\_\+money}} (const std\+::string \&from\+\_\+user\+\_\+id, const std\+::string \&to\+\_\+username, double amount, const std\+::string \&currency)
+\begin{DoxyCompactList}\small\item\em Осуществляет перевод денег между пользователями. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{structTransfer}{Transfer}} $>$ \mbox{\hyperlink{classFinanceService_a4c6c4ec1f7d3e8fad0c723f0a3f1202d}{get\+\_\+transaction\+\_\+history}} (const std\+::string \&user\+\_\+id, int page, int limit)
+\begin{DoxyCompactList}\small\item\em Получает историю транзакций для указанного пользователя. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Класс для предоставления финансовых услуг, таких как получение баланса, перевод денег и история транзакций. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classFinanceService_a48056a693a5ac947bca7427352e88bb3}\index{FinanceService@{FinanceService}!FinanceService@{FinanceService}}
+\index{FinanceService@{FinanceService}!FinanceService@{FinanceService}}
+\doxysubsubsection{\texorpdfstring{FinanceService()}{FinanceService()}}
+{\footnotesize\ttfamily \label{classFinanceService_a48056a693a5ac947bca7427352e88bb3} 
+Finance\+Service\+::\+Finance\+Service (\begin{DoxyParamCaption}\item[{pqxx\+::connection \&}]{db\+\_\+conn}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Конструктор для \doxylink{classFinanceService}{Finance\+Service}. 
+
+Инициализирует \doxylink{classFinanceService}{Finance\+Service} с предоставленным соединением с базой данных Postgre\+SQL.
+
+
+\begin{DoxyParams}{Parameters}
+{\em db\+\_\+conn} & Ссылка на объект pqxx\+::connection, используемый для взаимодействия с базой данных. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classFinanceService_a4c6c4ec1f7d3e8fad0c723f0a3f1202d}\index{FinanceService@{FinanceService}!get\_transaction\_history@{get\_transaction\_history}}
+\index{get\_transaction\_history@{get\_transaction\_history}!FinanceService@{FinanceService}}
+\doxysubsubsection{\texorpdfstring{get\_transaction\_history()}{get\_transaction\_history()}}
+{\footnotesize\ttfamily \label{classFinanceService_a4c6c4ec1f7d3e8fad0c723f0a3f1202d} 
+std\+::vector$<$ \mbox{\hyperlink{structTransfer}{Transfer}} $>$ Finance\+Service\+::get\+\_\+transaction\+\_\+history (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{user\+\_\+id}{, }\item[{int}]{page}{, }\item[{int}]{limit}{}\end{DoxyParamCaption})}
+
+
+
+Получает историю транзакций для указанного пользователя. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em user\+\_\+id} & Уникальный идентификатор пользователя. \\
+\hline
+{\em page} & Номер страницы для пагинации (начиная с 1). \\
+\hline
+{\em limit} & Максимальное количество записей на одной странице. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Вектор объектов \doxylink{structTransfer}{Transfer}, представляющих историю транзакций пользователя.
+\end{DoxyReturn}
+Выполняет запрос к базе данных для получения списка транзакций, в которых участвовал пользователь, с возможностью пагинации.
+
+
+\begin{DoxyParams}{Parameters}
+{\em user\+\_\+id} & Уникальный идентификатор пользователя. \\
+\hline
+{\em page} & Номер страницы для пагинации (начиная с 1). \\
+\hline
+{\em limit} & Максимальное количество записей на одной странице. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Вектор объектов \doxylink{structTransfer}{Transfer}, представляющих историю транзакций пользователя. 
+\end{DoxyReturn}
+\Hypertarget{classFinanceService_a3f32cb2f5588658b14b02c63ceb43ad1}\index{FinanceService@{FinanceService}!get\_user\_balance@{get\_user\_balance}}
+\index{get\_user\_balance@{get\_user\_balance}!FinanceService@{FinanceService}}
+\doxysubsubsection{\texorpdfstring{get\_user\_balance()}{get\_user\_balance()}}
+{\footnotesize\ttfamily \label{classFinanceService_a3f32cb2f5588658b14b02c63ceb43ad1} 
+std\+::vector$<$ std\+::pair$<$ std\+::string, double $>$ $>$ Finance\+Service\+::get\+\_\+user\+\_\+balance (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{user\+\_\+id}{}\end{DoxyParamCaption})}
+
+
+
+Получает баланс пользователя для каждой валюты. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em user\+\_\+id} & Уникальный идентификатор пользователя. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Вектор пар, где каждая пара содержит код валюты (string) и баланс (double).
+\end{DoxyReturn}
+Выполняет запрос к базе данных для получения балансов всех счетов, принадлежащих указанному пользователю, и возвращает их вместе с соответствующим кодом валюты.
+
+
+\begin{DoxyParams}{Parameters}
+{\em user\+\_\+id} & Уникальный идентификатор пользователя. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Вектор пар, где каждая пара содержит код валюты (string) и баланс (double). 
+\end{DoxyReturn}
+\Hypertarget{classFinanceService_a94ab6f2036a8b5a37416ca7921abb98d}\index{FinanceService@{FinanceService}!transfer\_money@{transfer\_money}}
+\index{transfer\_money@{transfer\_money}!FinanceService@{FinanceService}}
+\doxysubsubsection{\texorpdfstring{transfer\_money()}{transfer\_money()}}
+{\footnotesize\ttfamily \label{classFinanceService_a94ab6f2036a8b5a37416ca7921abb98d} 
+std\+::string Finance\+Service\+::transfer\+\_\+money (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{from\+\_\+user\+\_\+id}{, }\item[{const std\+::string \&}]{to\+\_\+username}{, }\item[{double}]{amount}{, }\item[{const std\+::string \&}]{currency\+\_\+code}{}\end{DoxyParamCaption})}
+
+
+
+Осуществляет перевод денег между пользователями. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em from\+\_\+user\+\_\+id} & ID пользователя-\/отправителя. \\
+\hline
+{\em to\+\_\+username} & Имя пользователя-\/получателя. \\
+\hline
+{\em amount} & Сумма перевода. \\
+\hline
+{\em currency} & Код валюты перевода (например, "{}\+USD"{}, "{}\+EUR"{}). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ID созданной транзакции.
+\end{DoxyReturn}
+Выполняет атомарную операцию перевода, обновляя балансы счетов отправителя и получателя, и записывает транзакцию в базу данных.
+
+
+\begin{DoxyParams}{Parameters}
+{\em from\+\_\+user\+\_\+id} & ID пользователя-\/отправителя. \\
+\hline
+{\em to\+\_\+username} & Имя пользователя-\/получателя. \\
+\hline
+{\em amount} & Сумма перевода. \\
+\hline
+{\em currency\+\_\+code} & Код валюты перевода (например, "{}\+USD"{}, "{}\+EUR"{}). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ID созданной транзакции. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & В случае неверного кода валюты, отсутствия получателя, отсутствия счета, недостаточных средств или других ошибок базы данных. \\
+\hline
+\end{DoxyExceptions}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+finance\+\_\+manager/internal/finance/finance\+\_\+service.\+h\item 
+finance\+\_\+manager/internal/finance/finance\+\_\+service.\+cpp\end{DoxyCompactItemize}

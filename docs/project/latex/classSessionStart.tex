@@ -1,0 +1,85 @@
+\doxysection{Session\+Start Class Reference}
+\hypertarget{classSessionStart}{}\label{classSessionStart}\index{SessionStart@{SessionStart}}
+
+
+Класс для обработки запросов на начало сессии (аутентификацию).  
+
+
+
+
+{\ttfamily \#include $<$session\+\_\+start.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classSessionStart_a73977d526f4e5bb9e0576473adc8b43e}{Session\+Start}} (\mbox{\hyperlink{classUserVerifier}{User\+Verifier}} \&user\+\_\+verifier)
+\begin{DoxyCompactList}\small\item\em Конструктор класса \doxylink{classSessionStart}{Session\+Start}. \end{DoxyCompactList}\item 
+json \mbox{\hyperlink{classSessionStart_a0640d0223bc5de2c94c6f79f6ae04a99}{Handle\+Request}} (const json \&request\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Обрабатывает запрос на начало сессии (аутентификацию). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Класс для обработки запросов на начало сессии (аутентификацию). 
+
+Инкапсулирует логику аутентификации пользователя и генерации токена сессии. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classSessionStart_a73977d526f4e5bb9e0576473adc8b43e}\index{SessionStart@{SessionStart}!SessionStart@{SessionStart}}
+\index{SessionStart@{SessionStart}!SessionStart@{SessionStart}}
+\doxysubsubsection{\texorpdfstring{SessionStart()}{SessionStart()}}
+{\footnotesize\ttfamily \label{classSessionStart_a73977d526f4e5bb9e0576473adc8b43e} 
+Session\+Start\+::\+Session\+Start (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classUserVerifier}{User\+Verifier}} \&}]{user\+\_\+verifier}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Конструктор класса \doxylink{classSessionStart}{Session\+Start}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em user\+\_\+verifier} & Ссылка на объект \doxylink{classUserVerifier}{User\+Verifier} для проверки учетных данных пользователей.\\
+\hline
+\end{DoxyParams}
+Инициализирует \doxylink{classSessionStart}{Session\+Start} с необходимым верификатором пользователей.
+
+
+\begin{DoxyParams}{Parameters}
+{\em user\+\_\+verifier} & Ссылка на объект \doxylink{classUserVerifier}{User\+Verifier} для проверки учетных данных пользователей. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classSessionStart_a0640d0223bc5de2c94c6f79f6ae04a99}\index{SessionStart@{SessionStart}!HandleRequest@{HandleRequest}}
+\index{HandleRequest@{HandleRequest}!SessionStart@{SessionStart}}
+\doxysubsubsection{\texorpdfstring{HandleRequest()}{HandleRequest()}}
+{\footnotesize\ttfamily \label{classSessionStart_a0640d0223bc5de2c94c6f79f6ae04a99} 
+json Session\+Start\+::\+Handle\+Request (\begin{DoxyParamCaption}\item[{const json \&}]{request\+\_\+data}{}\end{DoxyParamCaption})}
+
+
+
+Обрабатывает запрос на начало сессии (аутентификацию). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em request\+\_\+data} & Входящие данные запроса в формате JSON, содержащие "{}email"{} и "{}password\+\_\+hash"{}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+JSON-\/объект с токеном или сообщением об ошибке.
+\end{DoxyReturn}
+Извлекает email и хеш пароля из данных запроса, использует {\ttfamily \doxylink{classUserVerifier}{User\+Verifier}} для генерации токена. Возвращает токен в случае успеха или ошибку при неверном формате JSON или неудачной верификации.
+
+
+\begin{DoxyParams}{Parameters}
+{\em request\+\_\+data} & Входящие данные запроса в формате JSON, содержащие "{}email"{} и "{}password\+\_\+hash"{}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+JSON-\/объект с токеном или сообщением об ошибке. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+auth\+\_\+service/internal/auth/user\+\_\+verify\+\_\+http/session\+\_\+start/session\+\_\+start.\+h\item 
+auth\+\_\+service/internal/auth/user\+\_\+verify\+\_\+http/session\+\_\+start/session\+\_\+start.\+cpp\end{DoxyCompactItemize}

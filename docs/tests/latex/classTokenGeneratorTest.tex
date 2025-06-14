@@ -1,0 +1,80 @@
+\doxysection{Token\+Generator\+Test Class Reference}
+\hypertarget{classTokenGeneratorTest}{}\label{classTokenGeneratorTest}\index{TokenGeneratorTest@{TokenGeneratorTest}}
+
+
+Тестовый класс для Token\+Generator.  
+
+
+Inheritance diagram for Token\+Generator\+Test\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classTokenGeneratorTest}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classTokenGeneratorTest_a79d4657c94d0fa334624c4137dce47e2}{Set\+Up}} () override
+\begin{DoxyCompactList}\small\item\em Настраивает тестовую среду перед каждым тестом. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classTokenGeneratorTest_a0310ba4c5216961c8909d703322e1977}{Set\+Up\+Test\+Suite}} ()
+\begin{DoxyCompactList}\small\item\em Настраивает тестовую среду перед выполнением всех тестов. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classTokenGeneratorTest_aeeafe0698cb34ab53d07994a14de4291}{Tear\+Down\+Test\+Suite}} ()
+\begin{DoxyCompactList}\small\item\em Очищает тестовую среду после выполнения всех тестов. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classTokenGeneratorTest_a39a7d7436319e42050db1b5ef8ebe193}\label{classTokenGeneratorTest_a39a7d7436319e42050db1b5ef8ebe193} 
+UUIDGenerator {\bfseries uuid\+\_\+gen}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classTokenGeneratorTest_a5c630769e39e23050dacdbfc3fb2ef96}\label{classTokenGeneratorTest_a5c630769e39e23050dacdbfc3fb2ef96} 
+static std\+::unique\+\_\+ptr$<$ sw\+::redis\+::\+Redis $>$ {\bfseries redis} = nullptr
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Тестовый класс для Token\+Generator. 
+
+Настраивает и очищает тестовую среду Redis для каждого тестового набора. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classTokenGeneratorTest_a79d4657c94d0fa334624c4137dce47e2}\index{TokenGeneratorTest@{TokenGeneratorTest}!SetUp@{SetUp}}
+\index{SetUp@{SetUp}!TokenGeneratorTest@{TokenGeneratorTest}}
+\doxysubsubsection{\texorpdfstring{SetUp()}{SetUp()}}
+{\footnotesize\ttfamily \label{classTokenGeneratorTest_a79d4657c94d0fa334624c4137dce47e2} 
+void Token\+Generator\+Test\+::\+Set\+Up (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+
+Настраивает тестовую среду перед каждым тестом. 
+
+Очищает базу данных Redis, чтобы каждый тест начинался с чистого состояния. \Hypertarget{classTokenGeneratorTest_a0310ba4c5216961c8909d703322e1977}\index{TokenGeneratorTest@{TokenGeneratorTest}!SetUpTestSuite@{SetUpTestSuite}}
+\index{SetUpTestSuite@{SetUpTestSuite}!TokenGeneratorTest@{TokenGeneratorTest}}
+\doxysubsubsection{\texorpdfstring{SetUpTestSuite()}{SetUpTestSuite()}}
+{\footnotesize\ttfamily \label{classTokenGeneratorTest_a0310ba4c5216961c8909d703322e1977} 
+static void Token\+Generator\+Test\+::\+Set\+Up\+Test\+Suite (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+Настраивает тестовую среду перед выполнением всех тестов. 
+
+Загружает конфигурацию Redis, устанавливает соединение и очищает базу данных Redis. \Hypertarget{classTokenGeneratorTest_aeeafe0698cb34ab53d07994a14de4291}\index{TokenGeneratorTest@{TokenGeneratorTest}!TearDownTestSuite@{TearDownTestSuite}}
+\index{TearDownTestSuite@{TearDownTestSuite}!TokenGeneratorTest@{TokenGeneratorTest}}
+\doxysubsubsection{\texorpdfstring{TearDownTestSuite()}{TearDownTestSuite()}}
+{\footnotesize\ttfamily \label{classTokenGeneratorTest_aeeafe0698cb34ab53d07994a14de4291} 
+static void Token\+Generator\+Test\+::\+Tear\+Down\+Test\+Suite (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+Очищает тестовую среду после выполнения всех тестов. 
+
+Очищает базу данных Redis и освобождает ресурсы. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+auth\+\_\+service/internal/auth/user\+\_\+verify/token\+\_\+generator/token\+\_\+generator\+\_\+test.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,83 @@
+\doxysection{Mock\+Session\+Hold Class Reference}
+\hypertarget{classMockSessionHold}{}\label{classMockSessionHold}\index{MockSessionHold@{MockSessionHold}}
+
+
+Мок-\/класс для Session\+Hold, используемый в тестах.  
+
+
+Inheritance diagram for Mock\+Session\+Hold\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classMockSessionHold}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classMockSessionHold_ab496c3aa82db2676cb62b9687fda30ab}{Mock\+Session\+Hold}} (sw\+::redis\+::\+Redis \&redis)
+\begin{DoxyCompactList}\small\item\em Конструктор \doxylink{classMockSessionHold}{Mock\+Session\+Hold}. \end{DoxyCompactList}\item 
+nlohmann\+::json \mbox{\hyperlink{classMockSessionHold_a879588c0934b22ba759aff75cc7b3f6e}{Handle\+Request}} (const nlohmann\+::json \&request\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Имитирует обработку запроса Session\+Hold. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classSessionHoldAccessor}{Session\+Hold\+Accessor}}}
+\begin{DoxyCompactItemize}
+\item 
+sw\+::redis\+::\+Redis \& \mbox{\hyperlink{classSessionHoldAccessor_a31746e1b0ed57ad2c9b9c26ad1fdb334}{get\+\_\+redis}} ()
+\begin{DoxyCompactList}\small\item\em Возвращает ссылку на объект Redis. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classMockSessionHold_a97efb4f1f15ac7514e96f0b93c440d02}\label{classMockSessionHold_a97efb4f1f15ac7514e96f0b93c440d02} 
+nlohmann\+::json {\bfseries last\+\_\+request}
+\item 
+\Hypertarget{classMockSessionHold_aaf6b61a4c23ef8c6879ce848e7101ffd}\label{classMockSessionHold_aaf6b61a4c23ef8c6879ce848e7101ffd} 
+nlohmann\+::json {\bfseries response\+\_\+to\+\_\+return}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Мок-\/класс для Session\+Hold, используемый в тестах. 
+
+Имитирует поведение Session\+Hold, позволяя фиксировать входящие запросы и возвращать предопределенные ответы, а также управлять состоянием Redis для теста. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classMockSessionHold_ab496c3aa82db2676cb62b9687fda30ab}\index{MockSessionHold@{MockSessionHold}!MockSessionHold@{MockSessionHold}}
+\index{MockSessionHold@{MockSessionHold}!MockSessionHold@{MockSessionHold}}
+\doxysubsubsection{\texorpdfstring{MockSessionHold()}{MockSessionHold()}}
+{\footnotesize\ttfamily \label{classMockSessionHold_ab496c3aa82db2676cb62b9687fda30ab} 
+Mock\+Session\+Hold\+::\+Mock\+Session\+Hold (\begin{DoxyParamCaption}\item[{sw\+::redis\+::\+Redis \&}]{redis}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Конструктор \doxylink{classMockSessionHold}{Mock\+Session\+Hold}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em redis} & Ссылка на объект sw\+::redis\+::\+Redis для взаимодействия с Redis. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classMockSessionHold_a879588c0934b22ba759aff75cc7b3f6e}\index{MockSessionHold@{MockSessionHold}!HandleRequest@{HandleRequest}}
+\index{HandleRequest@{HandleRequest}!MockSessionHold@{MockSessionHold}}
+\doxysubsubsection{\texorpdfstring{HandleRequest()}{HandleRequest()}}
+{\footnotesize\ttfamily \label{classMockSessionHold_a879588c0934b22ba759aff75cc7b3f6e} 
+nlohmann\+::json Mock\+Session\+Hold\+::\+Handle\+Request (\begin{DoxyParamCaption}\item[{const nlohmann\+::json \&}]{request\+\_\+data}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Имитирует обработку запроса Session\+Hold. 
+
+Сохраняет данные входящего запроса, устанавливает токен в Redis (если он присутствует) и возвращает предварительно установленный ответ. 
+\begin{DoxyParams}{Parameters}
+{\em request\+\_\+data} & Входящие данные запроса в формате JSON. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Заранее определенный ответ в формате JSON. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+auth\+\_\+service/internal/auth/user\+\_\+verify\+\_\+http/endpoints/session\+\_\+refresh\+\_\+endpoint/session\+\_\+refresh\+\_\+endpoint\+\_\+test.\+cpp\end{DoxyCompactItemize}

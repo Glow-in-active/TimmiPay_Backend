@@ -1,0 +1,17 @@
+\doxysection{api\+\_\+methods.\+h}
+\hypertarget{api__methods_8h_source}{}\label{api__methods_8h_source}\index{auth\_service/internal/server/api\_methods/api\_methods.h@{auth\_service/internal/server/api\_methods/api\_methods.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <crow.h>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <crow/middlewares/cors.h>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}../../auth/user\_verify\_http/session\_hold/session\_hold.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}../../auth/user\_verify\_http/session\_start/session\_start.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00016\ \textcolor{keywordtype}{void}\ register\_routes(crow::App<crow::CORSHandler>\&\ app,}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classSessionStart}{SessionStart}}\&\ session\_start\_handler,}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classSessionHold}{SessionHold}}\&\ session\_hold\_handler);}
+
+\end{DoxyCode}

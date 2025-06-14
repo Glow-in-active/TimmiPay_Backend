@@ -1,0 +1,85 @@
+\doxysection{Api\+Server\+Fixture Class Reference}
+\hypertarget{classApiServerFixture}{}\label{classApiServerFixture}\index{ApiServerFixture@{ApiServerFixture}}
+
+
+Фикстура для интеграционных тестов API сервера.  
+
+
+Inheritance diagram for Api\+Server\+Fixture\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classApiServerFixture}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classApiServerFixture_a8a730a16845b8df58bf883b41a5919ce}{Set\+Up\+Test\+Suite}} ()
+\begin{DoxyCompactList}\small\item\em Настраивает тестовую среду перед выполнением всех тестов. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classApiServerFixture_a16fd3419badc09163fd55ebda8231aec}{Tear\+Down\+Test\+Suite}} ()
+\begin{DoxyCompactList}\small\item\em Очищает тестовую среду после выполнения всех тестов. \end{DoxyCompactList}\item 
+static bool \mbox{\hyperlink{classApiServerFixture_afbffa79623b385924825ac89f46feb1a}{is\+\_\+server\+\_\+alive}} ()
+\begin{DoxyCompactList}\small\item\em Проверяет доступность API сервера. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classApiServerFixture_af73ff18ac2f61d47a89104361b64f1c2}\label{classApiServerFixture_af73ff18ac2f61d47a89104361b64f1c2} 
+static crow\+::\+App$<$ crow\+::\+CORSHandler $>$ {\bfseries app}
+\item 
+\Hypertarget{classApiServerFixture_a0965a77aca9df635b285be020a58534c}\label{classApiServerFixture_a0965a77aca9df635b285be020a58534c} 
+static \mbox{\hyperlink{classRealSessionStart}{Real\+Session\+Start}} {\bfseries session\+\_\+start}
+\item 
+\Hypertarget{classApiServerFixture_a619d216ea1fb22897c84db0ebdcccf78}\label{classApiServerFixture_a619d216ea1fb22897c84db0ebdcccf78} 
+static \mbox{\hyperlink{classRealSessionHold}{Real\+Session\+Hold}} {\bfseries session\+\_\+hold}
+\item 
+\Hypertarget{classApiServerFixture_a4d0279ca7f999f8c2afa124e87d94a7b}\label{classApiServerFixture_a4d0279ca7f999f8c2afa124e87d94a7b} 
+static std\+::thread {\bfseries server\+\_\+thread}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Фикстура для интеграционных тестов API сервера. 
+
+Настраивает и запускает тестовый HTTP-\/сервер Crow перед выполнением тестового набора и останавливает его после завершения. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classApiServerFixture_afbffa79623b385924825ac89f46feb1a}\index{ApiServerFixture@{ApiServerFixture}!is\_server\_alive@{is\_server\_alive}}
+\index{is\_server\_alive@{is\_server\_alive}!ApiServerFixture@{ApiServerFixture}}
+\doxysubsubsection{\texorpdfstring{is\_server\_alive()}{is\_server\_alive()}}
+{\footnotesize\ttfamily \label{classApiServerFixture_afbffa79623b385924825ac89f46feb1a} 
+static bool Api\+Server\+Fixture\+::is\+\_\+server\+\_\+alive (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+Проверяет доступность API сервера. 
+
+Выполняет HEAD-\/запрос к эндпоинту {\ttfamily /session\+\_\+start} и проверяет успешность соединения.
+
+\begin{DoxyReturn}{Returns}
+true, если сервер доступен, false в противном случае. 
+\end{DoxyReturn}
+\Hypertarget{classApiServerFixture_a8a730a16845b8df58bf883b41a5919ce}\index{ApiServerFixture@{ApiServerFixture}!SetUpTestSuite@{SetUpTestSuite}}
+\index{SetUpTestSuite@{SetUpTestSuite}!ApiServerFixture@{ApiServerFixture}}
+\doxysubsubsection{\texorpdfstring{SetUpTestSuite()}{SetUpTestSuite()}}
+{\footnotesize\ttfamily \label{classApiServerFixture_a8a730a16845b8df58bf883b41a5919ce} 
+static void Api\+Server\+Fixture\+::\+Set\+Up\+Test\+Suite (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+Настраивает тестовую среду перед выполнением всех тестов. 
+
+Регистрирует маршруты API, запускает сервер Crow в отдельном потоке и ожидает его готовности. \Hypertarget{classApiServerFixture_a16fd3419badc09163fd55ebda8231aec}\index{ApiServerFixture@{ApiServerFixture}!TearDownTestSuite@{TearDownTestSuite}}
+\index{TearDownTestSuite@{TearDownTestSuite}!ApiServerFixture@{ApiServerFixture}}
+\doxysubsubsection{\texorpdfstring{TearDownTestSuite()}{TearDownTestSuite()}}
+{\footnotesize\ttfamily \label{classApiServerFixture_a16fd3419badc09163fd55ebda8231aec} 
+static void Api\+Server\+Fixture\+::\+Tear\+Down\+Test\+Suite (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+Очищает тестовую среду после выполнения всех тестов. 
+
+Останавливает сервер Crow и дожидается завершения его потока. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+auth\+\_\+service/internal/server/api\+\_\+methods/api\+\_\+methods\+\_\+test.\+cpp\end{DoxyCompactItemize}

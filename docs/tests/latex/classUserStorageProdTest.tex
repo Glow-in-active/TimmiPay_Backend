@@ -1,0 +1,68 @@
+\doxysection{User\+Storage\+Prod\+Test Class Reference}
+\hypertarget{classUserStorageProdTest}{}\label{classUserStorageProdTest}\index{UserStorageProdTest@{UserStorageProdTest}}
+
+
+Тестовый класс для User\+Storage, использующий реальное соединение с базой данных.  
+
+
+Inheritance diagram for User\+Storage\+Prod\+Test\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classUserStorageProdTest}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classUserStorageProdTest_aa35ccb9b7caef116fc238979d512e932}{Set\+Up}} () override
+\begin{DoxyCompactList}\small\item\em Настраивает тестовую среду перед каждым тестом. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classUserStorageProdTest_a29f31bd9abc8a7fb103b8ad479ce9485}{Tear\+Down}} () override
+\begin{DoxyCompactList}\small\item\em Очищает тестовую среду после каждого теста. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classUserStorageProdTest_aef011ab45e1692329c029f77cb8818eb}\label{classUserStorageProdTest_aef011ab45e1692329c029f77cb8818eb} 
+pqxx\+::connection \texorpdfstring{$\ast$}{*} {\bfseries conn}
+\item 
+\Hypertarget{classUserStorageProdTest_a89222fa38df43c3e67c26c318122cf7d}\label{classUserStorageProdTest_a89222fa38df43c3e67c26c318122cf7d} 
+std\+::string {\bfseries test\+\_\+user\+\_\+id}
+\item 
+\Hypertarget{classUserStorageProdTest_a26ebe29a514fc5cdb759dadfcf41e3bf}\label{classUserStorageProdTest_a26ebe29a514fc5cdb759dadfcf41e3bf} 
+std\+::string {\bfseries test\+\_\+email}
+\item 
+\Hypertarget{classUserStorageProdTest_ab8701e852a7fab1523eed7cb02c0d40e}\label{classUserStorageProdTest_ab8701e852a7fab1523eed7cb02c0d40e} 
+UUIDGenerator {\bfseries uuid\+\_\+gen}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Тестовый класс для User\+Storage, использующий реальное соединение с базой данных. 
+
+Настраивает и очищает тестовые данные в базе данных для каждого теста. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classUserStorageProdTest_aa35ccb9b7caef116fc238979d512e932}\index{UserStorageProdTest@{UserStorageProdTest}!SetUp@{SetUp}}
+\index{SetUp@{SetUp}!UserStorageProdTest@{UserStorageProdTest}}
+\doxysubsubsection{\texorpdfstring{SetUp()}{SetUp()}}
+{\footnotesize\ttfamily \label{classUserStorageProdTest_aa35ccb9b7caef116fc238979d512e932} 
+void User\+Storage\+Prod\+Test\+::\+Set\+Up (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+
+Настраивает тестовую среду перед каждым тестом. 
+
+Генерирует уникальный ID пользователя и email, устанавливает соединение с тестовой базой данных и вставляет тестового пользователя. \Hypertarget{classUserStorageProdTest_a29f31bd9abc8a7fb103b8ad479ce9485}\index{UserStorageProdTest@{UserStorageProdTest}!TearDown@{TearDown}}
+\index{TearDown@{TearDown}!UserStorageProdTest@{UserStorageProdTest}}
+\doxysubsubsection{\texorpdfstring{TearDown()}{TearDown()}}
+{\footnotesize\ttfamily \label{classUserStorageProdTest_a29f31bd9abc8a7fb103b8ad479ce9485} 
+void User\+Storage\+Prod\+Test\+::\+Tear\+Down (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+
+Очищает тестовую среду после каждого теста. 
+
+Удаляет тестового пользователя из базы данных и закрывает соединение. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+storage/user\+\_\+verify/auth/user\+\_\+verify\+\_\+test.\+cpp\end{DoxyCompactItemize}
