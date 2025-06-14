@@ -89,7 +89,7 @@
     mkdir build
     cd build
     cmake .. -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake
-    make
+    cmake --build .
     ```
 
     Если вы используете другую директорию для `vcpkg`, убедитесь, что путь к `CMAKE_TOOLCHAIN_FILE` указан правильно.
