@@ -118,6 +118,11 @@
 cd build
 ctest
 ```
+или
+```bash
+cd build
+./all_tests
+```
 
 ## Примеры использования API
 
