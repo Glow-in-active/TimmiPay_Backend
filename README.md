@@ -126,7 +126,7 @@ cd build
 
 ## Примеры использования API
 
-Ниже приведены примеры использования основных эндпоинтов API с помощью `curl`. Предполагается, что сервисы запущены и доступны на `http://localhost:18080` (стандартный порт Crow).
+Ниже приведены примеры использования основных эндпоинтов API с помощью `curl`. Предполагается, что сервисы запущены и доступны на `http://localhost:8080`.
 
 ### 1. Сервис Аутентификации (`auth_service`)
 
@@ -137,7 +137,7 @@ cd build
 *   **Описание:** Аутентификация пользователя по email и хешу пароля.
 *   **Запрос:**
     ```bash
-    curl -X POST http://localhost:18080/session_start -H "Content-Type: application/json" -d '{
+    curl -X POST http://localhost:8080/session_start -H "Content-Type: application/json" -d '{
         "email": "user@example.com",
         "password_hash": "your_hashed_password"
     }'
@@ -145,7 +145,7 @@ cd build
 *   **Пример успешного ответа:**
     ```json
     {
-        "token": "generated_session_token"
+        "token": "generated_session_token(uuid)"
     }
     ```
 *   **Пример ответа с ошибкой:**
@@ -162,15 +162,14 @@ cd build
 *   **Описание:** Обновление срока действия существующего токена сессии.
 *   **Запрос:**
     ```bash
-    curl -X POST http://localhost:18080/session_refresh -H "Content-Type: application/json" -d '{
-        "token": "existing_session_token"
+    curl -X POST http://localhost:8080/session_refresh -H "Content-Type: application/json" -d '{
+        "token": "existing_session_token(uuid)"
     }'
     ```
 *   **Пример успешного ответа:**
     ```json
     {
         "status": "success",
-        "message": "Session token refreshed."
     }
     ```
 *   **Пример ответа с ошибкой:**
@@ -192,8 +191,8 @@ cd build
 *   **Описание:** Получение баланса пользователя по всем валютам.
 *   **Запрос:**
     ```bash
-    curl -X POST http://localhost:18080/api/v1/balance -H "Content-Type: application/json" -d '{
-        "session_token": "valid_session_token"
+    curl -X POST http://localhost:8181/api/v1/balance -H "Content-Type: application/json" -d '{
+        "session_token": "valid_session_token(uuid)"
     }'
     ```
 *   **Пример успешного ответа:**
@@ -225,8 +224,8 @@ cd build
 *   **Описание:** Перевод средств между пользователями.
 *   **Запрос:**
     ```bash
-    curl -X POST http://localhost:18080/api/v1/transfer -H "Content-Type: application/json" -d '{
-        "session_token": "valid_session_token",
+    curl -X POST http://localhost:8181/api/v1/transfer -H "Content-Type: application/json" -d '{
+        "session_token": "valid_session_token(uuid)",
         "to_username": "recipient_username",
         "amount": 100.00,
         "currency": "USD"
@@ -262,8 +261,8 @@ cd build
 *   **Описание:** Получение истории транзакций пользователя с опциональной пагинацией.
 *   **Запрос:**
     ```bash
-    curl -X POST http://localhost:18080/api/v1/history -H "Content-Type: application/json" -d '{
-        "session_token": "valid_session_token",
+    curl -X POST http://localhost:8181/api/v1/history -H "Content-Type: application/json" -d '{
+        "session_token": "valid_session_token(uuid)",
         "page": 1,
         "limit": 5
     }'
