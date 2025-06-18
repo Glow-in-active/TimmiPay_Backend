@@ -4,14 +4,16 @@
 #include <curl/curl.h>
 #include <gtest/gtest.h>
 
+#include <nlohmann/json.hpp>
+#include <memory>
 #include <thread>
 
 #include "../../../storage/config/config.h"
 #include "../../../storage/postgres_connect/connect.h"
 #include "../../../storage/redis_config/config_redis.h"
 #include "../../../storage/redis_connect/connect_redis.h"
-#include "../../auth/user_verify_http/session_hold/session_hold.h"
-#include "../../auth/user_verify_http/session_start/session_start.h"
+#include "../db_init/db_init.h"
+#include "../dependencies/dependencies.h"
 
 /**
  * @brief Callback-функция для записи данных, полученных от cURL.
@@ -29,61 +31,6 @@ static size_t CurlWriteCallback(void* contents, size_t size, size_t nmemb,
 }
 
 /**
- * @brief Реализация SessionStart для интеграционных тестов.
- *
- * Инициализирует все необходимые зависимости для работы SessionStart с
- * реальными подключениями к тестовым базам данных.
- */
-class RealSessionStart : public SessionStart {
- public:
-  /**
-   * @brief Конструктор для RealSessionStart.
-   *
-   * Инициализирует конфигурацию базы данных, Redis, устанавливает соединения и
-   * создает UserVerifier.
-   */
-  RealSessionStart()
-      : config_(load_config("database_config/test_postgres_config.json")),
-        redis_config_(
-            load_redis_config("database_config/test_redis_config.json")),
-        conn_(connect_to_database(config_)),
-        redis_(connect_to_redis(redis_config_)),
-        user_verifier_(conn_, redis_),
-        SessionStart(user_verifier_) {}
-
- private:
-  Config config_;
-  ConfigRedis redis_config_;
-  pqxx::connection conn_;
-  sw::redis::Redis redis_;
-  UserVerifier user_verifier_;
-};
-
-/**
- * @brief Реализация SessionHold для интеграционных тестов.
- *
- * Инициализирует все необходимые зависимости для работы SessionHold с реальными
- * подключениями к тестовой базе данных Redis.
- */
-class RealSessionHold : public SessionHold {
- public:
-  /**
-   * @brief Конструктор для RealSessionHold.
-   *
-   * Инициализирует конфигурацию Redis и устанавливает соединение.
-   */
-  RealSessionHold()
-      : redis_config_(
-            load_redis_config("database_config/test_redis_config.json")),
-        redis_(connect_to_redis(redis_config_)),
-        SessionHold(redis_) {}
-
- private:
-  ConfigRedis redis_config_;
-  sw::redis::Redis redis_;
-};
-
-/**
  * @brief Фикстура для интеграционных тестов сервера CrowApp.
  *
  * Настраивает и запускает тестовый HTTP-сервер Crow перед выполнением тестового
@@ -98,7 +45,9 @@ class CrowAppServerFixture : public ::testing::Test {
    * готовности сервера.
    */
   static void SetUpTestSuite() {
-    app = &create_crow_app(session_start, session_hold);
+    db_connections = std::make_unique<DBConnections>(initialize_databases());
+    deps = std::make_unique<Dependencies>(initialize_dependencies(*db_connections));
+    app = &create_crow_app(*deps);
 
     server_thread =
         std::thread([]() { app->port(18081).multithreaded().run(); });
@@ -141,8 +90,8 @@ class CrowAppServerFixture : public ::testing::Test {
   }
 
   static inline crow::App<crow::CORSHandler>* app;
-  static inline RealSessionStart session_start;
-  static inline RealSessionHold session_hold;
+  static inline std::unique_ptr<DBConnections> db_connections;
+  static inline std::unique_ptr<Dependencies> deps;
   static inline std::thread server_thread;
 };
 
@@ -196,4 +145,69 @@ TEST_F(CrowAppServerFixture, SessionRefreshRouteIsAvailable) {
 
   EXPECT_EQ(res, CURLE_OK);
   EXPECT_FALSE(response.empty());
+}
+
+/**
+ * @brief Проверяет доступность маршрута /register и успешную регистрацию.
+ *
+ * Тест отправляет POST-запрос на /register с валидными данными и проверяет,
+ * что ответ получен успешно.
+ */
+TEST_F(CrowAppServerFixture, RegistrationRouteIsAvailableAndWorks) {
+  CURL* curl = curl_easy_init();
+  ASSERT_TRUE(curl != nullptr);
+
+  // Тестовые данные для регистрации
+  std::string username = "testuser_register_123";
+  std::string email = "register_test@example.com";
+  std::string password_hash = "hash_password_123";
+
+  nlohmann::json request_body;
+  request_body["username"] = username;
+  request_body["email"] = email;
+  request_body["password_hash"] = password_hash;
+
+  std::string request_data = request_body.dump();
+
+  curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:18081/register");
+  curl_easy_setopt(curl, CURLOPT_POST, 1L);
+  curl_easy_setopt(curl, CURLOPT_POSTFIELDS, request_data.c_str());
+  curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 1000L);
+
+  std::string response_string;
+  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWriteCallback);
+  curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
+
+  CURLcode res = curl_easy_perform(curl);
+  curl_easy_cleanup(curl);
+
+  EXPECT_EQ(res, CURLE_OK);
+  EXPECT_FALSE(response_string.empty());
+
+  // Проверяем, что регистрация прошла успешно
+  nlohmann::json response_json = nlohmann::json::parse(response_string);
+  EXPECT_EQ(response_json["message"], "User registered successfully");
+
+  // Повторная регистрация с теми же данными должна вернуть 409 Conflict
+  curl = curl_easy_init();
+  ASSERT_TRUE(curl != nullptr);
+
+  curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:18081/register");
+  curl_easy_setopt(curl, CURLOPT_POST, 1L);
+  curl_easy_setopt(curl, CURLOPT_POSTFIELDS, request_data.c_str());
+  curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 1000L);
+
+  response_string.clear(); // Очищаем строку для нового ответа
+  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWriteCallback);
+  curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
+
+  res = curl_easy_perform(curl);
+  curl_easy_cleanup(curl);
+
+  EXPECT_EQ(res, CURLE_OK);
+  EXPECT_FALSE(response_string.empty());
+
+  // Проверяем, что получена ошибка 409 Conflict
+  response_json = nlohmann::json::parse(response_string);
+  EXPECT_EQ(response_json["error"], "Пользователь с такими данными уже существует");
 }

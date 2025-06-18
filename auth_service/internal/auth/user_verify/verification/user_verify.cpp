@@ -33,9 +33,14 @@ std::string UserVerifier::GenerateToken(const std::string& email,
                                         const std::string& password_hash) {
   User user = user_storage_.GetUserByEmail(email);
 
-  if (user.id.empty() || !user_storage_.VerifyPassword(user, password_hash)) {
-    throw std::runtime_error("Неверный логин или пароль");
+  if (user.email.empty() ||
+      !user_storage_.VerifyPassword(user, password_hash)) {
+    return "";  // Верификация не удалась
   }
 
   return token_gen_.GenerateToken(user);
+}
+
+UserStorage& UserVerifier::GetUserStorage() {
+  return user_storage_;
 }

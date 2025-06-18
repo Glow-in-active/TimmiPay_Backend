@@ -30,6 +30,7 @@ add_library(app_lib
     auth_service/internal/auth/user_verify_http/session_hold/session_hold.cpp
     auth_service/internal/auth/user_verify_http/endpoints/session_auth_endpoint/session_auth_endpoint.cpp
     auth_service/internal/auth/user_verify_http/endpoints/session_refresh_endpoint/session_refresh_endpoint.cpp
+    auth_service/internal/auth/user_verify_http/endpoints/registration_endpoint/registration_endpoint.cpp
     auth_service/internal/server/api_methods/api_methods.cpp
     auth_service/internal/server/crow_app/crow_app.cpp
     auth_service/internal/server/db_init/db_init.cpp
@@ -56,6 +57,7 @@ target_include_directories(app_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/auth/user_verify_http/session_hold
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/auth/user_verify_http/endpoints/session_auth_endpoint
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/auth/user_verify_http/endpoints/session_refresh_endpoint
+    ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/auth/user_verify_http/endpoints/registration_endpoint
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/server/api_methods
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/server/crow_app
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/server/db_init
@@ -120,6 +122,7 @@ target_include_directories(all_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/auth/user_verify_http/session_hold
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/auth/user_verify_http/endpoints/session_auth_endpoint
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/auth/user_verify_http/endpoints/session_refresh_endpoint
+    ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/auth/user_verify_http/endpoints/registration_endpoint
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/server/api_methods
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/server/crow_app
     ${CMAKE_CURRENT_SOURCE_DIR}/auth_service/internal/server/db_init

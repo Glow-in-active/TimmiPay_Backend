@@ -39,6 +39,13 @@ class UserVerifier {
   std::string GenerateToken(const std::string& email,
                             const std::string& password_hash);
 
+  /**
+   * @brief Возвращает ссылку на объект UserStorage.
+   *
+   * @return Ссылка на объект UserStorage.
+   */
+  UserStorage& GetUserStorage();
+
  private:
   UserStorage user_storage_;
   UUIDGenerator uuid_generator_;

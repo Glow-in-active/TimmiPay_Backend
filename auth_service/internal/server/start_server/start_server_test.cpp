@@ -270,17 +270,14 @@ TEST_F(StartServerTest, FunctionPointer) {
 }
 
 /**
- * @brief Проверяет тип возвращаемого значения `create_crow_app`.
+ * @brief Проверяет, что тип возвращаемого значения `create_crow_app`
+ * соответствует `crow::App<crow::CORSHandler>&`.
  *
- * Тест использует `std::is_same_v` для проверки того, что тип, возвращаемый
- * функцией `create_crow_app`, соответствует ожидаемому типу ссылки на
- * `crow::App<crow::CORSHandler>`.
+ * Использует `decltype` и `std::is_same_v` для проверки типа.
  */
 TEST_F(StartServerTest, CrowAppType) {
   using ExpectedType = crow::App<crow::CORSHandler>&;
-  using ActualType = decltype(create_crow_app(std::declval<SessionStart&>(),
-                                              std::declval<SessionHold&>()));
-
+  using ActualType = decltype(create_crow_app(std::declval<Dependencies&>()));
   EXPECT_TRUE((std::is_same_v<ExpectedType, ActualType>));
 }
 

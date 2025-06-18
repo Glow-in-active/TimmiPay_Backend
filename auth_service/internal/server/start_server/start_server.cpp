@@ -21,7 +21,7 @@
 void start_server(Dependencies& deps) {
   try {
     auto& app =
-        create_crow_app(deps.session_start_handler, deps.session_hold_handler);
+        create_crow_app(deps);
 
     app.port(8080).multithreaded().run();
 

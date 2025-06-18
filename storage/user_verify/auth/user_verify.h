@@ -37,6 +37,26 @@ class UserStorage {
    */
   bool VerifyPassword(const User& user, const std::string& password_hash);
 
+  /**
+   * @brief Получает информацию о пользователе по имени пользователя.
+   *
+   * @param username Имя пользователя.
+   * @return Объект User, содержащий данные пользователя, или пустой объект
+   * User, если пользователь не найден.
+   */
+  User GetUserByUsername(const std::string& username);
+
+  /**
+   * @brief Создает нового пользователя в базе данных.
+   *
+   * @param username Имя пользователя.
+   * @param email Адрес электронной почты пользователя.
+   * @param password_hash Хеш пароля пользователя.
+   * @return true, если пользователь успешно создан, false в противном случае.
+   */
+  bool CreateUser(const std::string& username, const std::string& email,
+                  const std::string& password_hash);
+
  private:
   pqxx::connection& conn_;
 };
