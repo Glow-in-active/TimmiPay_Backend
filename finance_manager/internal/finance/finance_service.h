@@ -62,6 +62,17 @@ class FinanceService {
   std::vector<Transfer> get_transaction_history(const std::string& user_id,
                                                 int page, int limit);
 
+  /**
+   * @brief Создает новый счет для пользователя в указанной валюте.
+   *
+   * @param user_id ID пользователя, для которого создается счет.
+   * @param currency_code Код валюты нового счета (например, "USD", "EUR").
+   * @return ID нового созданного счета.
+   * @throws std::runtime_error Если валюта не найдена или счет уже существует.
+   */
+  std::string create_account(const std::string& user_id,
+                             const std::string& currency_code);
+
  private:
   pqxx::connection& db_conn;
 

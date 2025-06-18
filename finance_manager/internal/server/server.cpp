@@ -160,6 +160,31 @@ FinanceServer::FinanceServer(pqxx::connection& postgres,
                                 nlohmann::json{{"error", e.what()}}.dump());
         }
       });
+
+  CROW_ROUTE(app, "/api/v1/accounts/create")
+      .methods("POST"_method)([this](const crow::request& req) {
+        try {
+          auto body = nlohmann::json::parse(req.body);
+          std::string session_token = body["session_token"];
+          std::string currency_code = body["currency_code"];
+
+          std::string user_id;
+          if (!verify_session(session_token, user_id)) {
+            return crow::response(401, "Invalid session token");
+          }
+
+          try {
+            std::string account_id =
+                finance_service->create_account(user_id, currency_code);
+            return crow::response(200, "Счет успешно создан");
+          } catch (const std::runtime_error& e) {
+            return crow::response(400, e.what());
+          }
+        } catch (const std::exception& e) {
+          return crow::response(500,
+                                nlohmann::json{{"error", e.what()}}.dump());
+        }
+      });
 }
 
 /**

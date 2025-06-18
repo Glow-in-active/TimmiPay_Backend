@@ -166,6 +166,43 @@ std::vector<Transfer> FinanceService::get_transaction_history(
   return transfers;
 }
 
+/**
+ * @brief Создает новый счет для пользователя в указанной валюте.
+ *
+ * @param user_id ID пользователя, для которого создается счет.
+ * @param currency_code Код валюты нового счета (например, "USD", "EUR").
+ * @return ID нового созданного счета.
+ * @throws std::runtime_error Если валюта не найдена или счет уже существует.
+ */
+std::string FinanceService::create_account(const std::string& user_id,
+                                           const std::string& currency_code) {
+  pqxx::work txn(db_conn);
+
+  std::string currency_id = get_currency_id(txn, currency_code);
+  if (currency_id.empty()) {
+    throw std::runtime_error("Валюта с кодом " + currency_code + " не найдена.");
+  }
+
+  // Проверяем, существует ли уже счет для данного пользователя и валюты
+  std::optional<Account> existing_account =
+      get_account(txn, user_id, currency_id);
+  if (existing_account.has_value()) {
+    throw std::runtime_error("Счет для пользователя " + user_id +
+                             " и валюты " + currency_code +
+                             " уже существует.");
+  }
+
+  // Создаем новый счет
+  pqxx::result result = txn.exec_params(
+      "INSERT INTO accounts (user_id, currency_id, balance) VALUES ($1, $2, $3) "
+      "RETURNING id;",
+      user_id, currency_id, 0.00);
+
+  txn.commit();
+
+  return result[0]["id"].as<std::string>();
+}
+
 std::string FinanceService::get_currency_id(pqxx::work& txn,
                                             const std::string& currency_code) {
   /**
